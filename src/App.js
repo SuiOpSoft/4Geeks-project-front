@@ -7,11 +7,13 @@ import 'primeflex/primeflex.css';
 import 'prismjs/themes/prism-coy.css';
 import './layout/layout.scss';
 import './App.scss';
-
+import { LandingPage } from "../src/views/LandingPage/LandingPage"
+import "../src/views/LandingPage/landing-styles/landing-style.scss"
+import "../src/views/LandingPage/landing-styles/pe-icon-7-stroke.scss"
 
 function App() {
   return (
-    <Home />
+    <LandingPage />
   );
 }
 
