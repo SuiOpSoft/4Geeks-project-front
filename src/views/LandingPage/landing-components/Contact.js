@@ -2,15 +2,14 @@ import React from "react";
 
 export const Contact = () =>{
     return(
-		<section className="section " id="contact">
+		<section className="section" id="contact">
 					<div className="container">
 						<div className="row">
 							<div className="col-lg-8 offset-lg-2">
 								<h1 className="section-title text-center">GET IN TOUCH</h1>
 								<div className="section-title-border mt-3" />
 								<p className="section-subtitle text-muted text-center pt-4 font-secondary">
-									We thrive when coming up with innovative ideas but also understand that a smart
-									concept should be supported with measurable results.
+									In order to take advantage of all the benefits which are presented, please feel free to fill the form.
 								</p>
 							</div>
 						</div>
@@ -21,15 +20,14 @@ export const Contact = () =>{
 										<span className="h5">Office Address 1:</span>
 										<br />
 										<span className="text-muted d-block mt-2">
-											4461 Cedar Street Moro, AR 72368
+											Elche, Alicante 03202
 										</span>
 									</p>
 									<p className="mt-4">
 										<span className="h5">Office Address 2:</span>
 										<br />
 										<span className="text-muted d-block mt-2">
-											2467 Swick Hill Street <br />
-											New Orleans, LA 70171
+											Málaga, Andalucía 29008
 										</span>
 									</p>
 									<p className="mt-4">
@@ -59,7 +57,7 @@ export const Contact = () =>{
 															id="name"
 															type="text"
 															className="form-control is-untouched is-pristine av-invalid form-control"
-															value=""
+															
 														/>
 													</div>
 												</div>
@@ -74,7 +72,7 @@ export const Contact = () =>{
 															id="email"
 															type="email"
 															className="form-control is-untouched is-pristine av-invalid form-control"
-															value=""
+															
 														/>
 													</div>
 												</div>
@@ -91,7 +89,7 @@ export const Contact = () =>{
 															id="subject"
 															type="text"
 															className="form-control is-untouched is-pristine av-invalid form-control"
-															value=""
+															
 														/>
 													</div>
 												</div>

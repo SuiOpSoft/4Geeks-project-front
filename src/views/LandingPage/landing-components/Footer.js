@@ -11,16 +11,10 @@ export const Footer = () =>{
 								<div className="text-muted mt-4">
 									<ul className="list-unstyled footer-list">
 										<li>
-											<a href="/home-two">Home</a>
+											<a href="/">Home</a>
 										</li>
 										<li>
-											<a href="/home-two">About us</a>
-										</li>
-										<li>
-											<a href="/home-two">Careers</a>
-										</li>
-										<li>
-											<a href="/home-two">Contact us</a>
+											<a href="/">Contact us</a>
 										</li>
 									</ul>
 								</div>
@@ -30,16 +24,13 @@ export const Footer = () =>{
 								<div className="text-muted mt-4">
 									<ul className="list-unstyled footer-list">
 										<li>
-											<a href="/home-two">Terms &amp; Condition</a>
+											<a href="/">Terms &amp; Condition</a>
 										</li>
 										<li>
-											<a href="/home-two">About us</a>
+											<a href="/">About us</a>
 										</li>
 										<li>
-											<a href="/home-two">Jobs</a>
-										</li>
-										<li>
-											<a href="/home-two">Bookmarks</a>
+											<a href="/">Bookmarks</a>
 										</li>
 									</ul>
 								</div>
@@ -49,28 +40,27 @@ export const Footer = () =>{
 								<div className="text-muted mt-4">
 									<ul className="list-unstyled footer-list">
 										<li>
-											<a href="/home-two">FAQ</a>
+											<a href="/">FAQ</a>
 										</li>
 										<li>
-											<a href="/home-two">Contact</a>
+											<a href="/">Contact</a>
 										</li>
 										<li>
-											<a href="/home-two">Disscusion</a>
+											<a href="/">Disscusion</a>
 										</li>
 									</ul>
 								</div>
 							</div>
 							<div className="mt-4 col-lg-3">
-								<h4>Subscribe</h4>
+								<h4>Feedback</h4>
 								<div className="text-muted mt-4">
 									<p>
-										In an ideal world this text wouldn’t exist, a client would acknowledge the
-										importance of having web copy before the design starts.
+										We would like to improve more and more so you are welcome to share your ideas to make it better.
 									</p>
 								</div>
 								<form className="subscribe">
 									<input placeholder="Email" className="form-control" required="" />
-									<a className="submit" href="/home-two">
+									<a className="submit" href="/">
 										<i className="pe-7s-paper-plane" />
 									</a>
 								</form>
@@ -85,9 +75,7 @@ export const Footer = () =>{
 								<div className="float-start pull-none">
 									<p className="copy-rights text-muted">2021 © SuiOpSoft</p>
 								</div>
-								<div className="float-end pull-none">
-									<img src="assets/images/payment.png" alt="payment" height="36" />
-								</div>
+								
 								<div className="clearfix" />
 							</div>
 						</div>
