@@ -41,6 +41,6 @@
   },
   "devDependencies": {
     "jest-puppeteer": "^4.3.0",
-    "puppeteer": "^2.0.0"
+    "puppeteer": "^1.5.0"
   }
 }
