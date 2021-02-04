@@ -18,15 +18,16 @@
 	text-transform: none;
 	line-height: 1;
 
-	/* Better Font Rendering =========== */
+
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
 .pe-7s-call:before {
     content: "\e670";
   }
-  .pe-7s-mail:before {
-    content: "\e639";
+  
+  .pe-7s-mail-open:before {
+    content: "\e63a";
   }
   .pe-7s-paper-plane:before {
     content: "\e629";

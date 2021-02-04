@@ -8,12 +8,12 @@ export const ContactSocial = () =>{
 							<div className="col-lg-6">
 								<ul className="list-inline social mt-4">
 									<li className="list-inline-item">
-										<a className="social-icon" href="/">
+										<a className="social-icon" href="https://twitter.com/">
 											<i className="fab fa-twitter" />
 										</a>
 									</li>
 									<li className="list-inline-item">
-										<a className="social-icon" href="/">
+										<a className="social-icon" href="https://www.linkedin.com/">
 											<i className="fab fa-linkedin-in" />
 										</a>
 									</li>
