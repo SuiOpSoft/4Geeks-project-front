@@ -2,7 +2,6 @@ import React from "react";
 
 export const WorkProcess = () =>{
     return(
-
                 <section className="section bg-light">
 					<div className="container">
 						<div className="row">

@@ -12,6 +12,7 @@ import {ContactSocial} from '../LandingPage/landing-components/ContactSocial'
 import {Footer} from '../LandingPage/landing-components/Footer'
 
 
+
 export const LandingPage = () => {
     return(
         <div>

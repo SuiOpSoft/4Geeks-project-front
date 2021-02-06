@@ -2,7 +2,7 @@ import React from "react";
 
 export const Header = () =>{
     return(
-        <section className="section bg-home home-half" id="home">
+        <section className="section bg-home home-half" id="header">
 					<div className="bg-overlay2" />
 					<div className="display-table">
 						<div className="display-table-cell">

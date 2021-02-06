@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Route } from "react-router-dom";
+import { BrowserRouter, Router, Route, Switch, HashRouter } from "react-router-dom";
 import { DataReliefValve } from "../components/inputs/DataReliefValve";
 import { DataFluids } from "../components/inputs/DataFluids";
 import { DataSeparators } from "../components/inputs/DataSeparators";
@@ -8,6 +8,7 @@ import { Navbar } from "../components/shared/navbar";
 import { SideBar } from "../components/shared/SideBar";
 import { HomeUser } from "../components/shared/HomeUser";
 import { Footer } from "../components/shared/Footer";
+import ScrollToTop from "../components/shared/ScrollTotop"
 
 import classNames from "classnames";
 
@@ -34,7 +35,7 @@ export const Home = () => {
       label: "Inputs",
       icon: "pi pi-fw pi-sitemap",
       items: [
-        { label: "Fluids", icon: "pi pi-fw pi-table", to: "/fluids" },
+        { label: "Fluids", icon: "pi pi-fw pi-table", to: "/datafluids" },
         {
           label: "Separators",
           icon: "pi pi-fw pi-table",
@@ -157,6 +158,7 @@ export const Home = () => {
   return (
     <div className={wrapperClass} onClick={onWrapperClick}>
       <Navbar onToggleMenu={onToggleMenu} />
+      <BrowserRouter basename="/home">
       <SideBar
         isSidebarVisible={isSidebarVisible}
         sidebar={sidebar}
@@ -168,14 +170,14 @@ export const Home = () => {
       />
 
       <div className="layout-main">
-        <Route path="/homeUser" component={HomeUser} />
-        <Route path="/fluids" component={DataFluids} />
+        <Route exact path="/homeUser" component={HomeUser} />
+        <Route path="/datafluids" component={DataFluids} />
         <Route path="/separators" component={DataSeparators} />  
         <Route path="/dataReliefValve" component={DataReliefValve} />
         <Route path="/dataLevelControlValves" component={DataLevelControlValves} />
       </div>
+      </BrowserRouter>
 
-      <Footer />
 
     </div>
   );

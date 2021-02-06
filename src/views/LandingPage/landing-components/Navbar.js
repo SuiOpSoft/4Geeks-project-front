@@ -1,15 +1,16 @@
 import React from "react";
-import {Route, Link} from "react-router-dom";
+import {Link} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
+
 
 export const Navbar = () => {
     return(
 			<nav className="navbar-custom    navbar navbar-expand-lg fixed-top">
 				<div className="container">
-					<Link to="/" className="logo navbar-brand">									
+					<div className="logo navbar-brand">									
 							SuiOpSoft
-					</Link>
+					</div>
 					<button aria-label="Toggle navigation" type="button" className="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" >
 					<span className="fas fa-bars"></span>
 					</button>
@@ -17,7 +18,7 @@ export const Navbar = () => {
 						<div data-nav="list" className="navbar-collapse">
 							<ul id="mySidenav" className="navbar-center navbar-nav">
 								<li className="nav-item">
-									<a href="#home" className="nav-link active ">
+									<a href="#header" className="nav-link active ">
 										Home
 									</a>
 								</li>

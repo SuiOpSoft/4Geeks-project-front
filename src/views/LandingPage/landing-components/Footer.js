@@ -74,8 +74,7 @@ export const Footer = () =>{
 							<div className="col-lg-12">
 								<div className="float-start pull-none">
 									<p className="copy-rights text-muted">2021 © SuiOpSoft</p>
-								</div>
-								
+								</div>								
 								<div className="clearfix" />
 							</div>
 						</div>

@@ -15,8 +15,7 @@ export const GetStarted = () =>{
 				</div>
 			</div>
 		</div>
-		<div className="bg-pattern-effect">
-			
+		<div className="bg-pattern-effect">			
 		</div>
 	</section>  
     )
