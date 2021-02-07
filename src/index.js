@@ -3,16 +3,12 @@ import 'react-app-polyfill/ie11';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { HashRouter } from 'react-router-dom';
-import ScrollToTop from './components/shared/ScrollTotop';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-    <HashRouter>
-        <ScrollToTop>
-            <App></App>
-        </ScrollToTop>
-    </HashRouter>,
+
+            <App></App>,
+
     document.getElementById('root')
 );
 
