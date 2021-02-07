@@ -4,32 +4,35 @@ import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import "../../index.css";
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
 import "./DataReliefValve.css";
+import { Button } from "primereact/button";
+import { Context } from "../../store/context";
 
 export const DataSeparators = () => {
   let dataSeparators = [
     {
       //   1
-      separator: "equipo1",
-      internal_Diameter: "-",
-      t_t_length: "-",
-      high_Level_Trip: "-",
-      high_Level_Alarm: "-",
-      normal_Liquid_Level: "-",
-      low_Level_Alarm: "-",
+      separator: "V-36102",
+      internal_Diameter: "1800",
+      t_t_length: "6300",
+      high_Level_Trip: "1080",
+      high_Level_Alarm: "900",
+      normal_Liquid_Level: "650",
+      low_Level_Alarm: "390",
       //   2
-      inlet_Nozzle: "-",
-      gas_Oulet_Nozzle: "-",
-      liquid_Outlet_Nozzle: "-",
+      inlet_Nozzle: "203.2",
+      gas_Oulet_Nozzle: "152.4",
+      liquid_Outlet_Nozzle: "203.2",
       inlet_Device_Type: "-",
-      demister_Type: "-"
+      demister_Type: "-",
     },
   ];
-
+  const { store, actions } = useContext(Context);
+  
   const [separators, setSeparators] = useState(dataSeparators);
 
   let originalRows = {};
@@ -54,6 +57,69 @@ export const DataSeparators = () => {
     delete originalRows[event.index];
 
     setSeparators(products);
+  };
+
+  const SeparatorGasAndLiquidAreasCalc = (
+    Diam,
+    Length,
+    HHl,
+    Nl,
+    Ll,
+    INd,
+    GOn,
+    LOn
+  ) => {
+    console.log(Diam);
+
+    let LA_Hh;
+    let LA_Nl;
+    let LA_Ll;
+
+    let Pi = 3.14159265358979;
+    let Area_Sep = (Pi * Diam ** 2) / (4 * 10 ** 6);
+    let Radio = Diam / 2;
+    let INArea = (Pi * INd ** 2) / (4 * 10 ** 6);
+    let GONArea = (Pi * GOn ** 2) / (4 * 10 ** 6);
+    let LONArea = (Pi * LOn ** 2) / (4 * 10 ** 6);
+    let ABS_R_Hh = Math.abs(Radio - HHl);
+    let ABS_R_Nl = Math.abs(Radio - Nl);
+    let ABS_R_Ll = Math.abs(Radio - Ll);
+    let AHh = 2.0 * Math.acos(ABS_R_Hh / Radio);
+    let ANl = 2.0 * Math.acos(ABS_R_Nl / Radio);
+    let ALl = 2.0 * Math.acos(ABS_R_Ll / Radio);
+    let TAHh = (0.5 * ABS_R_Hh * Diam * Math.sin(AHh / 2.0)) / 1.0e6;
+    let TANl = (0.5 * ABS_R_Nl * Diam * Math.sin(ANl / 2.0)) / 1.0e6;
+    let TALl = (0.5 * ABS_R_Ll * Diam * Math.sin(ALl / 2.0)) / 1.0e6;
+    if (HHl > Radio) {
+      LA_Hh = ((Radio ** 2 / 2.0) * (2 * Pi - AHh)) / 1.0e6 + TAHh;
+    } else {
+      LA_Hh = ((Radio ** 2 / 2.0) * AHh) / 1.0e6 - TAHh;
+    }
+    if (Nl > Radio) {
+      LA_Nl = ((Radio ** 2 / 2.0) * (2 * Pi - ANl)) / 1.0e6 + TANl;
+    } else {
+      LA_Nl = ((Radio ** 2 / 2.0) * ANl) / 1.0e6 - TANl;
+    }
+    if (Ll > Radio) {
+      LA_Ll = ((Radio ** 2 / 2.0) * (2 * Pi - ALl)) / 1.0e6 + TALl;
+    } else {
+      LA_Ll = ((Radio ** 2 / 2.0) * ALl) / 1.0e6 - TALl;
+    }
+    let GA_Hh = Area_Sep - LA_Hh;
+    let GA_Nl = Area_Sep - LA_Nl;
+    let GA_Ll = Area_Sep - LA_Ll;
+
+    return (store.separatorsOutput[0].Separator_Cross_sectional_Area_Ratio = Radio.toFixed(2),
+            store.separatorsOutput[0].Separator_Cross_sectional_Area = Area_Sep.toFixed(2),
+            store.separatorsOutput[0].Inlet_Nozzle_Area = INArea.toFixed(2),
+            store.separatorsOutput[0].Gas_Nozzle_Area = GONArea.toFixed(2),
+            store.separatorsOutput[0].Liquid_Nozzle_Area = LONArea.toFixed(2),
+            store.separatorsOutput[0].High_Level_Trip_Gas_Area = GA_Hh.toFixed(2),
+            store.separatorsOutput[0].Normal_Level_Gas_Area = GA_Nl.toFixed(2),
+            store.separatorsOutput[0].Low_Level_Gas_Area = GA_Ll.toFixed(2),
+            store.separatorsOutput[0].High_LEvel_Trip_Liquid_Area = LA_Hh.toFixed(2),
+            store.separatorsOutput[0].Normal_LEvel_Trip_Liquid_Area = LA_Nl.toFixed(2),
+            store.separatorsOutput[0].Low_LEvel_Trip_Liquid_Area = LA_Ll.toFixed(2));
   };
 
   const onEditorValueChange = (productKey, props, value) => {
@@ -190,6 +256,22 @@ export const DataSeparators = () => {
             editor={(props) => checkEditor("separators", props)}
           ></Column>
         </DataTable>
+        <Button
+          label="Calcular"
+          value=""
+          onClick={() => SeparatorGasAndLiquidAreasCalc(dataSeparators[0].internal_Diameter, 
+                                                        dataSeparators[0].t_t_length, 
+                                                        dataSeparators[0].high_Level_Trip,
+                                                        dataSeparators[0].high_Level_Alarm,
+                                                        dataSeparators[0].normal_Liquid_Level,
+                                                        dataSeparators[0].low_Level_Alarm,
+                                                        dataSeparators[0].inlet_Nozzle,
+                                                        dataSeparators[0].gas_Oulet_Nozzle,
+                                                        dataSeparators[0].liquid_Outlet_Nozzle,
+                                                        dataSeparators[0].inlet_Device_Type,
+                                                        dataSeparators[0].Low_LEvel_Trip_Liquid_Area)
+          }
+        ></Button>
       </div>
     </div>
   );

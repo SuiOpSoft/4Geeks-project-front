@@ -8,7 +8,7 @@ import { Navbar } from "../components/shared/navbar";
 import { SideBar } from "../components/shared/SideBar";
 import { HomeUser } from "../components/shared/HomeUser";
 import { Footer } from "../components/shared/Footer";
-import ScrollToTop from "../components/shared/ScrollTotop"
+import { SeparatorGasAndLiquidAreas } from "../components/outputs/SeparatorGasAndLiquidAreas"
 
 import classNames from "classnames";
 
@@ -175,9 +175,10 @@ export const Home = () => {
         <Route path="/separators" component={DataSeparators} />  
         <Route path="/dataReliefValve" component={DataReliefValve} />
         <Route path="/dataLevelControlValves" component={DataLevelControlValves} />
+        <Route path="/separatorResults" component={SeparatorGasAndLiquidAreas} />
       </div>
       </BrowserRouter>
-
+      <Footer/>
 
     </div>
   );

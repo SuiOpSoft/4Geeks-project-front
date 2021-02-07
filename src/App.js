@@ -13,8 +13,7 @@ import { SignIn } from "../src/views/SignInPage/SignIn";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import ScrollToTop from "../src/components/shared/ScrollTotop";
 import { Home } from "../src/views/Home";
-import { DataFluids } from "../src/components/inputs/DataFluids";
-import {HomeUser} from "../src/components/shared/HomeUser"
+import injectContext from "../src/store/context";
 
 function App() {
   return (
@@ -39,4 +38,4 @@ function App() {
   );
 }
 
-export default App;
+export default injectContext(App);
