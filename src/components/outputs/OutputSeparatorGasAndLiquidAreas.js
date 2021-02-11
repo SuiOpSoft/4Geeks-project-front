@@ -10,11 +10,11 @@ import { Column } from "primereact/column";
 import "../inputs/DataReliefValve.css";
 import {Context} from "../../store/context"
 
-export const SeparatorGasAndLiquidAreas = () => {
+export const OutputSeparatorGasAndLiquidAreas = () => {
   
   const { store, actions } = useContext(Context);
 
-  const [separatorGasAndLiquidAreas, setSeparatorGasAndLiquidAreas] = useState(store.separatorsOutput);
+  const [separatorGasAndLiquidAreas, setSeparatorGasAndLiquidAreas] = useState(store.output_separator_gas_and_liquid_areas);
   
 
 
@@ -32,8 +32,7 @@ export const SeparatorGasAndLiquidAreas = () => {
           value={separatorGasAndLiquidAreas}>
           <Column
             field="separator"
-            header="Separator"
-            
+            header="Separator"           
           ></Column>
           <Column
             field="Separator_Cross_sectional_Area_Ratio"
@@ -41,43 +40,43 @@ export const SeparatorGasAndLiquidAreas = () => {
           ></Column>
           <Column
             field="Separator_Cross_sectional_Area"
-            header="Cross-sectional Area (m2)"
+            header="Cross-sectional Area (m&sup2;)"
           ></Column>
           <Column
             field="Inlet_Nozzle_Area"
-            header="Inlet Nozzle Area (m2)"
+            header="Inlet Nozzle Area (m&sup2;)"
           ></Column>
           <Column
             field="Gas_Nozzle_Area"
-            header="Gas Nozzle Area (m2)"
+            header="Gas Nozzle Area (m&sup2;)"
           ></Column>
           <Column
             field="Liquid_Nozzle_Area"
-            header="Liquid Nozzle Area (m2)"
+            header="Liquid Nozzle Area (m&sup2;)"
           ></Column>
           <Column
             field="High_Level_Trip_Gas_Area"
-            header="High Level Trip Gas Area (m2)"
+            header="High Level Trip Gas Area (m&sup2;)"
           ></Column>
           <Column
             field="Normal_Level_Gas_Area"
-            header="Normal Level Gas Area (m2)"
+            header="Normal Level Gas Area (m&sup2;)"
           ></Column>
           <Column
             field="Low_Level_Gas_Area"
-            header="Low Level Gas Area (m2)"
+            header="Low Level Gas Area (m&sup2;)"
           ></Column>
           <Column
-            field="High_LEvel_Trip_Liquid_Area"
-            header="High LEvel Trip Liquid Area (m2)"
+            field="High_Level_Trip_Liquid_Area"
+            header="High LEvel Trip Liquid Area (m&sup2;)"
           ></Column>
           <Column
-            field="Normal_LEvel_Trip_Liquid_Area"
-            header="Normal LEvel Trip Liquid Area (m2)"
+            field="Normal_Level_Liquid_Area"
+            header="Normal LEvel Trip Liquid Area (m&sup2;)"
           ></Column>
           <Column
             field="Low_LEvel_Trip_Liquid_Area"
-            header="Low LEvel Trip Liquid Area (m2)"
+            header="Low LEvel Trip Liquid Area (m&sup2;)"
           ></Column>
         </DataTable>
       </div>

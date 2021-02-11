@@ -37,7 +37,7 @@ export function SeparatorGasAndLiquidAreasCalc(Diam, Length, HHl, Nl, Ll, INd, G
    let GA_Nl=Area_Sep-LA_Nl;
    let GA_Ll=Area_Sep-LA_Ll;
 
-   return store.separatorsOutput.Separator_Cross_sectional_Area_Ratio=Radio;
+   return store.separator_gas_and_liquid_areas.Separator_Cross_sectional_Area_Ratio=Radio;
    
 
 }

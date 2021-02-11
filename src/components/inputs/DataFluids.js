@@ -160,22 +160,22 @@ export const DataFluids = () => {
           ></Column>
           <Column
             field="oil_Density"
-            header="Oil Density (kg/m3)"
+            header="Oil Density (kg/m&sup3;)"
             editor={(props) => checkEditor("fluids", props)}
           ></Column>
           <Column
             field="gas_Density"
-            header="Gas Density (kg/m3)"
+            header="Gas Density (kg/m&sup3;)"
             editor={(props) => checkEditor("fluids", props)}
           ></Column>
           <Column
             field="mixture_Density"
-            header="Mixture Density (kg/m3)"
+            header="Mixture Density (kg/m&sup3;)"
             editor={(props) => checkEditor("fluids", props)}
           ></Column>
           <Column
             field="water_Density"
-            header="Water Density (kg/m3)"
+            header="Water Density (kg/m&sup3;)"
             editor={(props) => checkEditor("fluids", props)}
           ></Column>
           <Column
@@ -272,22 +272,22 @@ export const DataFluids = () => {
           ></Column>
           <Column
             field="standard_Gas_flow"
-            header="Standard Gas Flow (S m3/h)"
+            header="Standard Gas Flow (S m&sup3;/h)"
             editor={(props) => checkEditor("fluids", props)}
           ></Column>
           <Column
             field="standard_Liquid_Flow"
-            header="Standard Liquid Flow (S m3/h)"
+            header="Standard Liquid Flow (S m&sup3;/h)"
             editor={(props) => checkEditor("fluids", props)}
           ></Column>
           <Column
             field="actual_Gas_Flow"
-            header="Actual Gas Flow (m3/h)"
+            header="Actual Gas Flow (m&sup3;/h)"
             editor={(props) => checkEditor("fluids", props)}
           ></Column>
           <Column
             field="actual_Liquid_Flow"
-            header="Actual Liquid Flow (m3/h)"
+            header="Actual Liquid Flow (m&sup3;/h)"
             editor={(props) => checkEditor("fluids", props)}
           ></Column>
           <Column

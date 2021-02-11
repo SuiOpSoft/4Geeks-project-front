@@ -15,20 +15,16 @@ import ScrollToTop from "../src/components/shared/ScrollTotop";
 import { Home } from "../src/views/Home";
 import injectContext from "../src/store/context";
 
+
+
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter >
       <ScrollToTop>
         <Switch>
-          <Route  exact path="/">
-            <LandingPage />
-          </Route>
-          <Route  path="/signin">
-            <SignIn />
-          </Route>	  
-          <Route exact path="/home">
-            <Home />
-          </Route>
+          <Route  exact path="/" component = {LandingPage} />
+          <Route  path="/signin" component = {SignIn} />	  
+          <Route path="/home"  component = {Home} />
           <Route>
             <h1>Not found!</h1>
           </Route>

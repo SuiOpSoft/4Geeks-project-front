@@ -1,21 +1,76 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			separatorsOutput: [
-                {
+			output_separator_gas_and_liquid_areas: [],
+			output_inlet_nozzle_parameters: [
+				{
 					separator: "Equipo",
-                    Separator_Cross_sectional_Area_Ratio: "",
-                    Separator_Cross_sectional_Area: "",
-                    Inlet_Nozzle_Area: "",
-                    Gas_Nozzle_Area:"",
-                    Liquid_Nozzle_Area:"",
-                    High_Level_Trip_Gas_Area:"",
-                    Normal_Level_Gas_Area:"",
-                    Low_Level_Gas_Area:"",
-                    High_LEvel_Trip_Liquid_Area:"",
-                    Normal_LEvel_Trip_Liquid_Area:"",
-                    Low_LEvel_Trip_Liquid_Area:"",
-                }]
+					Mixture_Inlet_Nozzle_Velocity: "-",
+					Inlet_Nozzle_Momentum: "-",
+					Maximum_Mixture_Inlet_Nozzle_Velocity: "-",
+					Maximum_Inlet_Nozzle_Momentum: "-",
+					Maximun_Liquid_Flow_Inlet_Nozzle: "-",
+					Maximum_Gas_Flow_Inlet_Nozzle: "-",
+					Status_Inlet_Nozzle: "-"
+				}
+			],
+			output_gas_nozzle_parameters:[
+				{
+					separator: "Equipo",
+					Gas_Nozzle_Velocity: "-",
+					Gas_Nozzle_Momentum: "-",
+					Maximum_Gas_Nozzle_Velocity: "-",
+					Maximum_Gas_Nozzle_Momentum: "-",
+					Maximum_Gas_Nozzle_Flow: "-",
+					Status_Gas_Nozzle: "-"					
+				}
+			],
+			output_liquid_nozzle_parameters:[
+				{
+					separator: "Equipo",
+					Liquid_Nozzle_Velocity: "-",
+					Maximum_Liquid_Nozzle_Velocity: "-",
+					Maximum_Liquid_Nozzle_Flow: "-",
+					Status_Liquid_Nozzle: "-"				
+				}
+			],
+			output_vessel_gas_capacity_parameters:[
+				{
+					separator: "Equipo",
+					Gas_Load_Factor: "-",
+					Maximum_Gas_Flow_at_HH_level: "-",
+					Maximum_Gas_Flow_at_Normal_level: "-",
+					Status_Gas_Capacity_at_high_level: "-",
+					Status_Gas_Capacity_at_normal_level: "-"
+
+				}
+			],
+			output_vessel_liquid_capacity_parameters:[
+				{
+					separator: "Equipo",
+					Maximum_Vessel_Liquid_Flow_Capacity_at_Normal_Level: "-",
+   					Status_Vessel_Liquid_Capacity: "-"
+
+				}
+			],
+			output_relief_valve_parameters:[
+				{
+					separator: "Equipo",
+					Relief_Valve_Capacity: "-",
+					Relief_Valve_Capacity_Status: "-"
+					
+				}
+			],
+			output_level_control_valve_parameters:[
+				{
+					separator: "Equipo",
+					LCV_Liquid_Flow_Capacity:"-",
+					Level_Valve_required_Cv:"-",
+					Level_Control_Valve_Status:"-"
+
+				}
+			]
+
 		},
 		actions: {
 			addFavorites(item) {
@@ -24,7 +79,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				function filterFavorites(arr, criteria) {
 					return arr.filter(function(obj) {
 						return Object.keys(criteria).every(function(c) {
-							return obj[c] == criteria[c];
+							return obj[c] === criteria[c];
 						});
 					});
 				}

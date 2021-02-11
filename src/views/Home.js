@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { BrowserRouter, Router, Route, Switch, HashRouter } from "react-router-dom";
+import { BrowserRouter, Router, Route, Switch, Link, HashRouter, useRouteMatch } from "react-router-dom";
+import classNames from "classnames";
 import { DataReliefValve } from "../components/inputs/DataReliefValve";
 import { DataFluids } from "../components/inputs/DataFluids";
 import { DataSeparators } from "../components/inputs/DataSeparators";
@@ -8,9 +9,14 @@ import { Navbar } from "../components/shared/navbar";
 import { SideBar } from "../components/shared/SideBar";
 import { HomeUser } from "../components/shared/HomeUser";
 import { Footer } from "../components/shared/Footer";
-import { SeparatorGasAndLiquidAreas } from "../components/outputs/SeparatorGasAndLiquidAreas"
-
-import classNames from "classnames";
+import { OutputSeparatorGasAndLiquidAreas } from "../components/outputs/OutputSeparatorGasAndLiquidAreas"
+import {OutputInletNozzleParameters} from "../components/outputs/OutputInletNozzleParameters"
+import {OutputGasNozzleParameters} from "../components/outputs/OutputGasNozzleParameters"
+import {OutputLiquidNozzleParameters} from "../components/outputs/OutputLiquidNozzleParameters"
+import { OutputVesselGasCapacityParameters } from "../components/outputs/OutputVesselGasCapacityParameters";
+import { OutputVesselLiquidCapacityParameters } from "../components/outputs/OutputVesselLiquidCapacityParameters";
+import { OutputReliefValveParameters } from "../components/outputs/OutputReliefValveParameters";
+import { OutputLevelControlValveParameters } from "../components/outputs/OutputLevelControlValveParameters";
 
 export const Home = () => {
   const [layoutMode, setLayoutMode] = useState("static");
@@ -25,31 +31,35 @@ export const Home = () => {
     layoutColorMode === "dark"
       ? "assets/layout/images/SuiOpSoft-logo-sm.png"
       : "assets/layout/images/SuiOpSoft-logo-sm.png";
-  const menu = [
+  
+      const menu = [
     {
       label: "Home",
       icon: "pi pi-fw pi-home",
-      to: "/homeUser",
+      to: "/home/homeUser",
     },
     {
       label: "Inputs",
       icon: "pi pi-fw pi-sitemap",
       items: [
-        { label: "Fluids", icon: "pi pi-fw pi-table", to: "/datafluids" },
+        { label: "Fluids", 
+          icon: "pi pi-fw pi-table",
+          to:"/home/datafluids"
+        },
         {
           label: "Separators",
           icon: "pi pi-fw pi-table",
-          to: "/separators",
+          to: "/home/separators",
         },
         {
           label: "Relief Valves",
           icon: "pi pi-fw pi-table",
-          to: "/dataReliefValve",
+          to: "/home/datareliefvalve",
         },
         {
           label: "Level Control Valves",
           icon: "pi pi-fw pi-table",
-          to: "/dataLevelControlValves",
+          to: "/home/datalevelcontrolvalves",
         },
       ],
     },
@@ -57,7 +67,14 @@ export const Home = () => {
       label: "Outputs",
       icon: "pi pi-fw pi-external-link",
       items: [
-        { label: "Separators Results", icon: "pi pi-fw pi-table", to: "/separatorResults" },
+        { label: "Separators Gas and Liquid Areas", icon: "pi pi-fw pi-table", to: "/separatorGasAndLiquidAreas" },
+        { label: "Inlet Nozzle Parameters", icon: "pi pi-fw pi-table", to: "/inletNozzleParameters" },
+        { label: "Gas Nozzle Parameters", icon: "pi pi-fw pi-table", to: "/gasNozzleParameters" },
+        { label: "Liquid Nozzle Parameters", icon: "pi pi-fw pi-table", to: "/liquidNozzleParameters" },
+        { label: "Vessel Gas Capacity Parameters", icon: "pi pi-fw pi-table", to: "/vesselGasCapacityParameters" },
+        { label: "Vessel Liquid Capacity Parameters", icon: "pi pi-fw pi-table", to: "/vesselLiquidCapacityParameters" },
+        { label: "Relief Valve Parameters", icon: "pi pi-fw pi-table", to: "/outputReliefValveParameters" },
+        { label: "Level Control Valve Parameters", icon: "pi pi-fw pi-table", to: "/levelControlValveParameters" }
       ],
     },
     {
@@ -158,7 +175,6 @@ export const Home = () => {
   return (
     <div className={wrapperClass} onClick={onWrapperClick}>
       <Navbar onToggleMenu={onToggleMenu} />
-      <BrowserRouter basename="/home">
       <SideBar
         isSidebarVisible={isSidebarVisible}
         sidebar={sidebar}
@@ -170,14 +186,22 @@ export const Home = () => {
       />
 
       <div className="layout-main">
-        <Route exact path="/homeUser" component={HomeUser} />
-        <Route path="/datafluids" component={DataFluids} />
-        <Route path="/separators" component={DataSeparators} />  
-        <Route path="/dataReliefValve" component={DataReliefValve} />
-        <Route path="/dataLevelControlValves" component={DataLevelControlValves} />
-        <Route path="/separatorResults" component={SeparatorGasAndLiquidAreas} />
+        <Switch>
+        <Route exact path="/home/homeUser" component={HomeUser} />
+        <Route exact path="/home/datafluids" component = {DataFluids} />
+        <Route path="/home/separators" component={DataSeparators} />  
+        <Route path="/home/datareliefvalve" component={DataReliefValve} />
+        <Route path="/home/datalevelcontrolvalves" component={DataLevelControlValves} />
+        <Route path="/separatorGasAndLiquidAreas" component={OutputSeparatorGasAndLiquidAreas} />
+        <Route path="/inletNozzleParameters" component={OutputInletNozzleParameters} />
+        <Route path="/gasNozzleParameters" component={OutputGasNozzleParameters} />
+        <Route path="/liquidNozzleParameters" component={OutputLiquidNozzleParameters} />
+        <Route path="/vesselGasCapacityParameters" component={OutputVesselGasCapacityParameters} />
+        <Route path="/vesselLiquidCapacityParameters" component={OutputVesselLiquidCapacityParameters} />
+        <Route path="/outputReliefValveParameters" component={OutputReliefValveParameters} />
+        <Route path="/levelControlValveParameters" component={OutputLevelControlValveParameters} />
+        </Switch>
       </div>
-      </BrowserRouter>
       <Footer/>
 
     </div>
