@@ -36,7 +36,7 @@ export const Home = () => {
     {
       label: "Home",
       icon: "pi pi-fw pi-home",
-      to: "/home/homeUser",
+      to: "/home/homeuser",
     },
     {
       label: "Inputs",
@@ -187,7 +187,7 @@ export const Home = () => {
 
       <div className="layout-main">
         <Switch>
-        <Route exact path="/home/homeUser" component={HomeUser} />
+        <Route exact path="/home/homeuser" component={HomeUser} />
         <Route exact path="/home/datafluids" component = {DataFluids} />
         <Route path="/home/separators" component={DataSeparators} />  
         <Route path="/home/datareliefvalve" component={DataReliefValve} />

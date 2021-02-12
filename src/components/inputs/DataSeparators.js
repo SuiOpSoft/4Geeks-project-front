@@ -20,7 +20,6 @@ export const DataSeparators = () => {
   const toast = useRef(null);
   let dataSeparators = [
     {
-      //   1
       separator: "V-36102",
       internal_Diameter: "1800",
       t_t_length: "6300",
@@ -28,7 +27,6 @@ export const DataSeparators = () => {
       high_Level_Alarm: "900",
       normal_Liquid_Level: "650",
       low_Level_Alarm: "390",
-      //   2
       inlet_Nozzle: "203.2",
       gas_Oulet_Nozzle: "152.4",
       liquid_Outlet_Nozzle: "203.2",
@@ -36,7 +34,6 @@ export const DataSeparators = () => {
       demister_Type: "-",
     },
     {
-      //   1
       separator: "V-36102",
       internal_Diameter: "1800",
       t_t_length: "6300",
@@ -44,7 +41,6 @@ export const DataSeparators = () => {
       high_Level_Alarm: "900",
       normal_Liquid_Level: "650",
       low_Level_Alarm: "390",
-      //   2
       inlet_Nozzle: "203.2",
       gas_Oulet_Nozzle: "152.4",
       liquid_Outlet_Nozzle: "203.2",
@@ -85,9 +81,9 @@ export const DataSeparators = () => {
 
   const { store, actions } = useContext(Context);
   const [separatorDialog, setSeparatorDialog] = useState(false);
-  const [selectedProducts, setSelectedProducts] = useState(null);
+  const [selectedSeparators, setSelectedSeparators] = useState(null);
   const [submitted, setSubmitted] = useState(false);
-  const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
+  const [deleteSeparatorsDialog, setDeleteSeparatorsDialog] = useState(false);
 
   const [separators, setSeparators] = useState(dataSeparators);
   const [separator, setSeparator] = useState(emptySeparator);
@@ -116,7 +112,6 @@ export const DataSeparators = () => {
       let _separator = { ...separator };
       let _separators = [...separators];
 
-      //_separator.separator = createId();
       _separators.push(_separator);
       toast.current.show({
         severity: "success",
@@ -299,7 +294,7 @@ export const DataSeparators = () => {
           icon="pi pi-trash"
           className="p-button-danger"
           onClick={confirmDeleteSelected}
-          disabled={!selectedProducts || !selectedProducts.length}
+          disabled={!selectedSeparators || !selectedSeparators.length}
         />
       </React.Fragment>
     );
@@ -312,7 +307,7 @@ export const DataSeparators = () => {
   };
 
   const confirmDeleteSelected = () => {
-    setDeleteProductsDialog(true);
+    setDeleteSeparatorsDialog(true);
   };
 
   const inputTextEditor = (productKey, props, field) => {
@@ -368,8 +363,7 @@ export const DataSeparators = () => {
     <div className="p-grid p-fluid">
       <Toast ref={toast} />
       <div className="card">
-        <h5>Separators 1</h5>
-        {/* Data Separators Table 1 */}
+        <h5>Separators</h5>
         <Toolbar className="p-mb-4" left={leftToolbarTemplate}></Toolbar>
         <DataTable
           value={separators}
@@ -414,27 +408,6 @@ export const DataSeparators = () => {
             editor={(props) => checkEditor("separators", props)}
           ></Column>
           <Column
-            rowEditor
-            headerStyle={{ width: "7rem" }}
-            bodyStyle={{ textAlign: "center" }}
-          ></Column>
-        </DataTable>
-
-        <h5>Separators 2</h5>
-        {/* Data separators Table 2 */}
-        <DataTable
-          value={separators}
-          editMode="row"
-          dataKey="id"
-          onRowEditInit={onRowEditInit}
-          onRowEditCancel={onRowEditCancel}
-        >
-          <Column
-            field="separator"
-            header="Separators"
-            editor={(props) => checkEditor("separators", props)}
-          ></Column>
-          <Column
             field="inlet_Nozzle"
             header="Inlet Nozzle (mm)"
             editor={(props) => checkEditor("separators", props)}
@@ -471,7 +444,6 @@ export const DataSeparators = () => {
           onClick={() => SeparatorGasAndLiquidAreasCalc(separators)}
         ></Button>
       </div>
-
       <Dialog
         visible={separatorDialog}
         style={{ width: "450px" }}

@@ -16,6 +16,7 @@ import classNames from "classnames";
 import "./DataReliefValve.css";
 
 export const DataReliefValve = () => {
+  const toast = useRef(null);
   let dataReliefValves = [
     {
       separator: "equipo1",
@@ -32,7 +33,7 @@ export const DataReliefValve = () => {
   ];
 
   let emptyReliefValve = {
-      separator: "equipo",
+      separator: "",
       RV_set_pressure_value: "-",
       RV_set_pressure_reference: "-",
       RV_Orifice_Area_value: "-",
@@ -43,17 +44,16 @@ export const DataReliefValve = () => {
       Relief_Valve_Capacity: "-",
       Relief_Valve_Capacity_Status: "-"
     };
+  
+  const { store, actions } = useContext(Context);
+  const [reliefValveDialog, setReliefValveDialog] = useState(false);
+  const [selectedReliefValves, setSelectedReliefValves] = useState(null);
+  const [submitted, setSubmitted] = useState(false);
+  const [deleteReliefValvesDialog, setDeleteReliefValvesDialog] = useState(false);
 
   const [reliefValves, setReliefValves] = useState(dataReliefValves);
-  const { store, actions } = useContext(Context);
-  const [productDialog, setProductDialog] = useState(false);
-  const [selectedProducts, setSelectedProducts] = useState(null);
-  const [submitted, setSubmitted] = useState(false);
-  const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
-
   const [reliefValve, setReliefValve] = useState(emptyReliefValve);
   const [reliefValveResult, setReliefValveResult] = useState(emptyReliefValveResult);
-  const toast = useRef(null);
 
   let originalRows = {};
 
@@ -67,16 +67,15 @@ export const DataReliefValve = () => {
 
     const hideDialog = () => {
       setSubmitted(false);
-      setProductDialog(false);
+      setReliefValveDialog(false);
     };
   
     const saveReliefValve = () => {
       setSubmitted(true);
-  
+      if (reliefValve.separator.trim()) {
       let _reliefValve = { ...reliefValve };
       let _reliefValves = [...reliefValves];
-  
-      //_separator.separator = createId();
+
       _reliefValves.push(_reliefValve);
       toast.current.show({
         severity: "success",
@@ -85,7 +84,9 @@ export const DataReliefValve = () => {
         life: 3000,
       });
       setReliefValves(_reliefValves);
-      setProductDialog(false);
+      setReliefValveDialog(false);
+      setReliefValve(emptyReliefValve);
+      }
     };
 
   const onRowEditInit = (event) => {
@@ -106,7 +107,7 @@ export const DataReliefValve = () => {
     dataTableFuncMap[`${productKey}`](updatedProducts);
   };
 
-  const productDialogFooter = (
+  const reliefValveDialogFooter = (
     <React.Fragment>
       <Button
         label="Cancel"
@@ -137,7 +138,7 @@ export const DataReliefValve = () => {
           icon="pi pi-trash"
           className="p-button-danger"
           onClick={confirmDeleteSelected}
-          disabled={!selectedProducts || !selectedProducts.length}
+          disabled={!selectedReliefValves || !selectedReliefValves.length}
         />
       </React.Fragment>
     );
@@ -146,11 +147,11 @@ export const DataReliefValve = () => {
   const openNew = () => {
     setReliefValve(emptyReliefValve);
     setSubmitted(false);
-    setProductDialog(true);
+    setReliefValveDialog(true);
   };
 
   const confirmDeleteSelected = () => {
-    setDeleteProductsDialog(true);
+    setDeleteReliefValvesDialog(true);
   };
 
   const inputTextEditor = (productKey, props, field) => {
@@ -193,10 +194,8 @@ export const DataReliefValve = () => {
   };
 
   return (
-    <div className="p-grid p-fluid">
-          <div className="datatable-editing-demo">
+    <div className="p-grid p-fluid">         
       <Toast ref={toast} />
-
       <div className="card">
         <h5>Valve Relief</h5>
         <Toolbar className="p-mb-4" left={leftToolbarTemplate}></Toolbar>
@@ -235,33 +234,31 @@ export const DataReliefValve = () => {
         </DataTable>
       </div>
       <Dialog
-        visible={productDialog}
+        visible={reliefValveDialog}
         style={{ width: "450px" }}
         header="New Relief Valve"
         modal
         className="p-fluid"
-        footer={productDialogFooter}
+        footer={reliefValveDialogFooter}
         onHide={hideDialog}
       >
         <div className="p-field">
-          <label htmlFor="separator">Separator Tag</label>
+          <label htmlFor="separator">Relieve Valve Tag</label>
           <InputText
             id="reliefValve"
-            value={reliefValves.reliefValve}
-            onChange={(e) => onInputChange(e, "reliefValve")}
+            value={reliefValves.separator}
+            onChange={(e) => onInputChange(e, "separator")}
             required
             autoFocus
             className={classNames({
-              "p-invalid": submitted && !reliefValve.reliefValve,
+              "p-invalid": submitted && !reliefValve.separator,
             })}
           />
-          {submitted && !reliefValve.reliefValve && (
+          {submitted && !reliefValve.separator && (
             <small className="p-error">Relief Valve Tag is required.</small>
           )}
         </div>
       </Dialog>
     </div>
-    </div>
-
   );
 };

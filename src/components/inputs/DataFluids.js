@@ -3,14 +3,20 @@ import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
 import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import "../../index.css";
-
-import React, { useState } from "react";
+import React, { useState,  useContext, useRef } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
 import "./DataReliefValve.css";
+import classNames from "classnames";
+import { Button } from "primereact/button";
+import { Toolbar } from "primereact/toolbar";
+import { Context } from "../../store/context";
+import { Dialog } from "primereact/dialog";
+import { Toast } from "primereact/toast";
 
 export const DataFluids = () => {
+  const toast = useRef(null);
   let dataFluids = [
     {
       //   1
@@ -22,7 +28,6 @@ export const DataFluids = () => {
       mixture_Density: "-",
       water_Density: "-",
       feed_BSW: "-",
-      //   2
       liquid_Viscosity: "-",
       gas_Viscosity: "-",
       gas_Mw: "-",
@@ -30,7 +35,6 @@ export const DataFluids = () => {
       gas_Compressor: "-",
       specific_Heat_Ratio: "-",
       liquid_Surface_Tension: "-",
-      //    3
       liquid_Vapor_Pressure: "-",
       liquid_Critical_Pressure: "-",
       standard_Gas_flow: "-",
@@ -40,8 +44,40 @@ export const DataFluids = () => {
     },
   ];
 
-  const [fluids, setFluids] = useState(dataFluids);
+  let emptyFluid = {
+    separator: "",
+      operating_Pressure: "-",
+      operating_Temperature: "-",
+      oil_Density: "-",
+      gas_Density: "-",
+      mixture_Density: "-",
+      water_Density: "-",
+      feed_BSW: "-",
+      liquid_Viscosity: "-",
+      gas_Viscosity: "-",
+      gas_Mw: "-",
+      liq_MW: "-",
+      gas_Compressor: "-",
+      specific_Heat_Ratio: "-",
+      liquid_Surface_Tension: "-",
+      liquid_Vapor_Pressure: "-",
+      liquid_Critical_Pressure: "-",
+      standard_Gas_flow: "-",
+      standard_Liquid_Flow: "-",
+      actual_Gas_Flow: "-",
+      actual_Liquid_Flow: "-"
+  }
 
+  const { store, actions } = useContext(Context);
+  const [fluidDialog, setFluidDialog] = useState(false);
+  const [selectedFluids, setSelectedFluids] = useState(null);
+  const [submitted, setSubmitted] = useState(false);
+  const [deleteFluidsDialog, setDeleteFluidsDialog] = useState(false);
+  
+  const [fluids, setFluids] = useState(dataFluids);
+  const [fluid, setFluid] = useState(emptyFluid);
+  //const [fluidResult, setFluidResult] = useState(emptyFluidResult);
+  
   let originalRows = {};
 
   const dataTableFuncMap = {
@@ -53,6 +89,30 @@ export const DataFluids = () => {
         fetchProductData('products2');
         fetchProductData('products3');
     }, []); // eslint-disable-line react-hooks/exhaustive-deps*/
+
+    const hideDialog = () => {
+      setSubmitted(false);
+      setFluidDialog(false);
+    };
+
+    const saveFluid = () => {
+      setSubmitted(true);
+      if (fluid.separator.trim()) {
+        let _fluid = { ...fluid };
+        let _fluids = [...fluids];
+  
+        _fluids.push(_fluid);
+        toast.current.show({
+          severity: "success",
+          summary: "Successful",
+          detail: "Separator Created",
+          life: 3000,
+        });
+        setFluids(_fluids);
+        setFluidDialog(false);
+        setFluid(emptyFluid);
+      }
+    };
 
   const onRowEditInit = (event) => {
     originalRows[event.index] = { ...fluids[event.index] };
@@ -72,6 +132,53 @@ export const DataFluids = () => {
     dataTableFuncMap[`${productKey}`](updatedProducts);
   };
 
+  const fluidDialogFooter = (
+    <React.Fragment>
+      <Button
+        label="Cancel"
+        icon="pi pi-times"
+        className="p-button-text"
+        onClick={hideDialog}
+      />
+      <Button
+        label="Save"
+        icon="pi pi-check"
+        className="p-button-text"
+        onClick={saveFluid}
+      />
+    </React.Fragment>
+  );
+
+  const leftToolbarTemplate = () => {
+    return (
+      <React.Fragment>
+        <Button
+          label="New"
+          icon="pi pi-plus"
+          className="p-button-success p-mr-2"
+          onClick={openNew}
+        />
+        <Button
+          label="Delete"
+          icon="pi pi-trash"
+          className="p-button-danger"
+          onClick={confirmDeleteSelected}
+          disabled={!selectedFluids || !selectedFluids.length}
+        />
+      </React.Fragment>
+    );
+  };
+
+  const openNew = () => {
+    setFluid(emptyFluid);
+    setSubmitted(false);
+    setFluidDialog(true);
+  };
+
+  const confirmDeleteSelected = () => {
+    setDeleteFluidsDialog(true);
+  };
+
   const inputTextEditor = (productKey, props, field) => {
     return (
       <InputText
@@ -80,6 +187,14 @@ export const DataFluids = () => {
         onChange={(e) => onEditorValueChange(productKey, props, e.target.value)}
       />
     );
+  };
+
+  const onInputChange = (e, name) => {
+    const val = (e.target && e.target.value) || "";
+    let _product = { ...fluid };
+    _product[`${name}`] = val;
+
+    setFluid(_product);
   };
 
   const checkEditor = (productKey, props) => {
@@ -133,9 +248,10 @@ export const DataFluids = () => {
 
   return (
     <div className="p-grid p-fluid">
+      <Toast ref={toast} />
       <div className="card">
-        <h5>Fluids 1</h5>
-        {/* Data Fluids Table 1 */}
+        <h5>Fluids</h5>
+        <Toolbar className="p-mb-4" left={leftToolbarTemplate}></Toolbar>
         <DataTable
           value={fluids}
           editMode="row"
@@ -184,27 +300,6 @@ export const DataFluids = () => {
             editor={(props) => checkEditor("fluids", props)}
           ></Column>
           <Column
-            rowEditor
-            headerStyle={{ width: "7rem" }}
-            bodyStyle={{ textAlign: "center" }}
-          ></Column>
-        </DataTable>
-
-        <h5>Fluids 2</h5>
-        {/* Data Fluids Table 2 */}
-        <DataTable
-          value={fluids}
-          editMode="row"
-          dataKey="id"
-          onRowEditInit={onRowEditInit}
-          onRowEditCancel={onRowEditCancel}
-        >
-          <Column
-            field="separator"
-            header="Separators"
-            editor={(props) => checkEditor("fluids", props)}
-          ></Column>
-          <Column
             field="liquid_Viscosity"
             header="Liquid Viscosity (cP)"
             editor={(props) => checkEditor("fluids", props)}
@@ -237,27 +332,6 @@ export const DataFluids = () => {
           <Column
             field="liquid_Surface_Tension"
             header="Liquid Surface Tension (dyne/cm)"
-            editor={(props) => checkEditor("fluids", props)}
-          ></Column>
-          <Column
-            rowEditor
-            headerStyle={{ width: "7rem" }}
-            bodyStyle={{ textAlign: "center" }}
-          ></Column>
-        </DataTable>
-
-        <h5>Fluids 3</h5>
-        {/* Data Fluids Table 3 */}
-        <DataTable
-          value={fluids}
-          editMode="row"
-          dataKey="id"
-          onRowEditInit={onRowEditInit}
-          onRowEditCancel={onRowEditCancel}
-        >
-          <Column
-            field="separator"
-            header="Separators"
             editor={(props) => checkEditor("fluids", props)}
           ></Column>
           <Column
@@ -297,6 +371,32 @@ export const DataFluids = () => {
           ></Column>
         </DataTable>
       </div>
+      <Dialog
+        visible={fluidDialog}
+        style={{ width: "450px" }}
+        header="New Data Fluids"
+        modal
+        className="p-fluid"
+        footer={fluidDialogFooter}
+        onHide={hideDialog}
+      >
+        <div className="p-field">
+          <label htmlFor="separator">Data Fluids Tag</label>
+          <InputText
+            id="separator"
+            value={fluid.separator}
+            onChange={(e) => onInputChange(e, "separator")}
+            required
+            autoFocus
+            className={classNames({
+              "p-invalid": submitted && !fluid.separator,
+            })}
+          />
+          {submitted && !fluid.separator && (
+            <small className="p-error">Separator Tag is required.</small>
+          )}
+        </div>
+      </Dialog>
     </div>
   );
 };

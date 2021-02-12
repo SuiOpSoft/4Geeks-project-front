@@ -42,7 +42,7 @@ export const SignIn = () => {
 													<label htmlFor="customControlInline" className="custom-control-label"> Remember me</label>
 												</div>
 												<div className="d-flex justify-content-center mt-2">
-													<Link to="/home">
+													<Link to="/home/homeuser">
 													<button type="submit" className="btn btn-primary btn btn-none">Log In</button></Link>
 												</div>
 												<div className="mt-4 mb-0 text-center">
