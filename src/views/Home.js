@@ -29,8 +29,8 @@ export const Home = () => {
   let menuClick = false;
   const logo =
     layoutColorMode === "dark"
-      ? "assets/layout/images/SuiOpSoft-logo-sm.png"
-      : "assets/layout/images/SuiOpSoft-logo-sm.png";
+      ? "/assets/layout/images/SuiOpSoft-logo-sm.png"
+      : "/assets/layout/images/SuiOpSoft-logo-sm.png";
   
       const menu = [
     {
@@ -67,14 +67,14 @@ export const Home = () => {
       label: "Outputs",
       icon: "pi pi-fw pi-external-link",
       items: [
-        { label: "Separators Gas and Liquid Areas", icon: "pi pi-fw pi-table", to: "/separatorGasAndLiquidAreas" },
-        { label: "Inlet Nozzle Parameters", icon: "pi pi-fw pi-table", to: "/inletNozzleParameters" },
-        { label: "Gas Nozzle Parameters", icon: "pi pi-fw pi-table", to: "/gasNozzleParameters" },
-        { label: "Liquid Nozzle Parameters", icon: "pi pi-fw pi-table", to: "/liquidNozzleParameters" },
-        { label: "Vessel Gas Capacity Parameters", icon: "pi pi-fw pi-table", to: "/vesselGasCapacityParameters" },
-        { label: "Vessel Liquid Capacity Parameters", icon: "pi pi-fw pi-table", to: "/vesselLiquidCapacityParameters" },
-        { label: "Relief Valve Parameters", icon: "pi pi-fw pi-table", to: "/outputReliefValveParameters" },
-        { label: "Level Control Valve Parameters", icon: "pi pi-fw pi-table", to: "/levelControlValveParameters" }
+        { label: "Separators Gas and Liquid Areas", icon: "pi pi-fw pi-table", to: "/home/separatorGasAndLiquidAreas" },
+        { label: "Inlet Nozzle Parameters", icon: "pi pi-fw pi-table", to: "/home/inletNozzleParameters" },
+        { label: "Gas Nozzle Parameters", icon: "pi pi-fw pi-table", to: "/home/gasNozzleParameters" },
+        { label: "Liquid Nozzle Parameters", icon: "pi pi-fw pi-table", to: "/home/liquidNozzleParameters" },
+        { label: "Vessel Gas Capacity Parameters", icon: "pi pi-fw pi-table", to: "/home/vesselGasCapacityParameters" },
+        { label: "Vessel Liquid Capacity Parameters", icon: "pi pi-fw pi-table", to: "/home/vesselLiquidCapacityParameters" },
+        { label: "Relief Valve Parameters", icon: "pi pi-fw pi-table", to: "/home/outputReliefValveParameters" },
+        { label: "Level Control Valve Parameters", icon: "pi pi-fw pi-table", to: "/home/levelControlValveParameters" }
       ],
     },
     {
@@ -192,14 +192,14 @@ export const Home = () => {
         <Route path="/home/separators" component={DataSeparators} />  
         <Route path="/home/datareliefvalve" component={DataReliefValve} />
         <Route path="/home/datalevelcontrolvalves" component={DataLevelControlValves} />
-        <Route path="/separatorGasAndLiquidAreas" component={OutputSeparatorGasAndLiquidAreas} />
-        <Route path="/inletNozzleParameters" component={OutputInletNozzleParameters} />
-        <Route path="/gasNozzleParameters" component={OutputGasNozzleParameters} />
-        <Route path="/liquidNozzleParameters" component={OutputLiquidNozzleParameters} />
-        <Route path="/vesselGasCapacityParameters" component={OutputVesselGasCapacityParameters} />
-        <Route path="/vesselLiquidCapacityParameters" component={OutputVesselLiquidCapacityParameters} />
-        <Route path="/outputReliefValveParameters" component={OutputReliefValveParameters} />
-        <Route path="/levelControlValveParameters" component={OutputLevelControlValveParameters} />
+        <Route path="/home/separatorGasAndLiquidAreas" component={OutputSeparatorGasAndLiquidAreas} />
+        <Route path="/home/inletNozzleParameters" component={OutputInletNozzleParameters} />
+        <Route path="/home/gasNozzleParameters" component={OutputGasNozzleParameters} />
+        <Route path="/home/liquidNozzleParameters" component={OutputLiquidNozzleParameters} />
+        <Route path="/home/vesselGasCapacityParameters" component={OutputVesselGasCapacityParameters} />
+        <Route path="/home/vesselLiquidCapacityParameters" component={OutputVesselLiquidCapacityParameters} />
+        <Route path="/home/outputReliefValveParameters" component={OutputReliefValveParameters} />
+        <Route path="/home/levelControlValveParameters" component={OutputLevelControlValveParameters} />
         </Switch>
       </div>
       <Footer/>

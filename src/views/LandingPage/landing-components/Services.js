@@ -3,7 +3,7 @@ import React from "react";
 export const Services = () =>{
     return(
         <section className="section" id="services">
-					<div className="container">
+					<div className="container mt-5">
 						<div className="row">
 							<div className="col-lg-8 offset-lg-2">
 								<h1 className="section-title text-center">Our Services</h1>

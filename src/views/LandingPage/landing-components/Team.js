@@ -2,8 +2,8 @@ import React from "react";
 
 export const Team = () =>{
     return(
-        <section className="section mt-3" id="team">
-					<div className="container">
+        <section className="section " id="team">
+					<div className="container mt-5">
 						<div className="row">
 							<div className="col-lg-8 offset-lg-2">
 								<h1 className="section-title text-center">BEHIND THE PEOPLE</h1>

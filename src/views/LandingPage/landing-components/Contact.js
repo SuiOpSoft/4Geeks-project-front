@@ -3,7 +3,7 @@ import React from "react";
 export const Contact = () =>{
     return(
 		<section className="section" id="contact">
-					<div className="container">
+					<div className="container mt-5">
 						<div className="row">
 							<div className="col-lg-8 offset-lg-2">
 								<h1 className="section-title text-center">GET IN TOUCH</h1>
@@ -110,13 +110,13 @@ export const Contact = () =>{
 										</div>
 										<div className="row">
 											<div className="text-end col-lg-12">
-												<input
+												<button
 													type="submit"
 													id="submit"
 													name="send"
-													className="submitBnt btn btn-primary"
-													value="Send Message"
-												/>
+													className="submitBnt btn btn-primary mt-2"
+													value=""
+												>Send Message</button>
 												<div id="simple-msg" />
 											</div>
 										</div>

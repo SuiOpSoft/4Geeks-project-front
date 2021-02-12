@@ -4,7 +4,7 @@ export const Features = () =>{
     return(
 		<Fragment>
         <section className="section bg-light " id="features">
-					<div className="container mb-5">
+					<div className="container mt-5 mb-5">
 						<div className="vertical-content row">
 							<div className="col-lg-5">
 								<div className="features-box">
@@ -32,7 +32,7 @@ export const Features = () =>{
 				<div className="bg-overlay" />
 				<div className="container mt-5">
 					<div className="row">
-						<div className="text-center col-lg-12">
+						<div className="text-center col-lg-12 ">
 							<h2 className="text-white">Build your future more easily.</h2>
 							<p className="pt-3 home-desc">
 								...

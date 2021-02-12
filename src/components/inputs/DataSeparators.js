@@ -84,7 +84,7 @@ export const DataSeparators = () => {
   };
 
   const { store, actions } = useContext(Context);
-  const [productDialog, setProductDialog] = useState(false);
+  const [separatorDialog, setSeparatorDialog] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
@@ -107,25 +107,27 @@ export const DataSeparators = () => {
 
   const hideDialog = () => {
     setSubmitted(false);
-    setProductDialog(false);
+    setSeparatorDialog(false);
   };
 
   const saveSeparator = () => {
     setSubmitted(true);
+    if (separator.separator.trim()) {
+      let _separator = { ...separator };
+      let _separators = [...separators];
 
-    let _separator = { ...separator };
-    let _separators = [...separators];
-
-    //_separator.separator = createId();
-    _separators.push(_separator);
-    toast.current.show({
-      severity: "success",
-      summary: "Successful",
-      detail: "Separator Created",
-      life: 3000,
-    });
-    setSeparators(_separators);
-    setProductDialog(false);
+      //_separator.separator = createId();
+      _separators.push(_separator);
+      toast.current.show({
+        severity: "success",
+        summary: "Successful",
+        detail: "Separator Created",
+        life: 3000,
+      });
+      setSeparators(_separators);
+      setSeparatorDialog(false);
+      setSeparator(emptySeparator);
+    }
   };
 
   const onRowEditInit = (event) => {
@@ -141,6 +143,7 @@ export const DataSeparators = () => {
   };
 
   const SeparatorGasAndLiquidAreasCalc = (separators) => {
+    store.output_separator_gas_and_liquid_areas = [];
     let _separatorResult = { ...separatorResult };
     let _separatorsResults = [...store.output_separator_gas_and_liquid_areas];
     // store.output_separator_gas_and_liquid_areas = _separatorsResults;
@@ -165,9 +168,9 @@ export const DataSeparators = () => {
     let LA_Hh;
     let LA_Nl;
     let LA_Ll;
-    let test = separators.map(item => {
+    let test = separators.map((item) => {
       Area_Sep = (Pi * item.internal_Diameter ** 2) / (4 * 10 ** 6);
-      Radio = (item.internal_Diameter / 2);
+      Radio = item.internal_Diameter / 2;
       INArea = (Pi * item.inlet_Nozzle ** 2) / (4 * 10 ** 6);
       GONArea = (Pi * item.gas_Oulet_Nozzle ** 2) / (4 * 10 ** 6);
       LONArea = (Pi * item.liquid_Outlet_Nozzle ** 2) / (4 * 10 ** 6);
@@ -177,9 +180,12 @@ export const DataSeparators = () => {
       AHh = 2.0 * Math.acos(ABS_R_Hh / Radio);
       ANl = 2.0 * Math.acos(ABS_R_Nl / Radio);
       ALl = 2.0 * Math.acos(ABS_R_Ll / Radio);
-      TAHh = (0.5 * ABS_R_Hh * item.internal_Diameter * Math.sin(AHh / 2.0)) / 1.0e6;
-      TANl = (0.5 * ABS_R_Nl * item.internal_Diameter * Math.sin(ANl / 2.0)) / 1.0e6;
-      TALl = (0.5 * ABS_R_Ll * item.internal_Diameter * Math.sin(ALl / 2.0)) / 1.0e6;
+      TAHh =
+        (0.5 * ABS_R_Hh * item.internal_Diameter * Math.sin(AHh / 2.0)) / 1.0e6;
+      TANl =
+        (0.5 * ABS_R_Nl * item.internal_Diameter * Math.sin(ANl / 2.0)) / 1.0e6;
+      TALl =
+        (0.5 * ABS_R_Ll * item.internal_Diameter * Math.sin(ALl / 2.0)) / 1.0e6;
       if (item.high_Level_Trip > Radio) {
         LA_Hh = ((Radio ** 2 / 2.0) * (2 * Pi - AHh)) / 1.0e6 + TAHh;
       } else {
@@ -211,8 +217,8 @@ export const DataSeparators = () => {
       _separatorResult.Low_Level_Gas_Area = GA_Ll.toFixed(2);
 
       _separatorsResults.push(_separatorResult);
-      
-      return store.output_separator_gas_and_liquid_areas = _separatorsResults;
+
+      return (store.output_separator_gas_and_liquid_areas = _separatorsResults);
     });
 
     // let LA_Hh;
@@ -262,7 +268,7 @@ export const DataSeparators = () => {
     dataTableFuncMap[`${productKey}`](updatedProducts);
   };
 
-  const productDialogFooter = (
+  const separatorDialogFooter = (
     <React.Fragment>
       <Button
         label="Cancel"
@@ -302,7 +308,7 @@ export const DataSeparators = () => {
   const openNew = () => {
     setSeparator(emptySeparator);
     setSubmitted(false);
-    setProductDialog(true);
+    setSeparatorDialog(true);
   };
 
   const confirmDeleteSelected = () => {
@@ -467,19 +473,19 @@ export const DataSeparators = () => {
       </div>
 
       <Dialog
-        visible={productDialog}
+        visible={separatorDialog}
         style={{ width: "450px" }}
         header="New Separator"
         modal
         className="p-fluid"
-        footer={productDialogFooter}
+        footer={separatorDialogFooter}
         onHide={hideDialog}
       >
         <div className="p-field">
           <label htmlFor="separator">Separator Tag</label>
           <InputText
             id="separator"
-            value={separators.separator}
+            value={separator.separator}
             onChange={(e) => onInputChange(e, "separator")}
             required
             autoFocus
