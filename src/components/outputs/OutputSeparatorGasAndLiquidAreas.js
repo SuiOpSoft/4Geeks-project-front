@@ -3,6 +3,8 @@ import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
 import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import "../../index.css";
+import { Button } from "primereact/button";
+import { Toolbar } from "primereact/toolbar";
 
 import React, { useState, useRef, useContext } from "react";
 import { DataTable } from "primereact/datatable";
@@ -13,8 +15,19 @@ import {Context} from "../../store/context"
 export const OutputSeparatorGasAndLiquidAreas = () => {
   
   const { store, actions } = useContext(Context);
-
   const [separatorGasAndLiquidAreas, setSeparatorGasAndLiquidAreas] = useState(store.output_separator_gas_and_liquid_areas);
+  const dt = useRef(null);
+  
+  const rightToolbarTemplate = () => {
+    return (
+        <React.Fragment>
+            <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
+        </React.Fragment>
+    )
+}
+const exportCSV = () => {
+  dt.current.exportCSV();
+}
   
 
 
@@ -28,7 +41,8 @@ export const OutputSeparatorGasAndLiquidAreas = () => {
 
       <div className="card">
         <h5>Separator Gas and Liquid Areas</h5>
-        <DataTable
+        <Toolbar className="p-mb-4" right={rightToolbarTemplate}></Toolbar>
+        <DataTable ref={dt}
           value={separatorGasAndLiquidAreas}>
           <Column
             field="separator"

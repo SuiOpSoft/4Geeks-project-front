@@ -8,12 +8,25 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import "../inputs/DataReliefValve.css";
 import {Context} from "../../store/context"
+import { Button } from "primereact/button";
+import { Toolbar } from "primereact/toolbar";
 
 export const OutputVesselLiquidCapacityParameters = () => {
   
   const { store, actions } = useContext(Context);
-
   const [vesselLiquidCapacityParameters, setVesselLiquidCapacityParameters] = useState(store.output_vessel_liquid_capacity_parameters);
+  const dt = useRef(null);
+  
+  const rightToolbarTemplate = () => {
+    return (
+        <React.Fragment>
+            <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
+        </React.Fragment>
+    )
+}
+const exportCSV = () => {
+  dt.current.exportCSV();
+}
   
 
 
@@ -27,7 +40,8 @@ export const OutputVesselLiquidCapacityParameters = () => {
 
       <div className="card">
         <h5>Vessel Liquid Capacity Parameters</h5>
-        <DataTable
+        <Toolbar className="p-mb-4" right={rightToolbarTemplate}></Toolbar>
+        <DataTable ref={dt}
           value={vesselLiquidCapacityParameters}>
           <Column
             field="separator"

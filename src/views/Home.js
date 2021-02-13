@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { BrowserRouter, Router, Route, Switch, Link, HashRouter, useRouteMatch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import classNames from "classnames";
 import { DataReliefValve } from "../components/inputs/DataReliefValve";
 import { DataFluids } from "../components/inputs/DataFluids";
@@ -17,6 +17,8 @@ import { OutputVesselGasCapacityParameters } from "../components/outputs/OutputV
 import { OutputVesselLiquidCapacityParameters } from "../components/outputs/OutputVesselLiquidCapacityParameters";
 import { OutputReliefValveParameters } from "../components/outputs/OutputReliefValveParameters";
 import { OutputLevelControlValveParameters } from "../components/outputs/OutputLevelControlValveParameters";
+import {GasChart} from "../components/charts/GasChart"
+import {LiquidChart} from "../components/charts/LiquidChart"
 
 export const Home = () => {
   const [layoutMode, setLayoutMode] = useState("static");
@@ -81,8 +83,8 @@ export const Home = () => {
       label: "Charts",
       icon: "pi pi-fw pi-chart-bar",
       items: [
-        { label: "Gas Chart", icon: "pi pi-fw pi-chart-line", to: "/gasChart" },
-        { label: "Liquid Chart", icon: "pi pi-fw pi-chart-line", to: "/liquidChart" },
+        { label: "Gas Chart", icon: "pi pi-fw pi-chart-line", to: "/home/gaschart" },
+        { label: "Liquid Chart", icon: "pi pi-fw pi-chart-line", to: "/home/liquidchart" },
       ],
     },
   ];
@@ -200,6 +202,8 @@ export const Home = () => {
         <Route path="/home/vesselLiquidCapacityParameters" component={OutputVesselLiquidCapacityParameters} />
         <Route path="/home/outputReliefValveParameters" component={OutputReliefValveParameters} />
         <Route path="/home/levelControlValveParameters" component={OutputLevelControlValveParameters} />
+        <Route path="/home/gaschart" component={GasChart} />
+        <Route path="/home/liquidchart" component={LiquidChart} />
         </Switch>
       </div>
       <Footer/>

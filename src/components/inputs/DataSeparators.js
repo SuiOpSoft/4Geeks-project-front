@@ -3,7 +3,6 @@ import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
 import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import "../../index.css";
-import getState from "../../store/flux";
 import React, { useState, useContext, useRef } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -15,41 +14,43 @@ import { Toolbar } from "primereact/toolbar";
 import { Context } from "../../store/context";
 import { Dialog } from "primereact/dialog";
 import { Toast } from "primereact/toast";
+import { FileUpload } from 'primereact/fileupload';
 
 export const DataSeparators = () => {
   const toast = useRef(null);
-  let dataSeparators = [
-    {
-      separator: "V-36102",
-      internal_Diameter: "1800",
-      t_t_length: "6300",
-      high_Level_Trip: "1080",
-      high_Level_Alarm: "900",
-      normal_Liquid_Level: "650",
-      low_Level_Alarm: "390",
-      inlet_Nozzle: "203.2",
-      gas_Oulet_Nozzle: "152.4",
-      liquid_Outlet_Nozzle: "203.2",
-      inlet_Device_Type: "-",
-      demister_Type: "-",
-    },
-    {
-      separator: "V-36102",
-      internal_Diameter: "1800",
-      t_t_length: "6300",
-      high_Level_Trip: "1080",
-      high_Level_Alarm: "900",
-      normal_Liquid_Level: "650",
-      low_Level_Alarm: "390",
-      inlet_Nozzle: "203.2",
-      gas_Oulet_Nozzle: "152.4",
-      liquid_Outlet_Nozzle: "203.2",
-      inlet_Device_Type: "-",
-      demister_Type: "-",
-    },
-  ];
+  // let dataSeparators = [
+  //   {
+  //     separator: "V-36102",
+  //     internal_Diameter: "1800",
+  //     t_t_length: "6300",
+  //     high_Level_Trip: "1080",
+  //     high_Level_Alarm: "900",
+  //     normal_Liquid_Level: "650",
+  //     low_Level_Alarm: "390",
+  //     inlet_Nozzle: "203.2",
+  //     gas_Oulet_Nozzle: "152.4",
+  //     liquid_Outlet_Nozzle: "203.2",
+  //     inlet_Device_Type: "-",
+  //     demister_Type: "-",
+  //   },
+  //   {
+  //     separator: "V-36102",
+  //     internal_Diameter: "1800",
+  //     t_t_length: "6300",
+  //     high_Level_Trip: "1080",
+  //     high_Level_Alarm: "900",
+  //     normal_Liquid_Level: "650",
+  //     low_Level_Alarm: "390",
+  //     inlet_Nozzle: "203.2",
+  //     gas_Oulet_Nozzle: "152.4",
+  //     liquid_Outlet_Nozzle: "203.2",
+  //     inlet_Device_Type: "-",
+  //     demister_Type: "-",
+  //   },
+  // ];
 
   let emptySeparator = {
+    
     separator: "",
     internal_Diameter: "-",
     t_t_length: "-",
@@ -65,6 +66,7 @@ export const DataSeparators = () => {
   };
 
   let emptySeparatorResult = {
+    
     separator: "Equipo",
     Separator_Cross_sectional_Area_Ratio: "",
     Separator_Cross_sectional_Area: "",
@@ -84,10 +86,13 @@ export const DataSeparators = () => {
   const [selectedSeparators, setSelectedSeparators] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [deleteSeparatorsDialog, setDeleteSeparatorsDialog] = useState(false);
-
-  const [separators, setSeparators] = useState(dataSeparators);
+  const [deleteSeparatorDialog, setDeleteSeparatorDialog] = useState(false);
+  const [separators, setSeparators] = useState(store.input_separators_data);
   const [separator, setSeparator] = useState(emptySeparator);
   const [separatorResult, setSeparatorResult] = useState(emptySeparatorResult);
+  const [globalFilter, setGlobalFilter] = useState(null);
+  
+  const dt = useRef(null);
 
   let originalRows = {};
 
@@ -106,19 +111,29 @@ export const DataSeparators = () => {
     setSeparatorDialog(false);
   };
 
+const createId = () => {
+  let id = '';
+  let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  for (let i = 0; i < 5; i++) {
+      id += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return id;
+}
+
   const saveSeparator = () => {
     setSubmitted(true);
     if (separator.separator.trim()) {
       let _separator = { ...separator };
       let _separators = [...separators];
-
-      _separators.push(_separator);
-      toast.current.show({
-        severity: "success",
-        summary: "Successful",
-        detail: "Separator Created",
-        life: 3000,
-      });
+  
+        _separator.id = createId();
+        _separators.push(_separator);
+          toast.current.show({ 
+                severity: 'success',
+                summary: 'Successful',
+                detail: 'Separator Created', 
+                life: 3000, });
+      
       setSeparators(_separators);
       setSeparatorDialog(false);
       setSeparator(emptySeparator);
@@ -268,17 +283,29 @@ export const DataSeparators = () => {
       <Button
         label="Cancel"
         icon="pi pi-times"
-        className="p-button-text"
+        className="p-button-text dialog-no"
         onClick={hideDialog}
       />
       <Button
         label="Save"
         icon="pi pi-check"
-        className="p-button-text"
+        className="p-button-text dialog-yes"
         onClick={saveSeparator}
       />
     </React.Fragment>
   );
+  
+  const deleteSelectedSeparators = () => {
+    let _products = separators.filter(val => !selectedSeparators.includes(val));
+    setSeparators(_products);
+    setDeleteSeparatorsDialog(false);
+    setSelectedSeparators(null);
+    toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Separators Deleted', life: 3000 });
+}
+
+  const confirmDeleteSelected = () => {
+    setDeleteSeparatorsDialog(true);
+  };
 
   const leftToolbarTemplate = () => {
     return (
@@ -286,13 +313,13 @@ export const DataSeparators = () => {
         <Button
           label="New"
           icon="pi pi-plus"
-          className="p-button-success p-mr-2"
+          className="success-button p-mr-2"
           onClick={openNew}
         />
         <Button
           label="Delete"
           icon="pi pi-trash"
-          className="p-button-danger"
+          className="delete-button"
           onClick={confirmDeleteSelected}
           disabled={!selectedSeparators || !selectedSeparators.length}
         />
@@ -304,10 +331,6 @@ export const DataSeparators = () => {
     setSeparator(emptySeparator);
     setSubmitted(false);
     setSeparatorDialog(true);
-  };
-
-  const confirmDeleteSelected = () => {
-    setDeleteSeparatorsDialog(true);
   };
 
   const inputTextEditor = (productKey, props, field) => {
@@ -359,86 +382,144 @@ export const DataSeparators = () => {
     }
   };
 
+  const rightToolbarTemplate = () => {
+    return (
+        <React.Fragment>
+            <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} label="Import" chooseLabel="Import" className="p-mr-2 p-d-inline-block" />
+            <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
+        </React.Fragment>
+    )
+}
+
+const exportCSV = () => {
+  dt.current.exportCSV();
+}
+
+  const header = (
+    <div className="table-header">
+        <h5 className="p-m-0">Manage Separators</h5>
+        <span className="p-input-icon-left">
+            <i className="pi pi-search" />
+            <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />
+        </span>
+    </div>
+);
+
+const deleteSeparator = () => {
+  let _products = separators.filter(val => val.id !== separator.id);
+  setSeparator(_products);
+  setDeleteSeparatorDialog(false);
+  setSeparator(emptySeparator);
+  toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
+}
+
+const hideDeleteSeparatorDialog = () => {
+  setDeleteSeparatorDialog(false);
+}
+
+const hideDeleteSeparatorsDialog = () => {
+  setDeleteSeparatorsDialog(false);
+}
+
+const deleteSeparatorDialogFooter = (
+  <React.Fragment>
+      <Button label="No" icon="pi pi-times" className="p-button-text dialog-no" onClick={hideDeleteSeparatorDialog} />
+      <Button label="Yes" icon="pi pi-check" className="p-button-text dialog-yes" onClick={deleteSeparator} />
+  </React.Fragment>
+);
+const deleteSeparatorsDialogFooter = (
+  <React.Fragment>
+      <Button label="No" icon="pi pi-times" className="p-button-text dialog-no" onClick={hideDeleteSeparatorsDialog} />
+      <Button label="Yes" icon="pi pi-check" className="p-button-text dialog-yes" onClick={deleteSelectedSeparators} />
+  </React.Fragment>
+);
+
   return (
     <div className="p-grid p-fluid">
       <Toast ref={toast} />
       <div className="card">
         <h5>Separators</h5>
-        <Toolbar className="p-mb-4" left={leftToolbarTemplate}></Toolbar>
-        <DataTable
+        <Toolbar className="p-mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+        <DataTable 
+          ref={dt}
           value={separators}
+          selection={selectedSeparators} onSelectionChange={(e) => setSelectedSeparators(e.value)}
           editMode="row"
           dataKey="id"
           onRowEditInit={onRowEditInit}
           onRowEditCancel={onRowEditCancel}
+          globalFilter={globalFilter}
+          header={header}
         >
+          <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
           <Column
             field="separator"
             header="Separators"
-            editor={(props) => checkEditor("separators", props)}
+            editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
           <Column
             field="internal_Diameter"
             header="Internal Diameter (mm)"
-            editor={(props) => checkEditor("separators", props)}
+            editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
           <Column
             field="t_t_length"
             header="T-T Length (mm)"
-            editor={(props) => checkEditor("separators", props)}
+            editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
           <Column
             field="high_Level_Trip"
             header="High Level trip (mm)"
-            editor={(props) => checkEditor("separators", props)}
+            editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
           <Column
             field="high_Level_Alarm"
             header="High Level Alarm (mm)"
-            editor={(props) => checkEditor("separators", props)}
+            editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
           <Column
             field="normal_Liquid_Level"
             header="Normal Liquid Level (mm)"
-            editor={(props) => checkEditor("separators", props)}
+            editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
           <Column
             field="low_Level_Alarm"
             header="Low Level Alarm (mm)"
-            editor={(props) => checkEditor("separators", props)}
+            editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
           <Column
             field="inlet_Nozzle"
             header="Inlet Nozzle (mm)"
-            editor={(props) => checkEditor("separators", props)}
+            editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
           <Column
             field="gas_Oulet_Nozzle"
             header="gas Outlet Nozzle (mm)"
-            editor={(props) => checkEditor("separators", props)}
+            editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
           <Column
             field="liquid_Outlet_Nozzle"
             header="Liquid Outlet Nozzle (mm)"
-            editor={(props) => checkEditor("separators", props)}
+            editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
           <Column
             field="inlet_Device_Type"
             header="Inlet Device Tupe (NID, HOP or SP)"
-            editor={(props) => checkEditor("separators", props)}
+            editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
           <Column
             field="demister_Type"
             header="Demister Type (KO, VD, HD or HVD)"
-            editor={(props) => checkEditor("separators", props)}
+            editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
           <Column
             rowEditor
             headerStyle={{ width: "7rem" }}
             bodyStyle={{ textAlign: "center" }}
-          ></Column>
+          ></Column>        
         </DataTable>
         <Button
+        className="mt-4 p-button-help"
           label="Calcular"
           value=""
           onClick={() => SeparatorGasAndLiquidAreasCalc(separators)}
@@ -470,6 +551,19 @@ export const DataSeparators = () => {
           )}
         </div>
       </Dialog>
+      <Dialog visible={deleteSeparatorDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteSeparatorDialogFooter} onHide={hideDeleteSeparatorDialog}>
+                <div className="confirmation-content">
+                    <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}} />
+                    {separator && <span>Are you sure you want to delete <b>{separator.separator}</b>?</span>}
+                </div>
+            </Dialog>
+
+            <Dialog visible={deleteSeparatorsDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteSeparatorsDialogFooter} onHide={hideDeleteSeparatorsDialog}>
+                <div className="confirmation-content">
+                    <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}} />
+                    {separator && <span>Are you sure you want to delete the selected separators?</span>}
+                </div>
+            </Dialog>
     </div>
   );
 };

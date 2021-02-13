@@ -2,3 +2,85 @@
     padding-top: 0;
     padding-bottom: 0;
 }
+.table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+.p-input-icon-left {
+    width: 15em !important; 
+}
+.card{
+    background-color: #c9d6ff;
+}
+.confirmation-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.delete-button{
+    background-color: #D62246;
+    border-color: #D62246;
+}
+.delete-button:hover{
+    background-color: #d1002a !important;
+    border-color: #d1002a !important;
+    
+}
+.success-button{
+    background-color: #02DE99;
+    border-color: #02DE99;
+}
+.success-button:hover{
+    background-color: #00cc8b !important;
+    border-color: #00cc8b !important;
+}
+.p-highlight{
+    background: #8E9CCC !important;
+}
+.p-datatable .p-datatable-header{
+    background: #8E9CCC !important;
+}
+.p-toolbar{
+    background: #8E9CCC !important;
+}
+th .p-checkbox .p-checkbox-box.p-highlight{
+    border-color: #8E9CCC !important;
+}
+th .p-checkbox .p-checkbox-box.p-highlight:hover{
+    border-color: #c9d6ff !important;
+}
+td .p-checkbox .p-checkbox-box.p-highlight:hover{
+    border-color: #46599B !important;
+}
+th .p-checkbox .p-checkbox-box:hover{
+    border-color: #a0bedd !important;
+}
+td .p-checkbox .p-checkbox-box:hover{
+    border-color: #a0bedd !important;
+}
+.p-row-editor-init{
+    color: #7082c4 !important;
+}
+.p-row-editor-init:hover{
+    color: #011250 !important;
+}
+.pi-exclamation-triangle{
+    color: darkred;
+}
+.dialog-yes{
+    color: rgb(25, 143, 25) !important;
+}
+.dialog-yes:hover{
+    color: rgb(20, 177, 20) !important;
+}
+.dialog-no:hover{
+    color: rgb(201, 2, 2) !important;
+}
+.dialog-no{
+    color: darkred !important;
+}
+.p-disabled:disabled{
+    opacity: 0.50 !important;
+}

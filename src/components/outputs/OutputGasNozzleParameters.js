@@ -8,14 +8,25 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import "../inputs/DataReliefValve.css";
 import {Context} from "../../store/context"
+import { Button } from "primereact/button";
+import { Toolbar } from "primereact/toolbar";
 
 export const OutputGasNozzleParameters = () => {
   
   const { store, actions } = useContext(Context);
-
   const [gasNozzleParameters, setGasNozzleParameters] = useState(store.output_gas_nozzle_parameters);
+  const dt = useRef(null);
   
-
+  const rightToolbarTemplate = () => {
+    return (
+        <React.Fragment>
+            <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
+        </React.Fragment>
+    )
+}
+const exportCSV = () => {
+  dt.current.exportCSV();
+}
 
   // useEffect(() => {
   //       fetchProductData('reliefValves');
@@ -27,8 +38,11 @@ export const OutputGasNozzleParameters = () => {
 
       <div className="card">
         <h5>Gas Nozzle Parameters</h5>
+        <Toolbar className="p-mb-4" right={rightToolbarTemplate}></Toolbar>
         <DataTable
+          ref={dt}
           value={gasNozzleParameters}>
+            
           <Column
             field="separator"
             header="Separator"            
