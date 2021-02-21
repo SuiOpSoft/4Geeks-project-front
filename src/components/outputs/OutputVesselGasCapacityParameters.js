@@ -21,7 +21,7 @@ export const OutputVesselGasCapacityParameters = () => {
   const rightToolbarTemplate = () => {
     return (
         <React.Fragment>
-            <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
+            <Button label="Export" icon="pi pi-upload" className="export-button" onClick={exportCSV} />
         </React.Fragment>
     )
 }
@@ -36,42 +36,41 @@ const exportCSV = () => {
   //   }, []); // eslint-disable-line react-hooks/exhaustive-deps*/
 
   return (
-    <div className="p-grid p-fluid">
-          <div className="datatable-editing-demo">
-
-      <div className="card">
+    <div className="p-grid p-fluid index">
+      <div className="card card-color">
         <h5>Vessel Gas Capacity Parameters</h5>
         <Toolbar className="p-mb-4" right={rightToolbarTemplate}></Toolbar>
         <DataTable ref={dt}
-          value={vesselGasCapacityParameters}>
-          <Column
+          value={vesselGasCapacityParameters}
+          scrollHeight="55vh" 
+          frozenWidth="15rem"
+          scrollable>
+          <Column headerStyle={{ width: '15rem' }}
             field="separator"
-            header="Separator"           
+            header="Separator" frozen          
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="Gas_Load_Factor"
             header="Gas Load Factor(m/s)"
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="Maximum_Gas_Flow_at_HH_level"
             header="Maximum Gas Flow at HH level (m&sup3;/h)"
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '25rem' }}
             field="Maximum_Gas_Flow_at_Normal_level"
             header="Maximum Gas Flow at Normal level (m&sup3;/h)"
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="Status_Gas_Capacity_at_high_level"
             header="Status Gas Capacity at high level"
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="Status_Gas_Capacity_at_normal_level"
             header="Status Gas Capacity at normal level"
           ></Column>
         </DataTable>
       </div>
     </div>
-    </div>
-
   );
 };

@@ -9,12 +9,10 @@ export const Navbar = (props) => {
             </button>
             <div className="layout-topbar-icons">               
                 <button type="button" className="p-link">
-                    <span className="layout-topbar-item-text">Settings</span>
                     <span className="layout-topbar-icon pi pi-user" />
                 </button>
                 <Link to="/">
                 <button type="button" className="p-link" to="">
-                    <span className="layout-topbar-item-text">User</span>
                     <span className="layout-topbar-icon pi pi-sign-out" />
                 </button></Link>
             </div>

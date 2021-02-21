@@ -71,7 +71,7 @@ export const LiquidChart = () => {
     };
 
     return (
-        <div className="card">
+        <div className="card index charts">
             <Chart type="bar" data={chartData} options={lightOptions} />
         </div>
     )

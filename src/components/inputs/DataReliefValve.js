@@ -213,7 +213,7 @@ export const DataReliefValve = () => {
     return (
         <React.Fragment>
             <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} label="Import" chooseLabel="Import" className="p-mr-2 p-d-inline-block" />
-            <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
+            <Button label="Export" icon="pi pi-upload" className="export-button" onClick={exportCSV} />
         </React.Fragment>
     )
 }
@@ -224,7 +224,7 @@ const exportCSV = () => {
 
   const header = (
     <div className="table-header">
-        <h5 className="p-m-0">Manage Separators</h5>
+        <h5 className="p-m-0">Manage Relief Valve Separators</h5>
         <span className="p-input-icon-left">
             <i className="pi pi-search" />
             <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />
@@ -262,10 +262,10 @@ const deleteReliefValvesDialogFooter = (
 );
 
   return (
-    <div className="p-grid p-fluid">         
-      <Toast ref={toast} />
-      <div className="card">
-        <h5>Valve Relief</h5>
+    <div className="p-grid p-fluid index">         
+      <Toast className="index-toast" ref={toast} />
+      <div className="card card-color">
+        <h5>Relief Valve</h5>
         <Toolbar className="p-mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
         <DataTable
           ref={dt}
@@ -278,11 +278,11 @@ const deleteReliefValvesDialogFooter = (
           globalFilter={globalFilter}
           header={header}
         >
-          <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
+          <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} frozen></Column>
           <Column
             field="separator"
-            header="ReliefValve"
-            editor={(props) => checkEditor("reliefValves", props)}sortable
+            header="Separator"
+            editor={(props) => checkEditor("reliefValves", props)}sortable frozen
           ></Column>
           <Column
             field="RV_Tag"

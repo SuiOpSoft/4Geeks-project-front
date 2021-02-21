@@ -20,7 +20,7 @@ export const OutputGasNozzleParameters = () => {
   const rightToolbarTemplate = () => {
     return (
         <React.Fragment>
-            <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
+            <Button label="Export" icon="pi pi-upload" className="export-button" onClick={exportCSV} />
         </React.Fragment>
     )
 }
@@ -33,48 +33,47 @@ const exportCSV = () => {
   //   }, []); // eslint-disable-line react-hooks/exhaustive-deps*/
 
   return (
-    <div className="p-grid p-fluid">
-          <div className="datatable-editing-demo">
-
-      <div className="card">
+    <div className="p-grid p-fluid index">
+      <div className="card card-color">
         <h5>Gas Nozzle Parameters</h5>
         <Toolbar className="p-mb-4" right={rightToolbarTemplate}></Toolbar>
         <DataTable
           ref={dt}
-          value={gasNozzleParameters}>
-            
-          <Column
+          value={gasNozzleParameters}
+          scrollHeight="55vh" 
+          frozenWidth="15rem"
+          scrollable          
+          >
+          <Column headerStyle={{ width: '15rem' }}
             field="separator"
-            header="Separator"            
+            header="Separator" frozen           
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="Gas_Nozzle_Velocity"
             header="Gas Nozzle Velocity (m/s)"
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="Gas_Nozzle_Momentum"
             header="Gas Nozzle Momentum (kg/(m*sec&sup2;))"
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="Maximum_Gas_Nozzle_Velocity"
             header="Maximum Gas Nozzle Velocity (m/s)"
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '25rem' }}
             field="Maximum_Gas_Nozzle_Momentum"
             header="Maximum Gas Nozzle Momentum (kg/(m*sec&sup2;))"
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="Maximum_Gas_Nozzle_Flow"
             header="Maximum Gas Nozzle Flow (m&sup3;/h)"
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '15rem' }}
             field="Status_Gas_Nozzle"
             header="Status_Gas_Nozzle"
           ></Column>
         </DataTable>
       </div>
     </div>
-    </div>
-
   );
 };

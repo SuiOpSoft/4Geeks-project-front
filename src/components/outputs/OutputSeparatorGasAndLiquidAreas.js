@@ -21,7 +21,7 @@ export const OutputSeparatorGasAndLiquidAreas = () => {
   const rightToolbarTemplate = () => {
     return (
         <React.Fragment>
-            <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
+            <Button label="Export" icon="pi pi-upload" className="export-button" onClick={exportCSV} />
         </React.Fragment>
     )
 }
@@ -36,65 +36,65 @@ const exportCSV = () => {
   //   }, []); // eslint-disable-line react-hooks/exhaustive-deps*/
 
   return (
-    <div className="p-grid p-fluid">
-          <div className="datatable-editing-demo">
-
-      <div className="card">
+    <div className="p-grid p-fluid index">
+      <div className="card card-color">
         <h5>Separator Gas and Liquid Areas</h5>
         <Toolbar className="p-mb-4" right={rightToolbarTemplate}></Toolbar>
         <DataTable ref={dt}
-          value={separatorGasAndLiquidAreas}>
-          <Column
+          value={separatorGasAndLiquidAreas}
+          scrollHeight="55vh" 
+          frozenWidth="15rem"
+          scrollable>
+          <Column headerStyle={{ width: '15rem' }}
             field="separator"
-            header="Separator"           
+            header="Separator" frozen          
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="Separator_Cross_sectional_Area_Ratio"
             header="Sectional Area Ratio (mm)"
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="Separator_Cross_sectional_Area"
             header="Cross-sectional Area (m&sup2;)"
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="Inlet_Nozzle_Area"
             header="Inlet Nozzle Area (m&sup2;)"
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="Gas_Nozzle_Area"
             header="Gas Nozzle Area (m&sup2;)"
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="Liquid_Nozzle_Area"
             header="Liquid Nozzle Area (m&sup2;)"
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="High_Level_Trip_Gas_Area"
             header="High Level Trip Gas Area (m&sup2;)"
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="Normal_Level_Gas_Area"
             header="Normal Level Gas Area (m&sup2;)"
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="Low_Level_Gas_Area"
             header="Low Level Gas Area (m&sup2;)"
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="High_Level_Trip_Liquid_Area"
             header="High LEvel Trip Liquid Area (m&sup2;)"
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="Normal_Level_Liquid_Area"
             header="Normal LEvel Trip Liquid Area (m&sup2;)"
           ></Column>
-          <Column
-            field="Low_LEvel_Trip_Liquid_Area"
+          <Column headerStyle={{ width: '20rem' }}
+            field="Low_Level_Trip_Liquid_Area"
             header="Low LEvel Trip Liquid Area (m&sup2;)"
           ></Column>
         </DataTable>
       </div>
-    </div>
     </div>
 
   );

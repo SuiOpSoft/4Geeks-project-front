@@ -206,8 +206,8 @@ export const Home = () => {
         <Route path="/home/liquidchart" component={LiquidChart} />
         </Switch>
       </div>
-      <Footer/>
-
+      <Footer />
+      
     </div>
   );
 };

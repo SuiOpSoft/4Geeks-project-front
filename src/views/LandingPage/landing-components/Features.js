@@ -22,7 +22,7 @@ export const Features = () =>{
 							</div>
 							<div className="col-lg-7">
 								<div className="features-img features-right text-right">
-									<img src="https://usecim.net/wp-content/uploads/2018/07/oil1.jpg" alt="macbook" className="img-fluid" />
+									<img src="https://usecim.net/wp-content/uploads/2018/07/oil1.jpg" alt="macbook" className="img-fluid img-fluid-petrol" />
 								</div>
 							</div>
 						</div>

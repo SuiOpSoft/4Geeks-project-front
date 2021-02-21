@@ -4,7 +4,7 @@ import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import "../../index.css";
 
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext,useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
@@ -16,6 +16,7 @@ import { Toolbar } from "primereact/toolbar";
 import { Context } from "../../store/context";
 import { Dialog } from "primereact/dialog";
 import { FileUpload } from 'primereact/fileupload';
+
 
 
 export const DataLevelControlValves = () => {
@@ -64,7 +65,6 @@ export const DataLevelControlValves = () => {
   const [deleteLevelControlValveDialog, setDeleteLevelControlValveDialog] = useState(false);
   const [levelControlValve, setLevelControlValve] = useState(emptyLevelControlValve);
   //const [levelControlValveResult, setLevelControlValveResult] = useState(emptyLevelControlValveResult);
-
 
 
   let originalRows = {};
@@ -235,7 +235,7 @@ export const DataLevelControlValves = () => {
     return (
         <React.Fragment>
             <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} label="Import" chooseLabel="Import" className="p-mr-2 p-d-inline-block" />
-            <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
+            <Button label="Export" icon="pi pi-upload" className="export-button" onClick={exportCSV} />
         </React.Fragment>
     )
 }
@@ -284,9 +284,9 @@ const deleteLevelControlValvesDialogFooter = (
 );
 
   return (
-    <div className="p-grid p-fluid">     
-        <Toast ref={toast} />
-        <div className="card">
+    <div className="p-grid p-fluid index">     
+        <Toast className="index-toast" ref={toast} />
+        <div className="card card-color">
           <h5>Level Control Valves</h5>
           <Toolbar className="p-mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
           <DataTable
@@ -299,64 +299,48 @@ const deleteLevelControlValvesDialogFooter = (
             onRowEditCancel={onRowEditCancel}
             globalFilter={globalFilter}
             header={header}
+            scrollHeight="55vh" 
+            frozenWidth="15rem"
+            scrollable
+             
           >
-            <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
-            <Column
+            <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} frozen></Column>
+            <Column headerStyle={{ width: '15rem' }}
               field="separator"
               header="Separator"
-              editor={(props) => checkEditor("levelControlValves", props)}sortable
+              editor={(props) => checkEditor("levelControlValves", props)}sortable frozen
             ></Column>
-            <Column
+            <Column headerStyle={{ width: '20rem' }}
               field="lcv_Tag"
               header="Lcv Tag"
-              editor={(props) => checkEditor("levelControlValves", props)}sortable
+              editor={(props) => checkEditor("levelControlValves", props)}sortable 
             ></Column>
-            <Column
+            <Column headerStyle={{ width: '20rem' }}
               field="lcv_Cv"
               header="Lcv Cv (US gpm)"
               editor={(props) => checkEditor("levelControlValves", props)}sortable
             ></Column>
-            <Column
-              field="lcv_Diameter"
-              header="Lcv Diameter (in)"
-              editor={(props) => checkEditor("levelControlValves", props)}sortable
-            ></Column>
-            <Column
-              field="outlet_Lcv_Piping_Diameter"
-              header="Outlet LCV piping diameter (in)"
-              editor={(props) => checkEditor("levelControlValves", props)}sortable
-            ></Column>
-              <Column
-              field="inlet_Lcv_Piping_Diameter"
-              header="Inlet Lcv Piping Diameter (in)"
-              editor={(props) => checkEditor("levelControlValves", props)}sortable
-            ></Column>
-            <Column
+            <Column headerStyle={{ width: '20rem' }}
               field="lcv_Factor_Fl"
               header="LCV Factor FL (constant)"
               editor={(props) => checkEditor("levelControlValves", props)}sortable
             ></Column>
-            <Column
-              field="lcv_Factor_Fi"
-              header="LCV Factor FI (constant)"
-              editor={(props) => checkEditor("levelControlValves", props)}sortable
-            ></Column>
-            <Column
+            <Column headerStyle={{ width: '20rem' }}
               field="lcv_Factor_Fp"
               header="LCV Factor FP (constant)"
               editor={(props) => checkEditor("levelControlValves", props)}sortable
             ></Column>
-            <Column
+            <Column headerStyle={{ width: '20rem' }}
               field="lcv_Inlet_Pressure"
               header="LCV Inlet Pressure (kpa)"
               editor={(props) => checkEditor("levelControlValves", props)}sortable
             ></Column>
-            <Column
+            <Column headerStyle={{ width: '20rem' }}
               field="lcv_Outlet_Pressure"
               header="LCV Outlet Pressure (kpa)"
               editor={(props) => checkEditor("levelControlValves", props)}sortable
             ></Column>
-            <Column
+            <Column 
             rowEditor
             headerStyle={{ width: "7rem" }}
             bodyStyle={{ textAlign: "center" }}

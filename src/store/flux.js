@@ -1,6 +1,7 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
+			
 			input_fluids_data: [
 				{
 					separator: "V-36102",
@@ -76,7 +77,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					Low_Level_Gas_Area: "6",
 					High_Level_Trip_Liquid_Area: "3",
 					Normal_Level_Liquid_Area: "2",
-					Low_LEvel_Trip_Liquid_Area: "8",
+					Low_Level_Trip_Liquid_Area: "8",
 				  }
 			],
 			output_inlet_nozzle_parameters: [

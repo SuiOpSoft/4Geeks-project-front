@@ -20,7 +20,7 @@ export const OutputReliefValveParameters = () => {
   const rightToolbarTemplate = () => {
     return (
         <React.Fragment>
-            <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
+            <Button label="Export" icon="pi pi-upload" className="export-button" onClick={exportCSV} />
         </React.Fragment>
     )
 }
@@ -35,10 +35,10 @@ const exportCSV = () => {
   //   }, []); // eslint-disable-line react-hooks/exhaustive-deps*/
 
   return (
-    <div className="p-grid p-fluid">
+    <div className="p-grid p-fluid index">
           <div className="datatable-editing-demo">
 
-      <div className="card">
+      <div className="card card-color">
         <h5>Relief Valve Parameters</h5>
         <Toolbar className="p-mb-4" right={rightToolbarTemplate}></Toolbar>
         <DataTable ref={dt}

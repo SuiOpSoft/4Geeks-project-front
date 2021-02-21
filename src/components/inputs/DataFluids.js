@@ -194,8 +194,8 @@ export const DataFluids = () => {
       />
       <Button
         label="Save"
-        icon="pi pi-check"
         className="p-button-text dialog-yes"
+        icon="pi pi-check"
         onClick={saveFluid}
       />
     </React.Fragment>
@@ -310,7 +310,7 @@ export const DataFluids = () => {
     return (
         <React.Fragment>
             <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} label="Import" chooseLabel="Import" className="p-mr-2 p-d-inline-block" />
-            <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
+            <Button label="Export" icon="pi pi-upload" className="export-button" onClick={exportCSV} />
         </React.Fragment>
     )
 }
@@ -321,7 +321,7 @@ const exportCSV = () => {
 
   const header = (
     <div className="table-header">
-        <h5 className="p-m-0">Manage Separators</h5>
+        <h5 className="p-m-0">Manage Fluids Separators</h5>
         <span className="p-input-icon-left">
             <i className="pi pi-search" />
             <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />
@@ -359,12 +359,12 @@ const deleteFluidsDialogFooter = (
 );
 
   return (
-    <div className="p-grid p-fluid">
-      <Toast ref={toast} />
-      <div className="card">
+    <div className="p-grid p-fluid index">
+      <Toast className="index-toast" ref={toast} />
+      <div className="card card-color">
         <h5>Fluids</h5>
         <Toolbar className="p-mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
-        <DataTable
+        <DataTable 
           ref={dt}
           value={fluids}
           selection={selectedFluids} onSelectionChange={(e) => setSelectedFluids(e.value)}
@@ -374,112 +374,115 @@ const deleteFluidsDialogFooter = (
           onRowEditCancel={onRowEditCancel}
           globalFilter={globalFilter}
           header={header}
+          scrollHeight="55vh" 
+          frozenWidth="15rem"
+          scrollable
         >
-          <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
-          <Column
+          <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} frozen></Column>
+          <Column headerStyle={{ width: '15rem' }}
             field="separator"
-            header="Separators"
-            editor={(props) => checkEditor("fluids", props)}sortable
+            header="Separator"
+            editor={(props) => checkEditor("fluids", props)} sortable frozen
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="operating_Pressure"
             header="Operating Pressure (kPa)"
-            editor={(props) => checkEditor("fluids", props)}sortable
+            editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="operating_Temperature"
             header="Operating Temperature (oC)"
-            editor={(props) => checkEditor("fluids", props)}sortable
+            editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="oil_Density"
             header="Oil Density (kg/m&sup3;)"
-            editor={(props) => checkEditor("fluids", props)}sortable
+            editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="gas_Density"
             header="Gas Density (kg/m&sup3;)"
-            editor={(props) => checkEditor("fluids", props)}sortable
+            editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="mixture_Density"
             header="Mixture Density (kg/m&sup3;)"
-            editor={(props) => checkEditor("fluids", props)}sortable
+            editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="water_Density"
             header="Water Density (kg/m&sup3;)"
-            editor={(props) => checkEditor("fluids", props)}sortable
+            editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="feed_BSW"
             header="Feed BSW (%v/v)"
-            editor={(props) => checkEditor("fluids", props)}sortable
+            editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="liquid_Viscosity"
             header="Liquid Viscosity (cP)"
-            editor={(props) => checkEditor("fluids", props)}sortable
+            editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="gas_Viscosity"
             header="Gas viscosity (oC)"
-            editor={(props) => checkEditor("fluids", props)}sortable
+            editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="gas_Mw"
             header="Gas Mw (kg/kmol)"
-            editor={(props) => checkEditor("fluids", props)}sortable
+            editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="liq_MW"
             header="Liq MW (kg/kmol)"
-            editor={(props) => checkEditor("fluids", props)}sortable
+            editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="gas_Compressor"
             header="Gas Compressor (Z)"
-            editor={(props) => checkEditor("fluids", props)}sortable
+            editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="specific_Heat_Ratio"
             header="Specific Heat Ratio"
-            editor={(props) => checkEditor("fluids", props)}sortable
+            editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="liquid_Surface_Tension"
             header="Liquid Surface Tension (dyne/cm)"
-            editor={(props) => checkEditor("fluids", props)}sortable
+            editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="liquid_Vapor_Pressure"
             header="Liquid Vapor Pressure (kPa)"
-            editor={(props) => checkEditor("fluids", props)}sortable
+            editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="liquid_Critical_Pressure"
             header="Liquid Critical Pressure (kPa)"
-            editor={(props) => checkEditor("fluids", props)}sortable
+            editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="standard_Gas_flow"
             header="Standard Gas Flow (S m&sup3;/h)"
-            editor={(props) => checkEditor("fluids", props)}sortable
+            editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="standard_Liquid_Flow"
             header="Standard Liquid Flow (S m&sup3;/h)"
-            editor={(props) => checkEditor("fluids", props)}sortable
+            editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="actual_Gas_Flow"
             header="Actual Gas Flow (m&sup3;/h)"
-            editor={(props) => checkEditor("fluids", props)}sortable
+            editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="actual_Liquid_Flow"
             header="Actual Liquid Flow (m&sup3;/h)"
-            editor={(props) => checkEditor("fluids", props)}sortable
+            editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
           <Column
             rowEditor

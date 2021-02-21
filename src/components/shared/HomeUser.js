@@ -1,32 +1,65 @@
 import React from "react";
+import { Dialog } from 'primereact/dialog';
+import { Button } from 'primereact/button';
+import { useState } from 'react';
+
 
 export const HomeUser = () => {
+
+  const [displayBasicInput, setDisplayBasicInput] = useState(false);
+  const [displayBasicOutput, setDisplayBasicOutput] = useState(false);
+  const [displayBasicChart, setDisplayBasicChart] = useState(false);
+  const [position, setPosition] = useState('center');
+
+    const dialogFuncMap = {
+        'displayBasicInput': setDisplayBasicInput,
+       'displayBasicOutput': setDisplayBasicOutput,
+       'displayBasicChart': setDisplayBasicChart
+    }
+
+    const onClick = (name, position) => {
+        dialogFuncMap[`${name}`](true);
+
+        if (position) {
+            setPosition(position);
+        }
+    }
+
+    const onHide = (name) => {
+        dialogFuncMap[`${name}`](false);
+    }
+
   return (
-    <div>
-      <h1>Home!</h1>
-      <div className="p-grid p-fluid dashboard">
-        <div className="p-col-12 p-lg-4">
-          <div className="card summary">
-            <span className="title">Users</span>
-            <span className="detail">Number of visitors</span>
-            <span className="count visitors">12</span>
-          </div>
-        </div>
-        <div className="p-col-12 p-lg-4">
-          <div className="card summary">
-            <span className="title">Sales</span>
-            <span className="detail">Number of purchases</span>
-            <span className="count purchases">534</span>
-          </div>
-        </div>
-        <div className="p-col-12 p-lg-4">
-          <div className="card summary">
-            <span className="title">Revenue</span>
-            <span className="detail">Income for today</span>
-            <span className="count revenue">$3,200</span>
-          </div>
-        </div>
-      </div>
+    <div className="index">
+      <div className="dialog-demo row">
+            <div className="card home-user-img-input col-sm-3 p-0 m-4" onClick={() => onClick('displayBasicInput')}>
+              <img className="home-user-img" alt="Logo" src="/assets/layout/images/SuiOpSoft-logo-sm.png"/>                
+            </div>
+            <div className="card home-user-img-out col-sm-3 p-0 m-4" onClick={() => onClick('displayBasicOutput')}>
+            <img className="home-user-img" alt="Logo" src="/assets/layout/images/SuiOpSoft-logo-sm.png"/>            
+            </div>
+            <div className="card home-user-img-chart col-sm-3 p-0 m-4" onClick={() => onClick('displayBasicChart')}>
+            <img className="home-user-img" alt="Logo" src="/assets/layout/images/SuiOpSoft-logo-sm.png" />
+            </div>
+                <Dialog header="Input Data" visible={displayBasicInput} style={{ width: '50vw' }} onHide={() => onHide('displayBasicInput')}>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                    cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </Dialog>
+                <Dialog header="Output Data" visible={displayBasicOutput} style={{ width: '50vw' }} onHide={() => onHide('displayBasicOutput')}>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                    cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </Dialog>
+                <Dialog header="Charts" visible={displayBasicChart} style={{ width: '50vw' }} onHide={() => onHide('displayBasicChart')}>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                    cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </Dialog>
+              </div>
     </div>
   );
 };

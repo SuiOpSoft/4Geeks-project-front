@@ -78,7 +78,7 @@ export const DataSeparators = () => {
     Low_Level_Gas_Area: "",
     High_Level_Trip_Liquid_Area: "",
     Normal_Level_Liquid_Area: "",
-    Low_LEvel_Trip_Liquid_Area: "",
+    Low_Level_Trip_Liquid_Area: "",
   };
 
   const { store, actions } = useContext(Context);
@@ -221,7 +221,7 @@ const createId = () => {
       _separatorResult.Liquid_Nozzle_Area = LONArea.toFixed(2);
       _separatorResult.High_Level_Trip_Liquid_Area = LA_Hh.toFixed(2);
       _separatorResult.Normal_Level_Liquid_Area = LA_Nl.toFixed(2);
-      _separatorResult.Low_LEvel_Trip_Liquid_Area = LA_Ll.toFixed(2);
+      _separatorResult.Low_Level_Trip_Liquid_Area = LA_Ll.toFixed(2);
       _separatorResult.High_Level_Trip_Gas_Area = GA_Hh.toFixed(2);
       _separatorResult.Normal_Level_Gas_Area = GA_Nl.toFixed(2);
       _separatorResult.Low_Level_Gas_Area = GA_Ll.toFixed(2);
@@ -386,7 +386,7 @@ const createId = () => {
     return (
         <React.Fragment>
             <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} label="Import" chooseLabel="Import" className="p-mr-2 p-d-inline-block" />
-            <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
+            <Button label="Export" icon="pi pi-upload" className="export-button" onClick={exportCSV} />
         </React.Fragment>
     )
 }
@@ -435,9 +435,9 @@ const deleteSeparatorsDialogFooter = (
 );
 
   return (
-    <div className="p-grid p-fluid">
-      <Toast ref={toast} />
-      <div className="card">
+    <div className="p-grid p-fluid index">
+      <Toast className="index-toast" ref={toast} />
+      <div className="card card-color">
         <h5>Separators</h5>
         <Toolbar className="p-mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
         <DataTable 
@@ -450,64 +450,67 @@ const deleteSeparatorsDialogFooter = (
           onRowEditCancel={onRowEditCancel}
           globalFilter={globalFilter}
           header={header}
+          scrollHeight="55vh" 
+          frozenWidth="15rem"
+          scrollable
         >
-          <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
-          <Column
+          <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} frozen></Column>
+          <Column headerStyle={{ width: '15rem' }}
             field="separator"
-            header="Separators"
-            editor={(props) => checkEditor("separators", props)} sortable
+            header="Separator"
+            editor={(props) => checkEditor("separators", props)} sortable frozen
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="internal_Diameter"
             header="Internal Diameter (mm)"
             editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="t_t_length"
             header="T-T Length (mm)"
             editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="high_Level_Trip"
             header="High Level trip (mm)"
             editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="high_Level_Alarm"
             header="High Level Alarm (mm)"
             editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="normal_Liquid_Level"
             header="Normal Liquid Level (mm)"
             editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="low_Level_Alarm"
             header="Low Level Alarm (mm)"
             editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="inlet_Nozzle"
             header="Inlet Nozzle (mm)"
             editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="gas_Oulet_Nozzle"
             header="gas Outlet Nozzle (mm)"
             editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="liquid_Outlet_Nozzle"
             header="Liquid Outlet Nozzle (mm)"
             editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="inlet_Device_Type"
             header="Inlet Device Tupe (NID, HOP or SP)"
             editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
-          <Column
+          <Column headerStyle={{ width: '20rem' }}
             field="demister_Type"
             header="Demister Type (KO, VD, HD or HVD)"
             editor={(props) => checkEditor("separators", props)} sortable

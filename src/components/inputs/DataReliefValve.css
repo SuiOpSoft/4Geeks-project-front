@@ -11,76 +11,335 @@
 .p-input-icon-left {
     width: 15em !important; 
 }
-.card{
-    background-color: #c9d6ff;
+.card-color{
+    background-color: #131e3e49;
+    width: 100%;
+    margin: 0;
+    max-height: 85vh;
+    color: white;
 }
+
 .confirmation-content {
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
 .delete-button{
     background-color: #D62246;
     border-color: #D62246;
 }
+
 .delete-button:hover{
     background-color: #d1002a !important;
-    border-color: #d1002a !important;
-    
+    border-color: #d1002a !important; 
 }
+
 .success-button{
-    background-color: #02DE99;
-    border-color: #02DE99;
+    background-color: #2f437e;
+    border-color: #2f437e;
 }
+
 .success-button:hover{
-    background-color: #00cc8b !important;
-    border-color: #00cc8b !important;
+    background-color: #43517c !important;
+    border-color: #43517c !important;
 }
+
+.export-button{
+    background-color: #2f437e;
+    border-color: #2f437e;
+}
+
+.export-button:hover{
+    background-color: #43517c !important;
+    border-color: #43517c !important;
+}
+
 .p-highlight{
-    background: #8E9CCC !important;
+    background: #131e3ecb !important;
+    color:white !important;
 }
+
 .p-datatable .p-datatable-header{
-    background: #8E9CCC !important;
+    background: #131e3e !important;
+    border-radius: 5px;
+    padding: 0.5rem;
+    border-color: #131e3e !important;
+    opacity: 0.8;
+    color: white;    
 }
+
+h5 .p-datatable-header{
+    opacity: 1 !important;
+}
+
 .p-toolbar{
-    background: #8E9CCC !important;
+    background: #131e3e !important;
+    border-color: #131e3e !important;
+    opacity: 0.8;
 }
+
 th .p-checkbox .p-checkbox-box.p-highlight{
-    border-color: #8E9CCC !important;
+    border-color: #131e3e !important;
 }
+
 th .p-checkbox .p-checkbox-box.p-highlight:hover{
-    border-color: #c9d6ff !important;
+    border-color: #3b476b !important;
 }
+
 td .p-checkbox .p-checkbox-box.p-highlight:hover{
-    border-color: #46599B !important;
+    border-color: #131e3e !important;
 }
+
+td .p-checkbox .p-checkbox-box.p-highlight{
+    border-color: #131e3e !important;
+}
+
+td .p-checkbox .p-checkbox-box.p-highlight:hover{
+    border-color: #494f61 !important;
+}
+
 th .p-checkbox .p-checkbox-box:hover{
-    border-color: #a0bedd !important;
+    border-color: #131e3e !important;
 }
+
 td .p-checkbox .p-checkbox-box:hover{
-    border-color: #a0bedd !important;
+    border-color: #131e3e !important;
 }
+
+th .pi-check{
+    color: #4400ff !important;
+}
+
+td .pi-check{
+    color: #4400ff !important;
+}
+
 .p-row-editor-init{
-    color: #7082c4 !important;
+    color: #000000 !important;
 }
+
 .p-row-editor-init:hover{
-    color: #011250 !important;
+    color: #000000 !important;
+}
+
+.p-row-editor-save-icon{
+    color: #000000 !important;
+}
+
+.p-row-editor-cancel-icon{
+    color: #000000 !important;
 }
 .pi-exclamation-triangle{
     color: darkred;
 }
+
 .dialog-yes{
-    color: rgb(25, 143, 25) !important;
+    color: rgb(36, 211, 36) !important;
 }
+
 .dialog-yes:hover{
     color: rgb(20, 177, 20) !important;
 }
+
 .dialog-no:hover{
-    color: rgb(201, 2, 2) !important;
+    color: rgb(165, 0, 0) !important;
 }
+
 .dialog-no{
-    color: darkred !important;
+    color: rgb(238, 0, 0) !important;
 }
+
 .p-disabled:disabled{
     opacity: 0.50 !important;
+}
+
+.home-user-img{
+    opacity: 0.3;
+}
+
+.home-user-img-input{
+    background: url("https://wallpaper-house.com/data/out/7/wallpaper2you_155851.jpg");
+    /* max-width: 25%; */
+    cursor: pointer;
+    border-radius: 10px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 30vh;
+}
+
+.home-user-img-out{
+    background: url("https://b8g9x2x5.rocketcdn.me/wp-content/uploads/2018/08/artificial-intelligence-ai-brain-machine-learning-ss-1920_d7k9rw.jpg");
+    /* max-width: 25%; */
+    cursor: pointer;
+    border-radius: 10px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 30vh;
+    
+}
+
+.home-user-img-chart{
+    background: url("https://pixelz.cc/wp-content/uploads/2019/03/stock-market-electronic-chart-increase-uhd-4k-wallpaper.jpg");
+    /* max-width: 25%; */
+    cursor: pointer;
+    border-radius: 10px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 30vh;
+}
+
+.p-dialog-content{
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.dialog-demo p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.layout-main{
+    background-color: #a1b8ff;
+    height: 100vh;
+   position:relative;
+   overflow: hidden;
+   z-index: 0;
+}
+
+.layout-main:after{
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.5;
+    background-image: url("https://i.pinimg.com/originals/aa/57/6d/aa576d6c1bb838d0d335475de2bbbe81.jpg");
+    background-repeat: no-repeat;
+    background-size: cover; 
+}
+
+.index{
+    position: relative;
+    z-index: 3;
+}
+
+.index-toast{
+    position: absolute;
+    z-index: 4 !important;
+}
+
+.layout-footer{
+    background: linear-gradient(90deg, #293c7d 0%, rgba(0,0,0,1) 100%);
+    
+    color: white;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 2;
+}
+
+.layout-menu li a:focus{
+    box-shadow: none;  
+}
+
+.layout-menu-button:focus{
+    box-shadow: none;
+} 
+
+.layout-menu-button:hover{
+    box-shadow: 0 0 40px 1px white;
+    color: white !important;
+}
+
+.layout-topbar-icons:focus button{
+    box-shadow: none;
+}
+
+.layout-topbar-icon{
+    border-radius: 1rem;
+}
+
+.layout-topbar-icon:hover{
+    box-shadow: 0 0 40px 1px #f9fafa;
+    color: white; 
+}
+
+.layout-topbar-icon:active{
+    box-shadow: none;
+    color: gray;
+    
+}
+
+.layout-topbar button:focus{
+    box-shadow: none !important;
+}
+
+.active-route{
+    color: #83bfff !important;
+}
+
+.p-editable-column{
+    height: 5rem !important;
+}
+
+
+/* SIDEBAR SCROLLBAR */
+
+.layout-sidebar::-webkit-scrollbar{
+    width: 0.5rem;
+}
+
+.layout-sidebar::-webkit-scrollbar-thumb{
+    background-color: #131e3e;
+    border-radius: 20px; 
+}
+
+.layout-sidebar::-webkit-scrollbar-track {
+    border-radius: 10px;  
+    background-color: rgb(205, 233, 255);
+}
+
+.layout-sidebar::-webkit-scrollbar-button:increment,.p-datatable-scrollable-body::-webkit-scrollbar-button {
+    display: none;
+} 
+
+/* datatable SCROLLBAR */
+
+.p-datatable-scrollable-body::-webkit-scrollbar{
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: #9fadd683;
+    border-radius: 20px;
+}
+
+.p-datatable-scrollable-body::-webkit-scrollbar-thumb{
+    background-color: #131e3e93;
+    border-radius: 20px;    
+}
+
+.p-datatable-scrollable-body::-webkit-scrollbar-thumb:hover{
+    background-color: #131e3e;
+    border-radius: 20px;    
+}
+
+.p-datatable-scrollable-body::-webkit-scrollbar-thumb:active{
+    background-color: #4869a5c4;
+    border-radius: 20px;    
+}
+
+.p-datatable-scrollable-body::-webkit-scrollbar-track {
+    border-radius: 10px;  
+    background-color:rgb(253, 2, 2)2;
+}
+
+.charts{
+    opacity: 0.9;
 }
