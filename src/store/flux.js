@@ -65,20 +65,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			],
 
 			output_separator_gas_and_liquid_areas: [
-				{
-					separator: "V-36102",
-					Separator_Cross_sectional_Area_Ratio: "5",
-					Separator_Cross_sectional_Area: "8",
-					Inlet_Nozzle_Area: "6",
-					Gas_Nozzle_Area: "7",
-					Liquid_Nozzle_Area: "9",
-					High_Level_Trip_Gas_Area: "5",
-					Normal_Level_Gas_Area: "4",
-					Low_Level_Gas_Area: "6",
-					High_Level_Trip_Liquid_Area: "3",
-					Normal_Level_Liquid_Area: "2",
-					Low_Level_Trip_Liquid_Area: "8",
-				  }
+				
 			],
 			output_inlet_nozzle_parameters: [
 				{

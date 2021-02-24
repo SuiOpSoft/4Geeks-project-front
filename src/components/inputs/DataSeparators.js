@@ -18,37 +18,7 @@ import { FileUpload } from 'primereact/fileupload';
 
 export const DataSeparators = () => {
   const toast = useRef(null);
-  // let dataSeparators = [
-  //   {
-  //     separator: "V-36102",
-  //     internal_Diameter: "1800",
-  //     t_t_length: "6300",
-  //     high_Level_Trip: "1080",
-  //     high_Level_Alarm: "900",
-  //     normal_Liquid_Level: "650",
-  //     low_Level_Alarm: "390",
-  //     inlet_Nozzle: "203.2",
-  //     gas_Oulet_Nozzle: "152.4",
-  //     liquid_Outlet_Nozzle: "203.2",
-  //     inlet_Device_Type: "-",
-  //     demister_Type: "-",
-  //   },
-  //   {
-  //     separator: "V-36102",
-  //     internal_Diameter: "1800",
-  //     t_t_length: "6300",
-  //     high_Level_Trip: "1080",
-  //     high_Level_Alarm: "900",
-  //     normal_Liquid_Level: "650",
-  //     low_Level_Alarm: "390",
-  //     inlet_Nozzle: "203.2",
-  //     gas_Oulet_Nozzle: "152.4",
-  //     liquid_Outlet_Nozzle: "203.2",
-  //     inlet_Device_Type: "-",
-  //     demister_Type: "-",
-  //   },
-  // ];
-
+  
   let emptySeparator = {
     
     separator: "",
@@ -100,11 +70,6 @@ export const DataSeparators = () => {
     separators: setSeparators,
   };
 
-  /*useEffect(() => {
-        fetchProductData('products1');
-        fetchProductData('products2');
-        fetchProductData('products3');
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps*/
 
   const hideDialog = () => {
     setSubmitted(false);
@@ -144,6 +109,11 @@ const createId = () => {
     originalRows[event.index] = { ...separators[event.index] };
   };
 
+  const onRowEditSave = (event) => {
+    originalRows[event.index] = { ...separators[event.index] };
+    handleInsertDataSeparators(originalRows[event.index])
+  }
+
   const onRowEditCancel = (event) => {
     let products = [...separators];
     products[event.index] = originalRows[event.index];
@@ -152,125 +122,25 @@ const createId = () => {
     setSeparators(products);
   };
 
-  const SeparatorGasAndLiquidAreasCalc = (separators) => {
-    store.output_separator_gas_and_liquid_areas = [];
-    let _separatorResult = { ...separatorResult };
-    let _separatorsResults = [...store.output_separator_gas_and_liquid_areas];
-    // store.output_separator_gas_and_liquid_areas = _separatorsResults;
-    let Pi = 3.14159265358979;
-    let Radio;
-    let Area_Sep;
-    let INArea;
-    let GONArea;
-    let LONArea;
-    let ABS_R_Hh;
-    let ABS_R_Nl;
-    let ABS_R_Ll;
-    let AHh;
-    let ANl;
-    let ALl;
-    let TAHh;
-    let TANl;
-    let TALl;
-    let GA_Hh;
-    let GA_Nl;
-    let GA_Ll;
-    let LA_Hh;
-    let LA_Nl;
-    let LA_Ll;
-    let test = separators.map((item) => {
-      Area_Sep = (Pi * item.internal_Diameter ** 2) / (4 * 10 ** 6);
-      Radio = item.internal_Diameter / 2;
-      INArea = (Pi * item.inlet_Nozzle ** 2) / (4 * 10 ** 6);
-      GONArea = (Pi * item.gas_Oulet_Nozzle ** 2) / (4 * 10 ** 6);
-      LONArea = (Pi * item.liquid_Outlet_Nozzle ** 2) / (4 * 10 ** 6);
-      ABS_R_Hh = Math.abs(Radio - item.high_Level_Trip);
-      ABS_R_Nl = Math.abs(Radio - item.normal_Liquid_Level);
-      ABS_R_Ll = Math.abs(Radio - item.low_Level_Alarm);
-      AHh = 2.0 * Math.acos(ABS_R_Hh / Radio);
-      ANl = 2.0 * Math.acos(ABS_R_Nl / Radio);
-      ALl = 2.0 * Math.acos(ABS_R_Ll / Radio);
-      TAHh =
-        (0.5 * ABS_R_Hh * item.internal_Diameter * Math.sin(AHh / 2.0)) / 1.0e6;
-      TANl =
-        (0.5 * ABS_R_Nl * item.internal_Diameter * Math.sin(ANl / 2.0)) / 1.0e6;
-      TALl =
-        (0.5 * ABS_R_Ll * item.internal_Diameter * Math.sin(ALl / 2.0)) / 1.0e6;
-      if (item.high_Level_Trip > Radio) {
-        LA_Hh = ((Radio ** 2 / 2.0) * (2 * Pi - AHh)) / 1.0e6 + TAHh;
-      } else {
-        LA_Hh = ((Radio ** 2 / 2.0) * AHh) / 1.0e6 - TAHh;
+  const SeparatorGasAndLiquidAreasCalc = async() => {
+    try {
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
       }
-      if (item.normal_Liquid_Level > Radio) {
-        LA_Nl = ((Radio ** 2 / 2.0) * (2 * Pi - ANl)) / 1.0e6 + TANl;
-      } else {
-        LA_Nl = ((Radio ** 2 / 2.0) * ANl) / 1.0e6 - TANl;
-      }
-      if (item.low_Level_Alarm > Radio) {
-        LA_Ll = ((Radio ** 2 / 2.0) * (2 * Pi - ALl)) / 1.0e6 + TALl;
-      } else {
-        LA_Ll = ((Radio ** 2 / 2.0) * ALl) / 1.0e6 - TALl;
-      }
-      GA_Hh = Area_Sep - LA_Hh;
-      GA_Nl = Area_Sep - LA_Nl;
-      GA_Ll = Area_Sep - LA_Ll;
-      _separatorResult.Separator_Cross_sectional_Area = Area_Sep.toFixed(2);
-      _separatorResult.Separator_Cross_sectional_Area_Ratio = Radio;
-      _separatorResult.Inlet_Nozzle_Area = Area_Sep.toFixed(2);
-      _separatorResult.Gas_Nozzle_Area = GONArea.toFixed(2);
-      _separatorResult.Liquid_Nozzle_Area = LONArea.toFixed(2);
-      _separatorResult.High_Level_Trip_Liquid_Area = LA_Hh.toFixed(2);
-      _separatorResult.Normal_Level_Liquid_Area = LA_Nl.toFixed(2);
-      _separatorResult.Low_Level_Trip_Liquid_Area = LA_Ll.toFixed(2);
-      _separatorResult.High_Level_Trip_Gas_Area = GA_Hh.toFixed(2);
-      _separatorResult.Normal_Level_Gas_Area = GA_Nl.toFixed(2);
-      _separatorResult.Low_Level_Gas_Area = GA_Ll.toFixed(2);
-
-      _separatorsResults.push(_separatorResult);
-
-      return (store.output_separator_gas_and_liquid_areas = _separatorsResults);
-    });
-
-    // let LA_Hh;
-    // let LA_Nl;
-    // let LA_Ll;
-
-    // let Pi = 3.14159265358979;
-    // let  Area_Sep = (Pi * Diam ** 2) / (4 * 10 ** 6);
-    // let Radio = Diam / 2;
-    // let INArea = (Pi * INd ** 2) / (4 * 10 ** 6);
-    // let GONArea = (Pi * GOn ** 2) / (4 * 10 ** 6);
-    // let LONArea = (Pi * LOn ** 2) / (4 * 10 ** 6);
-    // let ABS_R_Hh = Math.abs(Radio - HHl);
-    // let ABS_R_Nl = Math.abs(Radio - Nl);
-    // let ABS_R_Ll = Math.abs(Radio - Ll);
-    // let AHh = 2.0 * Math.acos(ABS_R_Hh / Radio);
-    // let ANl = 2.0 * Math.acos(ABS_R_Nl / Radio);
-    // let ALl = 2.0 * Math.acos(ABS_R_Ll / Radio);
-    // let TAHh = (0.5 * ABS_R_Hh * Diam * Math.sin(AHh / 2.0)) / 1.0e6;
-    // let TANl = (0.5 * ABS_R_Nl * Diam * Math.sin(ANl / 2.0)) / 1.0e6;
-    // let TALl = (0.5 * ABS_R_Ll * Diam * Math.sin(ALl / 2.0)) / 1.0e6;
-    // if (HHl > Radio) {
-    //   LA_Hh = ((Radio ** 2 / 2.0) * (2 * Pi - AHh)) / 1.0e6 + TAHh;
-    // } else {
-    //   LA_Hh = ((Radio ** 2 / 2.0) * AHh) / 1.0e6 - TAHh;
-    // }
-    // if (Nl > Radio) {
-    //   LA_Nl = ((Radio ** 2 / 2.0) * (2 * Pi - ANl)) / 1.0e6 + TANl;
-    // } else {
-    //   LA_Nl = ((Radio ** 2 / 2.0) * ANl) / 1.0e6 - TANl;
-    // }
-    // if (Ll > Radio) {
-    //   LA_Ll = ((Radio ** 2 / 2.0) * (2 * Pi - ALl)) / 1.0e6 + TALl;
-    // } else {
-    //   LA_Ll = ((Radio ** 2 / 2.0) * ALl) / 1.0e6 - TALl;
-    // }
-    // let GA_Hh = Area_Sep - LA_Hh;
-    // let GA_Nl = Area_Sep - LA_Nl;
-    // let GA_Ll = Area_Sep - LA_Ll;
-
-    //Wreturn console.log(Radio);
-  };
+      const res = await fetch('https://3001-teal-cougar-26i4nl9q.ws-eu03.gitpod.io/api/gasandliquidareascalc', requestOptions)
+      const json = await res.json()
+      console.log(json)
+  
+    }catch (error){
+      console.log(error)
+  
+    }
+    
+  }
 
   const onEditorValueChange = (productKey, props, value) => {
     let updatedProducts = [...props.value];
@@ -434,6 +304,41 @@ const deleteSeparatorsDialogFooter = (
   </React.Fragment>
 );
 
+const handleInsertDataSeparators = async dataseparator => {
+  
+  try {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "id": "1",
+        "separator_id": "1",
+        "internaldiameter" : dataseparator.internal_Diameter,
+        "ttlength" : dataseparator.t_t_length,
+        "highleveltrip" : dataseparator.high_Level_Trip,
+        "highlevelalarm" : dataseparator.high_Level_Alarm,
+        "normalliquidlevel" : dataseparator.normal_Liquid_Level,
+        "lowlevelalarm" : dataseparator.low_Level_Alarm,
+        "inletnozzle" : dataseparator.inlet_Nozzle,
+        "gasoutletnozzle" : dataseparator.gas_Oulet_Nozzle,
+        "liquidoutletnozzle" : dataseparator.liquid_Outlet_Nozzle,
+        "inletdevicetype" : dataseparator.inlet_Device_Type,
+        "demistertype" : dataseparator.demister_Type       
+      })
+    }
+    console.log(requestOptions.body)
+    const res = await fetch('https://3001-teal-cougar-26i4nl9q.ws-eu03.gitpod.io/api/dataseparators', requestOptions)
+    const json = await res.json()
+    
+
+  }catch (error){
+    console.log(error)
+  }
+}
+
   return (
     <div className="p-grid p-fluid index">
       <Toast className="index-toast" ref={toast} />
@@ -447,6 +352,7 @@ const deleteSeparatorsDialogFooter = (
           editMode="row"
           dataKey="id"
           onRowEditInit={onRowEditInit}
+          onRowEditSave={onRowEditSave}
           onRowEditCancel={onRowEditCancel}
           globalFilter={globalFilter}
           header={header}
@@ -525,7 +431,7 @@ const deleteSeparatorsDialogFooter = (
         className="mt-4 p-button-help"
           label="Calcular"
           value=""
-          onClick={() => SeparatorGasAndLiquidAreasCalc(separators)}
+          onClick={() => SeparatorGasAndLiquidAreasCalc()}
         ></Button>
       </div>
       <Dialog

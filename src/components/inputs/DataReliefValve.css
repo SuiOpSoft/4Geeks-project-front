@@ -154,42 +154,49 @@ td .pi-check{
     opacity: 0.50 !important;
 }
 
+.home-user-grid{
+    display:grid;
+    min-height: 25vh;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    grid-gap: 2%;    
+}
+
 .home-user-img{
     opacity: 0.3;
 }
 
 .home-user-img-input{
-    background: url("https://wallpaper-house.com/data/out/7/wallpaper2you_155851.jpg");
-    /* max-width: 25%; */
+    background: url("https://b8g9x2x5.rocketcdn.me/wp-content/uploads/2018/08/artificial-intelligence-ai-brain-machine-learning-ss-1920_d7k9rw.jpg");
     cursor: pointer;
     border-radius: 10px;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     height: 30vh;
+    top:25vh;
 }
 
 .home-user-img-out{
     background: url("https://b8g9x2x5.rocketcdn.me/wp-content/uploads/2018/08/artificial-intelligence-ai-brain-machine-learning-ss-1920_d7k9rw.jpg");
-    /* max-width: 25%; */
     cursor: pointer;
     border-radius: 10px;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     height: 30vh;
+    top:25vh;
     
 }
 
 .home-user-img-chart{
     background: url("https://pixelz.cc/wp-content/uploads/2019/03/stock-market-electronic-chart-increase-uhd-4k-wallpaper.jpg");
-    /* max-width: 25%; */
     cursor: pointer;
     border-radius: 10px;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     height: 30vh;
+    top:25vh;
 }
 
 .p-dialog-content{

@@ -18,31 +18,7 @@ import { FileUpload } from 'primereact/fileupload';
 
 export const DataFluids = () => {
   const toast = useRef(null);
-  // let dataFluids = [
-  //   {
-  //     separator: "V-36102",
-  //     operating_Pressure: "5536.33",
-  //     operating_Temperature: "37",
-  //     oil_Density: "794.08",
-  //     gas_Density: "52.18",
-  //     mixture_Density: "197.76",
-  //     water_Density: "1001",
-  //     feed_BSW: "0.1",
-  //     liquid_Viscosity: "2.1065",
-  //     gas_Viscosity: "0.013385",
-  //     gas_Mw: "20.80",
-  //     liq_MW: "155.53",
-  //     gas_Compressor: "0.8558",
-  //     specific_Heat_Ratio: "1.4913",
-  //     liquid_Surface_Tension: "15.49",
-  //     liquid_Vapor_Pressure: "5536.3",
-  //     liquid_Critical_Pressure: "12541.9",
-  //     standard_Gas_flow: "25835.9",
-  //     standard_Liquid_Flow: "103.9",
-  //     actual_Gas_Flow: "435.5",
-  //     actual_Liquid_Flow: "106.33",
-  //   },
-  // ];
+  
 
   let emptyFluid = {
       separator: "",
@@ -98,12 +74,6 @@ export const DataFluids = () => {
     fluids: setFluids,
   };
 
-  /*useEffect(() => {
-        fetchProductData('products1');
-        fetchProductData('products2');
-        fetchProductData('products3');
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps*/
-
     const hideDialog = () => {
       setSubmitted(false);
       setFluidDialog(false);
@@ -142,47 +112,43 @@ export const DataFluids = () => {
     originalRows[event.index] = { ...fluids[event.index] };
   };
 
+  const onRowEditSave = (event) => {
+    originalRows[event.index] = { ...fluids[event.index] };
+    handleInsertDataFluids(originalRows[event.index])
+  }
+
   const onRowEditCancel = (event) => {
     let products = [...fluids];
     products[event.index] = originalRows[event.index];
     delete originalRows[event.index];
-
     setFluids(products);
   };
-
-  // const InletNozzleParametersCalc = (fluids) => {
-  //   store.output_inlet_nozzle_parameters = [];
-  //   let _fluidResult = { ..._fluidResult};
-  //   let _fluidsResults = [ ...store.output_inlet_nozzle_parameters];
-
-
-  //   //REQUIRED DATA FROM FLUID DATA PARAMETERS
-  //   let AGf = 108.252555;
-  //   let ALf = 26.593298;
-  //   let Md = 198.676684;
-
-  //   //REQUIRED DATA FROM SEPARATOR DATA PARAMETERS
-  //   let INd = 152.4;
-  //   let InletDevice = "NID";
-
-  //   fluids.map((itemFluid) => {
-  //     separators.map((itemSeparator) => {
-        
-  //     })
-
-
-
-
-
-  //   })
-
-  // }
 
   const onEditorValueChange = (productKey, props, value) => {
     let updatedProducts = [...props.value];
     updatedProducts[props.rowIndex][props.field] = value;
     dataTableFuncMap[`${productKey}`](updatedProducts);
   };
+
+  const InletNozzleParametersCalc = async() => {
+    try {
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      }
+      const res = await fetch('https://3001-teal-cougar-26i4nl9q.ws-eu03.gitpod.io/api/inletnozzleparameterscalc', requestOptions)
+      const json = await res.json()
+      console.log(json)
+  
+    }catch (error){
+      console.log(error)
+  
+    }
+    
+  }
 
   const fluidDialogFooter = (
     <React.Fragment>
@@ -358,6 +324,98 @@ const deleteFluidsDialogFooter = (
   </React.Fragment>
 );
 
+ const handleInsertDataFluids = async datafluid => {
+  
+  try { 
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "id": "1",
+        "separator_id": "1",
+        "operatingpressure": datafluid.operating_Pressure,
+        "operatingtemperature": datafluid.operating_Temperature,
+        "oildensity": datafluid.oil_Density,
+        "gasdensity": datafluid.gas_Density,
+        "mixturedensity": datafluid.mixture_Density,
+        "waterdensity": datafluid.water_Density,
+        "feedbsw": datafluid.feed_BSW,
+        "liquidviscosity": datafluid.liquid_Viscosity,
+        "gasviscosity": datafluid.gas_Viscosity,
+        "gasmw": datafluid.gas_Mw,
+        "liqmw": datafluid.liq_MW,
+        "gascomprz": datafluid.gas_Compressor,
+        "especificheatratio": datafluid.specific_Heat_Ratio,
+        "liquidsurfacetension": datafluid.liquid_Surface_Tension,
+        "liquidvaporpressure": datafluid.liquid_Vapor_Pressure,
+        "liquidcriticalpressure": datafluid.liquid_Critical_Pressure,
+        "standardgasflow": datafluid.standard_Gas_flow,
+        "standardliquidflow": datafluid.standard_Liquid_Flow,
+        "actualgasflow": datafluid.actual_Gas_Flow,
+        "actualliquidflow": datafluid.actual_Liquid_Flow
+      })
+    }
+    console.log(requestOptions.body)
+    const res = await fetch('https://3001-green-mouse-horufcfi.ws-eu03.gitpod.io/api/datafluids', requestOptions)
+    const json = await res.json()
+    
+
+  }catch (error){
+    console.log(error)
+
+  }
+}
+
+const handleUpdateDataFluids = async datafluid => {
+  
+  try { 
+    console.log("updatedata", datafluid)
+    const requestOptions = {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "id": "1",
+        "separator_id": "1",
+        "operatingpressure": datafluid.operating_Pressure,
+        "operatingtemperature": datafluid.operating_Temperature,
+        "oildensity": datafluid.oil_Density,
+        "gasdensity": datafluid.gas_Density,
+        "mixturedensity": datafluid.mixture_Density,
+        "waterdensity": datafluid.water_Density,
+        "feedbsw": datafluid.feed_BSW,
+        "liquidviscosity": datafluid.liquid_Viscosity,
+        "gasviscosity": datafluid.gas_Viscosity,
+        "gasmw": datafluid.gas_Mw,
+        "liqmw": datafluid.liq_MW,
+        "gascomprz": datafluid.gas_Compressor,
+        "especificheatratio": datafluid.specific_Heat_Ratio,
+        "liquidsurfacetension": datafluid.liquid_Surface_Tension,
+        "liquidvaporpressure": datafluid.liquid_Vapor_Pressure,
+        "liquidcriticalpressure": datafluid.liquid_Critical_Pressure,
+        "standardgasflow": datafluid.standard_Gas_flow,
+        "standardliquidflow": datafluid.standard_Liquid_Flow,
+        "actualgasflow": datafluid.actual_Gas_Flow,
+        "actualliquidflow": datafluid.actual_Liquid_Flow
+      })
+    }
+    console.log(requestOptions.body)
+    const res = await fetch('https://3001-green-mouse-horufcfi.ws-eu03.gitpod.io/api/datafluids', requestOptions)
+    const json = await res.json()
+    console.log(json)
+
+  }catch (error){
+    console.log(error)
+
+  }
+}
+
+
   return (
     <div className="p-grid p-fluid index">
       <Toast className="index-toast" ref={toast} />
@@ -371,6 +429,7 @@ const deleteFluidsDialogFooter = (
           editMode="row"
           dataKey="id"
           onRowEditInit={onRowEditInit}
+          onRowEditSave={onRowEditSave}
           onRowEditCancel={onRowEditCancel}
           globalFilter={globalFilter}
           header={header}
@@ -490,6 +549,12 @@ const deleteFluidsDialogFooter = (
             bodyStyle={{ textAlign: "center" }}
           ></Column>
         </DataTable>
+        <Button
+            className="mt-4 p-button-help"
+            label="Calcular"
+            value=""
+            onClick={() => InletNozzleParametersCalc()}
+          ></Button>
       </div>
       <Dialog
         visible={fluidDialog}

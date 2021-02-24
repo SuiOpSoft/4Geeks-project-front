@@ -3,7 +3,7 @@ import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
 import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import "../../index.css";
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import "../inputs/DataReliefValve.css";
@@ -15,7 +15,7 @@ export const OutputInletNozzleParameters = () => {
   
   const { store, actions } = useContext(Context);
 
-  const [inletNozzleParameters, setInletNozzleParameters] = useState(store.output_inlet_nozzle_parameters);
+  const [inletNozzleParameters, setInletNozzleParameters] = useState([]);
   const dt = useRef(null);
   
   const rightToolbarTemplate = () => {
@@ -30,10 +30,20 @@ export const OutputInletNozzleParameters = () => {
 }
   
 
-
-  // useEffect(() => {
-  //       fetchProductData('reliefValves');
-  //   }, []); // eslint-disable-line react-hooks/exhaustive-deps*/
+useEffect( () => {
+  const requestOptions = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },}
+    try {fetch('https://3001-teal-cougar-26i4nl9q.ws-eu03.gitpod.io/api/inletnozzleparameterscalc', requestOptions)
+    .then(response => response.json())
+    .then(data => setInletNozzleParameters(data))}
+    catch(error){
+      throw error;
+    }
+  }, []);
 
   return (
     <div className="p-grid p-fluid index">
@@ -47,35 +57,35 @@ export const OutputInletNozzleParameters = () => {
           frozenWidth="15rem"
           scrollable>
           <Column headerStyle={{ width: '15rem', textAlign: 'center' }}
-            field="separator"
+            field="separator_id"
             header="Separator" frozen            
           ></Column>
           <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
-            field="Mixture_Inlet_Nozzle_Velocity"
+            field="mixtureinletnozzlevelocity"
             header="Mixture Inlet Nozzle Velocity (m/s)"
           ></Column>
           <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
-            field="Inlet_Nozzle_Momentum"
+            field="inletnozzlemomentum"
             header="Inlet Nozzle Momentum (kg/(m*sec&sup2;))"
           ></Column>
           <Column headerStyle={{ width: '25rem', textAlign: 'center' }}
-            field="Maximum_Mixture_Inlet_Nozzle_Velocity"
+            field="maximummixtureinletnozzlevelocity"
             header="Maximum Mixture Inlet Nozzle Velocity (m/s)"
           ></Column>
           <Column headerStyle={{ width: '25rem', textAlign: 'center' }}
-            field="Maximum_Inlet_Nozzle_Momentum"
+            field="maximuminletnozzlemomentum"
             header="Maximum Inlet Nozzle Momentum (kg/(m*sec&sup2;))"
           ></Column>
           <Column headerStyle={{ width: '25rem', textAlign: 'center' }}
-            field="Maximun_Liquid_Flow_Inlet_Nozzle"
+            field="maximumliquidflowinletnozzle"
             header="Maximun Liquid Flow Inlet Nozzle (m&sup3;/h)"
           ></Column>
           <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
-            field="Maximum_Gas_Flow_Inlet_Nozzle"
+            field="maximumgasflowinletnozzle"
             header="Maximum Gas Flow Inlet Nozzle (m&sup3;/h)"
           ></Column>
           <Column headerStyle={{ width: '15rem', textAlign: 'center' }}
-            field="Status_Inlet_Nozzle"
+            field="statusinletnozzle"
             header="Status Inlet Nozzle"
           ></Column>
         </DataTable>
