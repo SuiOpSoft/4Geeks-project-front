@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from 'react-router-dom';
 import classNames from "classnames";
 import { DataReliefValve } from "../components/inputs/DataReliefValve";
 import { DataFluids } from "../components/inputs/DataFluids";
@@ -19,6 +19,7 @@ import { OutputReliefValveParameters } from "../components/outputs/OutputReliefV
 import { OutputLevelControlValveParameters } from "../components/outputs/OutputLevelControlValveParameters";
 import {GasChart} from "../components/charts/GasChart"
 import {LiquidChart} from "../components/charts/LiquidChart"
+import UseUser from '../hooks/UseUser'
 
 export const Home = () => {
   const [layoutMode, setLayoutMode] = useState("static");
@@ -28,7 +29,9 @@ export const Home = () => {
   const [mobileMenuActive, setMobileMenuActive] = useState(false);
   const [inputStyle, setInputStyle] = useState("outlined");
   const sidebar = useRef();
+  const {isLogged} = UseUser()
   let menuClick = false;
+
   const logo =
     layoutColorMode === "dark"
       ? "/assets/layout/images/SuiOpSoft-logo-sm.png"
@@ -174,6 +177,10 @@ export const Home = () => {
     event.preventDefault();
   };
 
+
+  if(!isLogged){
+    return <Redirect to="/signin" />
+  }else{
   return (
     <div className={wrapperClass} onClick={onWrapperClick}>
       <Navbar onToggleMenu={onToggleMenu} />
@@ -210,4 +217,5 @@ export const Home = () => {
       
     </div>
   );
+  }
 };

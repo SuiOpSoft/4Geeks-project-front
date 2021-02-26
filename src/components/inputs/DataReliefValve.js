@@ -18,21 +18,7 @@ import { FileUpload } from 'primereact/fileupload';
 
 export const DataReliefValve = () => {
   const toast = useRef(null);
-  // let dataReliefValves = [
-  //   {
-  //     separator: "equipo1",
-  //     RV_set_pressure_value: "-",
-  //     RV_set_pressure_reference: "-",
-  //     RV_Orifice_Area_value: "-",
-  //   },
-  //   {
-  //     separator: "equipo2",
-  //     RV_set_pressure_value: "-",
-  //     RV_set_pressure_reference: "-",
-  //     RV_Orifice_Area_value: "-",
-  //   }
-  // ];
-
+  
   let emptyReliefValve = {
       separator: "",
       RV_set_pressure_value: "-",
@@ -64,10 +50,6 @@ export const DataReliefValve = () => {
   const dataTableFuncMap = {
     reliefValves: setReliefValves
   };
-
-  /*useEffect(() => {
-        fetchProductData('reliefValves');
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps*/
 
     const hideDialog = () => {
       setSubmitted(false);

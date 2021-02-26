@@ -2,9 +2,17 @@ import React from "react";
 import {Link} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
+import UseUser from '../../../hooks/UseUser'
 
 
 export const Navbar = () => {
+	//const isLogged= false
+	const {isLogged, logout} = UseUser()
+
+	const handleClick = e => {
+		logout()
+	}
+
     return(
 			<nav className="navbar-custom    navbar navbar-expand-lg fixed-top">
 				<div className="container">
@@ -45,7 +53,7 @@ export const Navbar = () => {
 								<li className="nav-item">
 									<Link to="signin" className="nav-link">
 										Sign in
-									</Link>								
+									</Link>							
 								</li>
 							</ul>
 						</div>

@@ -10,12 +10,17 @@ import {GetStarted} from '../LandingPage/landing-components/GetStarted'
 import {Contact} from '../LandingPage/landing-components/Contact'
 import {ContactSocial} from '../LandingPage/landing-components/ContactSocial'
 import {Footer} from '../LandingPage/landing-components/Footer'
+import { Redirect } from 'react-router-dom'
+import UseUser from "../../hooks/UseUser"
 
 
 
 export const LandingPage = () => {
+    const {isLogged} = UseUser()
+
     return(
         <div>
+            {isLogged && <Redirect to='/home/homeuser' />}
             <Navbar />
             <Header />
             <Services />

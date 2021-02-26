@@ -1,7 +1,5 @@
-import React from "react";
+import React, { useState }from "react";
 import { Dialog } from 'primereact/dialog';
-import { Button } from 'primereact/button';
-import { useState } from 'react';
 
 
 export const HomeUser = () => {
@@ -28,7 +26,7 @@ export const HomeUser = () => {
     const onHide = (name) => {
         dialogFuncMap[`${name}`](false);
     }
-
+    
   return (
     <div className="index">
       <div className="dialog-demo home-user-grid">

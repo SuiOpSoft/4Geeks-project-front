@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useContext, useState } from "react";
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
@@ -14,23 +14,29 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import ScrollToTop from "../src/components/shared/ScrollTotop";
 import { Home } from "../src/views/Home";
 import injectContext from "../src/store/context";
+import {UserContextProvider} from "../src/store/UserContext"
+
+
 
 
 
 function App() {
-  return (
-    <BrowserRouter >
-      <ScrollToTop>
-        <Switch>
-          <Route  exact path="/" component = {LandingPage} />
-          <Route  path="/signin" component = {SignIn} />	  
-          <Route path="/home"  component = {Home} />
-          <Route>
-            <h1>Not found!</h1>
-          </Route>
-        </Switch>
-      </ScrollToTop>
-    </BrowserRouter>
+
+  return (   
+      <BrowserRouter >
+        <ScrollToTop>
+        <UserContextProvider>        
+          <Switch>
+            <Route  exact path="/" component = {LandingPage} />
+            <Route  path="/signin" component = {SignIn} />	  
+            <Route path="/home"  component = {Home} />
+            <Route>
+              <h1>Not found!</h1>
+            </Route>
+          </Switch>
+          </UserContextProvider>
+        </ScrollToTop>
+      </BrowserRouter>   
   );
 }
 
