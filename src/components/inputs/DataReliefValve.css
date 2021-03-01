@@ -322,7 +322,7 @@ td .pi-check{
 
 .p-datatable-scrollable-body::-webkit-scrollbar{
     width: 0.5rem;
-    height: 0.5rem;
+    height: 0.8rem;
     background-color: #9fadd683;
     border-radius: 20px;
 }

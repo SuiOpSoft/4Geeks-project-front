@@ -21,21 +21,6 @@ import { FileUpload } from 'primereact/fileupload';
 
 export const DataLevelControlValves = () => {
   const toast = useRef(null);
-  // let dataLevelControlValves = [
-  //   {
-  //     separator: "equipo1",
-  //     lcv_Tag: "-",
-  //     lcv_Cv: "-",
-  //     lcv_Diameter: "-",
-  //     inlet_Lcv_Piping_Diameter: "-",
-  //     outlet_Lcv_Piping_Diameter: "-",
-  //     lcv_Factor_Fl: "-",
-  //     lcv_Factor_Fi: "-",
-  //     lcv_Factor_Fp: "-",
-  //     lcv_Inlet_Pressure: "-",
-  //     lcv_Outlet_Pressure: "-",
-  //   },
-  // ];
 
   let emptyLevelControlValve = {
     separator: "",
@@ -59,8 +44,7 @@ export const DataLevelControlValves = () => {
   const [deleteLevelControlValvesDialog, setDeleteLevelControlValvesDialog] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
 
-  const [levelControlValves, setLevelControlValves] = useState(
-    store.input_level_control_valve);
+  const [levelControlValves, setLevelControlValves] = useState(store.input_level_control_valve);
   const dt = useRef(null);
   const [deleteLevelControlValveDialog, setDeleteLevelControlValveDialog] = useState(false);
   const [levelControlValve, setLevelControlValve] = useState(emptyLevelControlValve);
@@ -72,10 +56,6 @@ export const DataLevelControlValves = () => {
   const dataTableFuncMap = {
     levelControlValves: setLevelControlValves,
   };
-
-  /*useEffect(() => {
-        fetchProductData('levelControlValves');
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps*/
 
     const hideDialog = () => {
       setSubmitted(false);

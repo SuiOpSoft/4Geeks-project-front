@@ -3,7 +3,7 @@ import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
 import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import "../../index.css";
-import React, { useState,  useContext, useRef } from "react";
+import React, { useState,  useContext, useRef, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
@@ -18,42 +18,6 @@ import { FileUpload } from 'primereact/fileupload';
 
 export const DataFluids = () => {
   const toast = useRef(null);
-  
-
-  let emptyFluid = {
-      separator: "",
-      operating_Pressure: "-",
-      operating_Temperature: "-",
-      oil_Density: "-",
-      gas_Density: "-",
-      mixture_Density: "-",
-      water_Density: "-",
-      feed_BSW: "-",
-      liquid_Viscosity: "-",
-      gas_Viscosity: "-",
-      gas_Mw: "-",
-      liq_MW: "-",
-      gas_Compressor: "-",
-      specific_Heat_Ratio: "-",
-      liquid_Surface_Tension: "-",
-      liquid_Vapor_Pressure: "-",
-      liquid_Critical_Pressure: "-",
-      standard_Gas_flow: "-",
-      standard_Liquid_Flow: "-",
-      actual_Gas_Flow: "-",
-      actual_Liquid_Flow: "-"
-  }
-
-  let emptyFluidResult = {
-          separator: "Equipo",
-					Mixture_Inlet_Nozzle_Velocity: "-",
-					Inlet_Nozzle_Momentum: "-",
-					Maximum_Mixture_Inlet_Nozzle_Velocity: "-",
-					Maximum_Inlet_Nozzle_Momentum: "-",
-					Maximun_Liquid_Flow_Inlet_Nozzle: "-",
-					Maximum_Gas_Flow_Inlet_Nozzle: "-",
-					Status_Inlet_Nozzle: "-"
-  }
 
   const { store, actions } = useContext(Context);
   const [fluidDialog, setFluidDialog] = useState(false);
@@ -62,50 +26,79 @@ export const DataFluids = () => {
   const [deleteFluidsDialog, setDeleteFluidsDialog] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
   const [deleteFluidDialog, setDeleteFluidDialog] = useState(false);
-  const [fluids, setFluids] = useState(store.input_fluids_data);
-  const [fluid, setFluid] = useState(emptyFluid);
-  const [fluidResult, setFluidResult] = useState(emptyFluidResult);
-  // const [separators, setSeparators] = useState(store.input_separators_data);
+  const [fluids, setFluids] = useState();
+  const [fluid, setFluid] = useState();
   const dt = useRef(null);
   
   let originalRows = {};
 
+  var ENDPOINT = 'https://3001-gold-coyote-2ur3jvsy.ws-eu03.gitpod.io'
+
+  useEffect(() => {
+    getDataFluid()
+  }, []);
+  
   const dataTableFuncMap = {
     fluids: setFluids,
   };
 
-    const hideDialog = () => {
+  const hideDialog = () => {
       setSubmitted(false);
       setFluidDialog(false);
     };
-
-    const createId = () => {
-      let id = '';
-      let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-      for (let i = 0; i < 5; i++) {
-          id += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      return id;
-    }
-
-    const saveFluid = () => {
-      setSubmitted(true);
-      if (fluid.separator.trim()) {
-        let _fluid = { ...fluid };
-        let _fluids = [...fluids];
   
-        _fluid.id = createId();
-        _fluids.push(_fluid);
-        toast.current.show({
-          severity: "success",
-          summary: "Successful",
-          detail: "Separator Created",
-          life: 3000,});
-
-        setFluids(_fluids);
-        setFluidDialog(false);
-        setFluid(emptyFluid);
+  const getDataFluid = () => {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },}
+      try {fetch(`${ENDPOINT}/api/datafluids`, requestOptions)
+      .then(response => response.json())
+      .then(data => setFluids(data))}
+      catch(error){
+        throw error;
       }
+  }
+
+  const saveFluid = async() => {
+    
+
+        try { 
+          const requestOptions = {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({       
+              tag: fluid,
+              facility_id: null
+            })
+          }
+          console.log(requestOptions.body)
+          const res = await fetch(`${ENDPOINT}/api/separators`, requestOptions)
+          const json = await res.json()
+          
+
+          setSubmitted(true); 
+            toast.current.show({
+              severity: "success",
+              summary: "Successful",
+              detail: "Separator Created",
+              life: 3000,
+            });
+          
+          getDataFluid()
+          setFluid('')
+          setFluidDialog(false)
+      
+        }catch (error){
+          console.log(error)
+      
+        }
+      
     };
 
   const onRowEditInit = (event) => {
@@ -114,7 +107,7 @@ export const DataFluids = () => {
 
   const onRowEditSave = (event) => {
     originalRows[event.index] = { ...fluids[event.index] };
-    handleInsertDataFluids(originalRows[event.index])
+    handleUpdateDataFluids(originalRows[event.index])
   }
 
   const onRowEditCancel = (event) => {
@@ -139,15 +132,13 @@ export const DataFluids = () => {
           'Content-Type': 'application/json'
         },
       }
-      const res = await fetch('https://3001-teal-cougar-26i4nl9q.ws-eu03.gitpod.io/api/inletnozzleparameterscalc', requestOptions)
+      const res = await fetch(`${ENDPOINT}/api/inletnozzleparameterscalc`, requestOptions)
       const json = await res.json()
-      console.log(json)
-  
-    }catch (error){
-      console.log(error)
-  
+      console.log(json) 
     }
-    
+    catch (error){
+      console.log(error)  
+    }   
   }
 
   const fluidDialogFooter = (
@@ -168,15 +159,19 @@ export const DataFluids = () => {
   );
 
   const deleteSelectedFluids = () => {
+
     let _products = fluids.filter(val => !selectedFluids.includes(val));
+    console.log(_products)
     setFluids(_products);
     setDeleteFluidsDialog(false);
     setSelectedFluids(null);
     toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
+    handleDeleteDataFluids();
 }
 
   const confirmDeleteSelected = () => {
     setDeleteFluidsDialog(true);
+    
   };
 
   const leftToolbarTemplate = () => {
@@ -200,7 +195,7 @@ export const DataFluids = () => {
   };
 
   const openNew = () => {
-    setFluid(emptyFluid);
+    
     setSubmitted(false);
     setFluidDialog(true);
   };
@@ -225,48 +220,48 @@ export const DataFluids = () => {
 
   const checkEditor = (productKey, props) => {
     switch (props.field) {
-      case "separator":
-        return inputTextEditor(productKey, props, "separator");
-      case "operating_Pressure":
-        return inputTextEditor(productKey, props, "operating_Pressure");
-      case "operating_Temperature":
-        return inputTextEditor(productKey, props, "operating_Temperature");
-      case "oil_Density":
-        return inputTextEditor(productKey, props, "oil_Density");
-      case "gas_Density":
-        return inputTextEditor(productKey, props, "gas_Density");
-      case "mixture_Density":
-        return inputTextEditor(productKey, props, "mixture_Density");
-      case "water_Density":
-        return inputTextEditor(productKey, props, "water_Density");
-      case "feed_BSW":
-        return inputTextEditor(productKey, props, "feed_BSW");
-      case "liquid_Viscosity":
-        return inputTextEditor(productKey, props, "liquid_Viscosity");
-      case "gas_Viscosity":
-        return inputTextEditor(productKey, props, "gas_Viscosity");
-      case "gas_Mw":
-        return inputTextEditor(productKey, props, "gas_Mw");
-      case "liq_MW":
-        return inputTextEditor(productKey, props, "liq_MW");
-      case "gas_Compressor":
-        return inputTextEditor(productKey, props, "gas_Compressor");
-      case "specific_Heat_Ratio":
-        return inputTextEditor(productKey, props, "specific_Heat_Ratio");
-      case "liquid_Surface_Tension":
-        return inputTextEditor(productKey, props, "liquid_Surface_Tension");
-      case "liquid_Vapor_Pressure":
-        return inputTextEditor(productKey, props, "liquid_Vapor_Pressure");
-      case "liquid_Critical_Pressure":
-        return inputTextEditor(productKey, props, "liquid_Critical_Pressure");
-      case "standard_Gas_flow":
-        return inputTextEditor(productKey, props, "standard_Gas_flow");
-      case "standard_Liquid_Flow":
-        return inputTextEditor(productKey, props, "standard_Liquid_Flow");
-      case "actual_Gas_Flow":
-        return inputTextEditor(productKey, props, "actual_Gas_Flow");
-      case "actual_Liquid_Flow":
-        return inputTextEditor(productKey, props, "actual_Liquid_Flow");
+      case "separator_tag":
+        return inputTextEditor(productKey, props, "separator_tag");
+      case "operatingpressure":
+        return inputTextEditor(productKey, props, "operatingpressure");
+      case "operatingtemperature":
+        return inputTextEditor(productKey, props, "operatingtemperature");
+      case "oildensity":
+        return inputTextEditor(productKey, props, "oildensity");
+      case "gasdensity":
+        return inputTextEditor(productKey, props, "gasdensity");
+      case "mixturedensity":
+        return inputTextEditor(productKey, props, "mixturedensity");
+      case "waterdensity":
+        return inputTextEditor(productKey, props, "waterdensity");
+      case "feedbsw":
+        return inputTextEditor(productKey, props, "feedbsw");
+      case "liquidviscosity":
+        return inputTextEditor(productKey, props, "liquidviscosity");
+      case "gasviscosity":
+        return inputTextEditor(productKey, props, "gasviscosity");
+      case "gasmw":
+        return inputTextEditor(productKey, props, "gasmw");
+      case "liqmw":
+        return inputTextEditor(productKey, props, "liqmw");
+      case "gascomprz":
+        return inputTextEditor(productKey, props, "gascomprz");
+      case "especificheatratio":
+        return inputTextEditor(productKey, props, "especificheatratio");
+      case "liquidsurfacetension":
+        return inputTextEditor(productKey, props, "liquidsurfacetension");
+      case "liquidvaporpressure":
+        return inputTextEditor(productKey, props, "liquidvaporpressure");
+      case "liquidcriticalpressure":
+        return inputTextEditor(productKey, props, "liquidcriticalpressure");
+      case "standardgasflow":
+        return inputTextEditor(productKey, props, "standardgasflow");
+      case "standardliquidflow":
+        return inputTextEditor(productKey, props, "standardliquidflow");
+      case "actualgasflow":
+        return inputTextEditor(productKey, props, "actualgasflow");
+      case "actualliquidflow":
+        return inputTextEditor(productKey, props, "actualliquidflow");
       default:
         break;
     }
@@ -299,7 +294,6 @@ const deleteFluid = () => {
   let _products = fluids.filter(val => val.id !== fluid.id);
   setFluid(_products);
   setDeleteFluidDialog(false);
-  setFluid(emptyFluid);
   toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
 }
 
@@ -324,42 +318,41 @@ const deleteFluidsDialogFooter = (
   </React.Fragment>
 );
 
- const handleInsertDataFluids = async datafluid => {
+ const handleUpdateDataFluids = async datafluid => {
   
   try { 
     const requestOptions = {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        "id": "1",
-        "separator_id": "1",
-        "operatingpressure": datafluid.operating_Pressure,
-        "operatingtemperature": datafluid.operating_Temperature,
-        "oildensity": datafluid.oil_Density,
-        "gasdensity": datafluid.gas_Density,
-        "mixturedensity": datafluid.mixture_Density,
-        "waterdensity": datafluid.water_Density,
-        "feedbsw": datafluid.feed_BSW,
-        "liquidviscosity": datafluid.liquid_Viscosity,
-        "gasviscosity": datafluid.gas_Viscosity,
-        "gasmw": datafluid.gas_Mw,
-        "liqmw": datafluid.liq_MW,
-        "gascomprz": datafluid.gas_Compressor,
-        "especificheatratio": datafluid.specific_Heat_Ratio,
-        "liquidsurfacetension": datafluid.liquid_Surface_Tension,
-        "liquidvaporpressure": datafluid.liquid_Vapor_Pressure,
-        "liquidcriticalpressure": datafluid.liquid_Critical_Pressure,
-        "standardgasflow": datafluid.standard_Gas_flow,
-        "standardliquidflow": datafluid.standard_Liquid_Flow,
-        "actualgasflow": datafluid.actual_Gas_Flow,
-        "actualliquidflow": datafluid.actual_Liquid_Flow
+      body: JSON.stringify({       
+        "separator_tag": datafluid.separator_tag,
+        "operatingpressure": datafluid.operatingpressure,
+        "operatingtemperature": datafluid.operatingtemperature,
+        "oildensity": datafluid.oildensity,
+        "gasdensity": datafluid.gasdensity,
+        "mixturedensity": datafluid.mixturedensity,
+        "waterdensity": datafluid.waterdensity,
+        "feedbsw": datafluid.feedbsw,
+        "liquidviscosity": datafluid.liquidviscosity,
+        "gasviscosity": datafluid.gasviscosity,
+        "gasmw": datafluid.gasmw,
+        "liqmw": datafluid.liqmw,
+        "gascomprz": datafluid.gascomprz,
+        "especificheatratio": datafluid.especificheatratio,
+        "liquidsurfacetension": datafluid.liquidsurfacetension,
+        "liquidvaporpressure": datafluid.liquidvaporpressure,
+        "liquidcriticalpressure": datafluid.liquidcriticalpressure,
+        "standardgasflow": datafluid.standardgasflow,
+        "standardliquidflow": datafluid.standardliquidflow,
+        "actualgasflow": datafluid.actualgasflow,
+        "actualliquidflow": datafluid.actualliquidflow
       })
     }
     console.log(requestOptions.body)
-    const res = await fetch('https://3001-green-mouse-horufcfi.ws-eu03.gitpod.io/api/datafluids', requestOptions)
+    const res = await fetch(`${ENDPOINT}/api/datafluids`, requestOptions)
     const json = await res.json()
     
 
@@ -369,45 +362,27 @@ const deleteFluidsDialogFooter = (
   }
 }
 
-const handleUpdateDataFluids = async datafluid => {
+  const handleDeleteDataFluids = async() => {
   
   try { 
-    console.log("updatedata", datafluid)
-    const requestOptions = {
-      method: 'PUT',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        "id": "1",
-        "separator_id": "1",
-        "operatingpressure": datafluid.operating_Pressure,
-        "operatingtemperature": datafluid.operating_Temperature,
-        "oildensity": datafluid.oil_Density,
-        "gasdensity": datafluid.gas_Density,
-        "mixturedensity": datafluid.mixture_Density,
-        "waterdensity": datafluid.water_Density,
-        "feedbsw": datafluid.feed_BSW,
-        "liquidviscosity": datafluid.liquid_Viscosity,
-        "gasviscosity": datafluid.gas_Viscosity,
-        "gasmw": datafluid.gas_Mw,
-        "liqmw": datafluid.liq_MW,
-        "gascomprz": datafluid.gas_Compressor,
-        "especificheatratio": datafluid.specific_Heat_Ratio,
-        "liquidsurfacetension": datafluid.liquid_Surface_Tension,
-        "liquidvaporpressure": datafluid.liquid_Vapor_Pressure,
-        "liquidcriticalpressure": datafluid.liquid_Critical_Pressure,
-        "standardgasflow": datafluid.standard_Gas_flow,
-        "standardliquidflow": datafluid.standard_Liquid_Flow,
-        "actualgasflow": datafluid.actual_Gas_Flow,
-        "actualliquidflow": datafluid.actual_Liquid_Flow
-      })
-    }
-    console.log(requestOptions.body)
-    const res = await fetch('https://3001-green-mouse-horufcfi.ws-eu03.gitpod.io/api/datafluids', requestOptions)
-    const json = await res.json()
-    console.log(json)
+    for (const separator of selectedFluids) {
+      const requestOptions = {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },        
+        body: JSON.stringify({
+          "separator_tag": separator.separator_tag     
+        })  
+      }
+      console.log(requestOptions.body)
+      const res = await fetch(`${ENDPOINT}/api/datafluids`, requestOptions)
+      const json = await res.json()
+      console.log(json)
+      
+    };
+    
 
   }catch (error){
     console.log(error)
@@ -436,110 +411,110 @@ const handleUpdateDataFluids = async datafluid => {
           scrollHeight="55vh" 
           frozenWidth="15rem"
           scrollable
-        >
+        > 
           <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} frozen></Column>
           <Column headerStyle={{ width: '15rem' }}
-            field="separator"
+            field="separator_tag"
             header="Separator"
             editor={(props) => checkEditor("fluids", props)} sortable frozen
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="operating_Pressure"
+            field="operatingpressure"
             header="Operating Pressure (kPa)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="operating_Temperature"
+            field="operatingtemperature"
             header="Operating Temperature (oC)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="oil_Density"
+            field="oildensity"
             header="Oil Density (kg/m&sup3;)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="gas_Density"
+            field="gasdensity"
             header="Gas Density (kg/m&sup3;)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="mixture_Density"
+            field="mixturedensity"
             header="Mixture Density (kg/m&sup3;)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="water_Density"
+            field="waterdensity"
             header="Water Density (kg/m&sup3;)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="feed_BSW"
+            field="feedbsw"
             header="Feed BSW (%v/v)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="liquid_Viscosity"
+            field="liquidviscosity"
             header="Liquid Viscosity (cP)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="gas_Viscosity"
+            field="gasviscosity"
             header="Gas viscosity (oC)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="gas_Mw"
+            field="gasmw"
             header="Gas Mw (kg/kmol)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="liq_MW"
+            field="liqmw"
             header="Liq MW (kg/kmol)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="gas_Compressor"
+            field="gascomprz"
             header="Gas Compressor (Z)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="specific_Heat_Ratio"
+            field="especificheatratio"
             header="Specific Heat Ratio"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="liquid_Surface_Tension"
+            field="liquidsurfacetension"
             header="Liquid Surface Tension (dyne/cm)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="liquid_Vapor_Pressure"
+            field="liquidvaporpressure"
             header="Liquid Vapor Pressure (kPa)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="liquid_Critical_Pressure"
+            field="liquidcriticalpressure"
             header="Liquid Critical Pressure (kPa)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="standard_Gas_flow"
+            field="standardgasflow"
             header="Standard Gas Flow (S m&sup3;/h)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="standard_Liquid_Flow"
+            field="standardliquidflow"
             header="Standard Liquid Flow (S m&sup3;/h)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="actual_Gas_Flow"
+            field="actualgasflow"
             header="Actual Gas Flow (m&sup3;/h)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="actual_Liquid_Flow"
+            field="actualliquidflow"
             header="Actual Liquid Flow (m&sup3;/h)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
@@ -569,15 +544,15 @@ const handleUpdateDataFluids = async datafluid => {
           <label htmlFor="separator">Data Fluids Tag</label>
           <InputText
             id="separator"
-            value={fluid.separator}
-            onChange={(e) => onInputChange(e, "separator")}
+            value={fluid ||''}
+            onChange={(e) => setFluid(e.target.value)}
             required
             autoFocus
             className={classNames({
-              "p-invalid": submitted && !fluid.separator,
+              "p-invalid": submitted && !fluid,
             })}
           />
-          {submitted && !fluid.separator && (
+          {submitted && !fluid && (
             <small className="p-error">Separator Tag is required.</small>
           )}
         </div>
@@ -585,14 +560,14 @@ const handleUpdateDataFluids = async datafluid => {
       <Dialog visible={deleteFluidDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteFluidDialogFooter} onHide={hideDeleteFluidDialog}>
                 <div className="confirmation-content">
                     <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}} />
-                    {fluid && <span>Are you sure you want to delete <b>{fluid.separator}</b>?</span>}
+                    <span>Are you sure you want to delete?</span>
                 </div>
             </Dialog>
 
             <Dialog visible={deleteFluidsDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteFluidsDialogFooter} onHide={hideDeleteFluidsDialog}>
                 <div className="confirmation-content">
                     <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}} />
-                    {fluid && <span>Are you sure you want to delete the selected fluids data?</span>}
+                    <span>Are you sure you want to delete the selected fluids data?</span>
                 </div>
             </Dialog>
     </div>

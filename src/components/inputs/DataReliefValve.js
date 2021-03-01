@@ -3,7 +3,7 @@ import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
 import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import "../../index.css";
-import {Context} from "../../store/context"
+import { Context } from "../../store/context";
 import React, { useState, useRef, useContext } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -14,31 +14,30 @@ import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
 import classNames from "classnames";
 import "./DataReliefValve.css";
-import { FileUpload } from 'primereact/fileupload';
+import { FileUpload } from "primereact/fileupload";
 
 export const DataReliefValve = () => {
   const toast = useRef(null);
-  
+
   let emptyReliefValve = {
-      separator: "",
-      RV_set_pressure_value: "-",
-      RV_set_pressure_reference: "-",
-      RV_Orifice_Area_value: "-",
+    separator: "",
+    RV_set_pressure_value: "-",
+    RV_set_pressure_reference: "-",
+    RV_Orifice_Area_value: "-",
   };
 
-    let emptyReliefValveResult = {
-      separator: "Equipo",
-      Relief_Valve_Capacity: "-",
-      Relief_Valve_Capacity_Status: "-"
-    };
-  
+  let emptyReliefValveResult = {
+    separator: "Equipo",
+    Relief_Valve_Capacity: "-",
+    Relief_Valve_Capacity_Status: "-",
+  };
+
   const { store, actions } = useContext(Context);
   const [reliefValveDialog, setReliefValveDialog] = useState(false);
   const [selectedReliefValves, setSelectedReliefValves] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [deleteReliefValvesDialog, setDeleteReliefValvesDialog] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
-
   const [reliefValves, setReliefValves] = useState(store.input_relief_valve_data);
   const [reliefValve, setReliefValve] = useState(emptyReliefValve);
   const [reliefValveResult, setReliefValveResult] = useState(emptyReliefValveResult);
@@ -48,26 +47,27 @@ export const DataReliefValve = () => {
   let originalRows = {};
 
   const dataTableFuncMap = {
-    reliefValves: setReliefValves
+    reliefValves: setReliefValves,
   };
 
-    const hideDialog = () => {
-      setSubmitted(false);
-      setReliefValveDialog(false);
-    };
+  const hideDialog = () => {
+    setSubmitted(false);
+    setReliefValveDialog(false);
+  };
 
-    const createId = () => {
-      let id = '';
-      let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-      for (let i = 0; i < 5; i++) {
-          id += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      return id;
+  const createId = () => {
+    let id = "";
+    let chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for (let i = 0; i < 5; i++) {
+      id += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-  
-    const saveReliefValve = () => {
-      setSubmitted(true);
-      if (reliefValve.separator.trim()) {
+    return id;
+  };
+
+  const saveReliefValve = () => {
+    setSubmitted(true);
+    if (reliefValve.separator.trim()) {
       let _reliefValve = { ...reliefValve };
       let _reliefValves = [...reliefValves];
 
@@ -82,8 +82,8 @@ export const DataReliefValve = () => {
       setReliefValves(_reliefValves);
       setReliefValveDialog(false);
       setReliefValve(emptyReliefValve);
-      }
-    };
+    }
+  };
 
   const onRowEditInit = (event) => {
     originalRows[event.index] = { ...reliefValves[event.index] };
@@ -121,12 +121,19 @@ export const DataReliefValve = () => {
   );
 
   const deleteSelectedReliefValves = () => {
-    let _products = reliefValves.filter(val => !selectedReliefValves.includes(val));
+    let _products = reliefValves.filter(
+      (val) => !selectedReliefValves.includes(val)
+    );
     setReliefValves(_products);
     setDeleteReliefValvesDialog(false);
     setSelectedReliefValves(null);
-    toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
-}
+    toast.current.show({
+      severity: "success",
+      summary: "Successful",
+      detail: "Products Deleted",
+      life: 3000,
+    });
+  };
 
   const confirmDeleteSelected = () => {
     setDeleteReliefValvesDialog(true);
@@ -193,93 +200,152 @@ export const DataReliefValve = () => {
 
   const rightToolbarTemplate = () => {
     return (
-        <React.Fragment>
-            <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} label="Import" chooseLabel="Import" className="p-mr-2 p-d-inline-block" />
-            <Button label="Export" icon="pi pi-upload" className="export-button" onClick={exportCSV} />
-        </React.Fragment>
-    )
-}
+      <React.Fragment>
+        <FileUpload
+          mode="basic"
+          accept="image/*"
+          maxFileSize={1000000}
+          label="Import"
+          chooseLabel="Import"
+          className="p-mr-2 p-d-inline-block"
+        />
+        <Button
+          label="Export"
+          icon="pi pi-upload"
+          className="export-button"
+          onClick={exportCSV}
+        />
+      </React.Fragment>
+    );
+  };
 
-const exportCSV = () => {
-  dt.current.exportCSV();
-}
+  const exportCSV = () => {
+    dt.current.exportCSV();
+  };
 
   const header = (
     <div className="table-header">
-        <h5 className="p-m-0">Manage Relief Valve Separators</h5>
-        <span className="p-input-icon-left">
-            <i className="pi pi-search" />
-            <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />
-        </span>
+      <h5 className="p-m-0">Manage Relief Valve Separators</h5>
+      <span className="p-input-icon-left">
+        <i className="pi pi-search" />
+        <InputText
+          type="search"
+          onInput={(e) => setGlobalFilter(e.target.value)}
+          placeholder="Search..."
+        />
+      </span>
     </div>
-);
+  );
 
-const deleteReliefValve = () => {
-  let _products = reliefValves.filter(val => val.id !== reliefValve.id);
-  setReliefValve(_products);
-  setDeleteReliefValveDialog(false);
-  setReliefValve(emptyReliefValve);
-  toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
-}
+  const deleteReliefValve = () => {
+    let _products = reliefValves.filter((val) => val.id !== reliefValve.id);
+    setReliefValve(_products);
+    setDeleteReliefValveDialog(false);
+    setReliefValve(emptyReliefValve);
+    toast.current.show({
+      severity: "success",
+      summary: "Successful",
+      detail: "Product Deleted",
+      life: 3000,
+    });
+  };
 
-const hideDeleteReliefValveDialog = () => {
-  setDeleteReliefValveDialog(false);
-}
+  const hideDeleteReliefValveDialog = () => {
+    setDeleteReliefValveDialog(false);
+  };
 
-const hideDeleteReliefValvesDialog = () => {
-  setDeleteReliefValvesDialog(false);
-}
+  const hideDeleteReliefValvesDialog = () => {
+    setDeleteReliefValvesDialog(false);
+  };
 
-const deleteReliefValveDialogFooter = (
-  <React.Fragment>
-      <Button label="No" icon="pi pi-times" className="p-button-text dialog-no" onClick={hideDeleteReliefValveDialog} />
-      <Button label="Yes" icon="pi pi-check" className="p-button-text dialog-yes" onClick={deleteReliefValve} />
-  </React.Fragment>
-);
-const deleteReliefValvesDialogFooter = (
-  <React.Fragment>
-      <Button label="No" icon="pi pi-times" className="p-button-text dialog-no" onClick={hideDeleteReliefValvesDialog} />
-      <Button label="Yes" icon="pi pi-check" className="p-button-text dialog-yes" onClick={deleteSelectedReliefValves} />
-  </React.Fragment>
-);
+  const deleteReliefValveDialogFooter = (
+    <React.Fragment>
+      <Button
+        label="No"
+        icon="pi pi-times"
+        className="p-button-text dialog-no"
+        onClick={hideDeleteReliefValveDialog}
+      />
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        className="p-button-text dialog-yes"
+        onClick={deleteReliefValve}
+      />
+    </React.Fragment>
+  );
+
+  const deleteReliefValvesDialogFooter = (
+    <React.Fragment>
+      <Button
+        label="No"
+        icon="pi pi-times"
+        className="p-button-text dialog-no"
+        onClick={hideDeleteReliefValvesDialog}
+      />
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        className="p-button-text dialog-yes"
+        onClick={deleteSelectedReliefValves}
+      />
+    </React.Fragment>
+  );
 
   return (
-    <div className="p-grid p-fluid index">         
+    <div className="p-grid p-fluid index">
       <Toast className="index-toast" ref={toast} />
       <div className="card card-color">
         <h5>Relief Valve</h5>
-        <Toolbar className="p-mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+        <Toolbar
+          className="p-mb-4"
+          left={leftToolbarTemplate}
+          right={rightToolbarTemplate}
+        ></Toolbar>
         <DataTable
           ref={dt}
           value={reliefValves}
-          selection={selectedReliefValves} onSelectionChange={(e) => setSelectedReliefValves(e.value)}
+          selection={selectedReliefValves}
+          onSelectionChange={(e) => setSelectedReliefValves(e.value)}
           editMode="row"
           dataKey="id"
           onRowEditInit={onRowEditInit}
           onRowEditCancel={onRowEditCancel}
           globalFilter={globalFilter}
           header={header}
+          scrollHeight="55vh"
+          frozenWidth="15rem"
+          scrollable
         >
-          <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} frozen></Column>
+          <Column
+            selectionMode="multiple"
+            headerStyle={{ width: "3rem" }}
+            frozen
+          ></Column>
           <Column
             field="separator"
             header="Separator"
-            editor={(props) => checkEditor("reliefValves", props)}sortable frozen
+            editor={(props) => checkEditor("reliefValves", props)}
+            sortable
+            frozen
           ></Column>
           <Column
             field="RV_Tag"
             header="RV Tag"
-            editor={(props) => checkEditor("reliefValves", props)}sortable
+            editor={(props) => checkEditor("reliefValves", props)}
+            sortable
           ></Column>
           <Column
             field="RV_set_pressure"
             header="RV Set Pressure (kPa)"
-            editor={(props) => checkEditor("reliefValves", props)}sortable
+            editor={(props) => checkEditor("reliefValves", props)}
+            sortable
           ></Column>
           <Column
             field="RV_Orifice_Area_value"
             header="RV Orifice Area (in&sup2;)"
-            editor={(props) => checkEditor("reliefValves", props)}sortable
+            editor={(props) => checkEditor("reliefValves", props)}
+            sortable
           ></Column>
           <Column
             rowEditor
@@ -314,19 +380,47 @@ const deleteReliefValvesDialogFooter = (
           )}
         </div>
       </Dialog>
-      <Dialog visible={deleteReliefValveDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteReliefValveDialogFooter} onHide={hideDeleteReliefValveDialog}>
-                <div className="confirmation-content">
-                    <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}} />
-                    {reliefValve && <span>Are you sure you want to delete <b>{reliefValve.separator}</b>?</span>}
-                </div>
-            </Dialog>
+      <Dialog
+        visible={deleteReliefValveDialog}
+        style={{ width: "450px" }}
+        header="Confirm"
+        modal
+        footer={deleteReliefValveDialogFooter}
+        onHide={hideDeleteReliefValveDialog}
+      >
+        <div className="confirmation-content">
+          <i
+            className="pi pi-exclamation-triangle p-mr-3"
+            style={{ fontSize: "2rem" }}
+          />
+          {reliefValve && (
+            <span>
+              Are you sure you want to delete <b>{reliefValve.separator}</b>?
+            </span>
+          )}
+        </div>
+      </Dialog>
 
-            <Dialog visible={deleteReliefValvesDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteReliefValvesDialogFooter} onHide={hideDeleteReliefValvesDialog}>
-                <div className="confirmation-content">
-                    <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}} />
-                    {reliefValve && <span>Are you sure you want to delete the selected Relief Valves?</span>}
-                </div>
-            </Dialog>
+      <Dialog
+        visible={deleteReliefValvesDialog}
+        style={{ width: "450px" }}
+        header="Confirm"
+        modal
+        footer={deleteReliefValvesDialogFooter}
+        onHide={hideDeleteReliefValvesDialog}
+      >
+        <div className="confirmation-content">
+          <i
+            className="pi pi-exclamation-triangle p-mr-3"
+            style={{ fontSize: "2rem" }}
+          />
+          {reliefValve && (
+            <span>
+              Are you sure you want to delete the selected Relief Valves?
+            </span>
+          )}
+        </div>
+      </Dialog>
     </div>
   );
 };
