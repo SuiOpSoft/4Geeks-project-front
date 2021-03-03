@@ -2,67 +2,67 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			
-			input_fluids_data: [
+			input_fluids_data: 
 				{
-					separator: "V-36102",
-					operating_Pressure: "5536.33",
-					operating_Temperature: "37",
-					oil_Density: "794.08",
-					gas_Density: "52.18",
-					mixture_Density: "197.76",
-					water_Density: "1001",
-					feed_BSW: "0.1",
-					liquid_Viscosity: "2.1065",
-					gas_Viscosity: "0.013385",
-					gas_Mw: "20.80",
-					liq_MW: "155.53",
-					gas_Compressor: "0.8558",
-					specific_Heat_Ratio: "1.4913",
-					liquid_Surface_Tension: "15.49",
-					liquid_Vapor_Pressure: "5536.3",
-					liquid_Critical_Pressure: "12541.9",
-					standard_Gas_flow: "25835.9",
-					standard_Liquid_Flow: "103.9",
-					actual_Gas_Flow: "435.5",
-					actual_Liquid_Flow: "106.33",
+					separator_tag: "",
+					operatingpressure: "-",
+					operatingtemperature: "-",
+					oildensity: "-",
+					gasdensity: "-",
+					mixturedensity: "-",
+					waterdensity: "-",
+					feedbsw: "-",
+					liquidviscosity: "-",
+					gasviscosity: "-",
+					gasmw: "-",
+					liqmw: "-",
+					gascomprz: "-",
+					especificheatratio: "-",
+					liquidsurfacetension: "-",
+					liquidvaporpressure: "-",
+					liquidcriticalpressure: "-",
+					standardgasflow: "-",
+					standardliquidflow: "-",
+					actualgasflow: "-",
+					actualliquidflow: "-"
 				  }
-			],
-			input_separators_data:[
+			,
+			input_separators_data:
 				{
-					
-					separator: "V-36102",
-					internal_Diameter: "1800",
-					t_t_length: "6300",
-					high_Level_Trip: "1080",
-					high_Level_Alarm: "900",
-					normal_Liquid_Level: "650",
-					low_Level_Alarm: "390",
-					inlet_Nozzle: "203.2",
-					gas_Oulet_Nozzle: "152.4",
-					liquid_Outlet_Nozzle: "203.2",
-					inlet_Device_Type: "-",
-					demister_Type: "-",
+					separator_tag: "",
+    				internaldiameter: "-",
+    				ttlength: "-",
+    				highleveltrip: "-",
+    				highlevelalarm: "-",
+    				normalliquidlevel: "-",
+    				lowlevelalarm: "-",
+    				inletnozzle: "-",
+    				gasoutletnozzle: "-",
+    				liquidoutletnozzle: "-",
+    				inletdevicetype: "-",
+    				demistertype: "-"
 				  }
-			],
-			input_relief_valve_data:[
+			,
+			input_relief_valve_data:
 				{
-					separator: "V-36102",
-					RV_Tag: "RV-450",
-					RV_set_pressure: "7900",
-					RV_Orifice_Area_value: "0.785",
+					separator_tag: '',
+    				rvtag: "-",
+    				rvsetpressure: "-",
+    				rvorificearea: "-"
 				  }
-			],
-			input_level_control_valve:[
+			,
+			input_level_control_valve:
 				{
-					separator: "V-36102",
-					lcv_Tag: "LCV-2021",
-					lcv_Cv: "47",
-					lcv_Factor_Fl: "0.9",
-					lcv_Factor_Fp: "0.92",
-					lcv_Inlet_Pressure: "5636.325",
-					lcv_Outlet_Pressure: "2286.325",
+					separator_tag: "",
+					lcvtag: "-",
+					lcvcv: "-",
+					lcvfactorfl: "-",
+					lcvfactorfi: "-",
+					lcvfactorfp: "-",
+					lcvinletpressure: "-",
+					lcvoutletpressure: "-",
 				  }
-			],
+			,
 
 			output_separator_gas_and_liquid_areas: [
 				

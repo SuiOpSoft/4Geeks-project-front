@@ -4,7 +4,7 @@ import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import "../../index.css";
 import { Context } from "../../store/context";
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
@@ -12,132 +12,144 @@ import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
-import classNames from "classnames";
 import "./DataReliefValve.css";
 import { FileUpload } from "primereact/fileupload";
 
 export const DataReliefValve = () => {
   const toast = useRef(null);
-
-  let emptyReliefValve = {
-    separator: "",
-    RV_set_pressure_value: "-",
-    RV_set_pressure_reference: "-",
-    RV_Orifice_Area_value: "-",
-  };
-
-  let emptyReliefValveResult = {
-    separator: "Equipo",
-    Relief_Valve_Capacity: "-",
-    Relief_Valve_Capacity_Status: "-",
-  };
-
   const { store, actions } = useContext(Context);
+  const [emptySeparatorTag, setEmptySeparatorTag] = useState(true);
   const [reliefValveDialog, setReliefValveDialog] = useState(false);
   const [selectedReliefValves, setSelectedReliefValves] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [deleteReliefValvesDialog, setDeleteReliefValvesDialog] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
-  const [reliefValves, setReliefValves] = useState(store.input_relief_valve_data);
-  const [reliefValve, setReliefValve] = useState(emptyReliefValve);
-  const [reliefValveResult, setReliefValveResult] = useState(emptyReliefValveResult);
-  const [deleteReliefValveDialog, setDeleteReliefValveDialog] = useState(false);
+  const [reliefValves, setReliefValves] = useState();
+  const [reliefValve, setReliefValve] = useState(store.input_relief_valve_data);
   const dt = useRef(null);
 
   let originalRows = {};
 
-  const dataTableFuncMap = {
-    reliefValves: setReliefValves,
-  };
+  var ENDPOINT = 'https://3001-azure-porcupine-wlupimh7.ws-eu03.gitpod.io'
+
+  useEffect(() => {
+    getDataReliefValve()
+  }, []);
+
+  const getDataReliefValve = () => {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },}
+      try {fetch(`${ENDPOINT}/api/datareliefvalve`, requestOptions)
+      .then(response => response.json())
+      .then(data => setReliefValves(data))}
+      catch(error){
+        throw error;
+      }
+  }
+
+  const openNew = () => {
+    setReliefValve(store.input_relief_valve_data);
+    setSubmitted(false);
+    setReliefValveDialog(true);
+  }
 
   const hideDialog = () => {
     setSubmitted(false);
     setReliefValveDialog(false);
-  };
+  }
 
-  const createId = () => {
-    let id = "";
-    let chars =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for (let i = 0; i < 5; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
+  const hideDeleteReliefValvesDialog = () => {
+    setDeleteReliefValvesDialog(false);
+  }
+
+  const saveReliefValve = async() => {
+    if (emptySeparatorTag===false)
+  try {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        tag: reliefValve.separator_tag,
+        facility_id: null
+      })
     }
-    return id;
-  };
+    console.log(requestOptions.body)
+    const res = await fetch(`${ENDPOINT}/api/separators`, requestOptions)
+    const json = await res.json()
+    console.log(json)
 
-  const saveReliefValve = () => {
-    setSubmitted(true);
-    if (reliefValve.separator.trim()) {
-      let _reliefValve = { ...reliefValve };
-      let _reliefValves = [...reliefValves];
+    setSubmitted(true)
+    toast.current.show({
+      severity: "success",
+      summary: "Successful",
+      detail: "ReliefValve Created",
+      life: 3000,
+    })
 
-      _reliefValve.id = createId();
-      _reliefValves.push(_reliefValve);
-      toast.current.show({
-        severity: "success",
-        summary: "Successful",
-        detail: "ReliefValve Created",
-        life: 3000,
-      });
-      setReliefValves(_reliefValves);
-      setReliefValveDialog(false);
-      setReliefValve(emptyReliefValve);
-    }
-  };
+    getDataReliefValve()
+    setReliefValveDialog(false);
+    setReliefValve(store.input_relief_valve_data);
+  
+      }catch (error){
+        console.log(error)
+    
+      }
+  }
 
   const onRowEditInit = (event) => {
     originalRows[event.index] = { ...reliefValves[event.index] };
-  };
+  }
+
+  const onRowEditSave = (event) => {
+    originalRows[event.index] = { ...reliefValves[event.index] };
+    handleUpdateDataReliefValves(originalRows[event.index])
+  }
 
   const onRowEditCancel = (event) => {
-    let products = [...reliefValves];
-    products[event.index] = originalRows[event.index];
+    let row_relief_valves = [...reliefValves];
+    row_relief_valves[event.index] = originalRows[event.index];
     delete originalRows[event.index];
+    setReliefValves(row_relief_valves);
+  }
 
-    setReliefValves(products);
-  };
+  const exportCSV = () => {
+    dt.current.exportCSV();
+  }
 
-  const onEditorValueChange = (productKey, props, value) => {
-    let updatedProducts = [...props.value];
-    updatedProducts[props.rowIndex][props.field] = value;
-    dataTableFuncMap[`${productKey}`](updatedProducts);
-  };
-
-  const reliefValveDialogFooter = (
-    <React.Fragment>
-      <Button
-        label="Cancel"
-        icon="pi pi-times"
-        className="p-button-text dialog-no"
-        onClick={hideDialog}
-      />
-      <Button
-        label="Save"
-        icon="pi pi-check"
-        className="p-button-text dialog-yes"
-        onClick={saveReliefValve}
-      />
-    </React.Fragment>
-  );
+  const confirmDeleteSelected = () => {
+    setDeleteReliefValvesDialog(true);
+  }
 
   const deleteSelectedReliefValves = () => {
-    let _products = reliefValves.filter(
-      (val) => !selectedReliefValves.includes(val)
-    );
-    setReliefValves(_products);
+    let _deleteReliefValves = reliefValves.filter((val) => !selectedReliefValves.includes(val))
+    setReliefValves(_deleteReliefValves);
     setDeleteReliefValvesDialog(false);
     setSelectedReliefValves(null);
     toast.current.show({
       severity: "success",
       summary: "Successful",
       detail: "Products Deleted",
-      life: 3000,
-    });
-  };
-
-  const confirmDeleteSelected = () => {
-    setDeleteReliefValvesDialog(true);
-  };
+      life: 3000
+    })
+    handleDeleteDataReliefValves()
+  }
+    
+  const onInputChange = (e, name) => {
+    const val = (e.target && e.target.value)|| '';
+    let _input = { ...reliefValve };
+    _input[`${name}`] = val;
+    setReliefValve(_input);
+    
+    if (e.target.value.length === 0) { return setEmptySeparatorTag(true) }
+    else{ return setEmptySeparatorTag(false)}
+  }
 
   const leftToolbarTemplate = () => {
     return (
@@ -156,45 +168,91 @@ export const DataReliefValve = () => {
           disabled={!selectedReliefValves || !selectedReliefValves.length}
         />
       </React.Fragment>
-    );
-  };
+    )
+  }
 
-  const openNew = () => {
-    setReliefValve(emptyReliefValve);
-    setSubmitted(false);
-    setReliefValveDialog(true);
-  };
+  const header = (
+    <div className="table-header">
+      <h5 className="p-m-0">Manage Relief Valve Separators</h5>
+      <span className="p-input-icon-left">
+        <i className="pi pi-search" />
+        <InputText
+          type="search"
+          onInput={(e) => setGlobalFilter(e.target.value)}
+          placeholder="Search..."
+        />
+      </span>
+    </div>
+  )
 
-  const inputTextEditor = (productKey, props, field) => {
+  const reliefValveDialogFooter = (
+    <React.Fragment>
+      <Button
+        label="Cancel"
+        icon="pi pi-times"
+        className="p-button-text dialog-no"
+        onClick={hideDialog}
+      />
+      <Button
+        label="Save"
+        icon="pi pi-check"
+        className="p-button-text dialog-yes"
+        onClick={saveReliefValve}
+      />
+    </React.Fragment>
+  )
+
+  const deleteReliefValvesDialogFooter = (
+    <React.Fragment>
+      <Button
+        label="No"
+        icon="pi pi-times"
+        className="p-button-text dialog-no"
+        onClick={hideDeleteReliefValvesDialog}
+      />
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        className="p-button-text dialog-yes"
+        onClick={deleteSelectedReliefValves}
+      />
+    </React.Fragment>
+  )
+
+  const dataTableFuncMap = {
+    reliefValves: setReliefValves,
+  }
+
+  const onEditorValueChange = (valueKey, props, value) => {
+      let updatedValues = [...props.value];
+      updatedValues[props.rowIndex][props.field] = value;
+      return dataTableFuncMap[`${valueKey}`](updatedValues);
+  }
+
+  const inputTextEditor = (valueKey, props, field) => {
     return (
       <InputText
-        type="text"
+        type="text"   
         value={props.rowData[field]}
-        onChange={(e) => onEditorValueChange(productKey, props, e.target.value)}
-      />
-    );
-  };
+        onChange={(e) => onEditorValueChange(valueKey, props, e.target.value)}
+        required
+        />
+    )
+  }
 
-  const onInputChange = (e, name) => {
-    const val = (e.target && e.target.value) || "";
-    let _product = { ...reliefValve };
-    _product[`${name}`] = val;
-
-    setReliefValve(_product);
-  };
-
-  const checkEditor = (productKey, props) => {
+  const checkEditor = (valueKey, props) => {
     switch (props.field) {
-      case "name":
-        return inputTextEditor(productKey, props, "name");
-      case "RV_Tag":
-        return inputTextEditor(productKey, props, "RV_Tag");
-      case "RV_set_pressure":
-        return inputTextEditor(productKey, props, "RV_set_pressure");
-      case "RV_Orifice_Area_value":
-        return inputTextEditor(productKey, props, "RV_Orifice_Area_value");
+      case "separator_tag":
+        return inputTextEditor(valueKey, props, "separator_tag");
+      case "rvtag":
+        return inputTextEditor(valueKey, props, "rvtag");
+      case "rvsetpressure":
+        return inputTextEditor(valueKey, props, "rvsetpressure");
+      case "rvorificearea":
+        return inputTextEditor(valueKey, props, "rvorificearea");
       default:
         break;
+      
     }
   };
 
@@ -217,80 +275,61 @@ export const DataReliefValve = () => {
         />
       </React.Fragment>
     );
-  };
+  };  
 
-  const exportCSV = () => {
-    dt.current.exportCSV();
-  };
+  const handleUpdateDataReliefValves = async datareliefvalve => {
+  
+    try { 
+      const requestOptions = {
+        method: 'PUT',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({       
+          "separator_tag": datareliefvalve.separator_tag,
+          "rvtag": datareliefvalve.rvtag,
+          "rvsetpressure":datareliefvalve.rvsetpressure, 
+          "rvorificearea":datareliefvalve.rvorificearea
+        })
+      }
+      console.log(requestOptions.body)
+      const res = await fetch(`${ENDPOINT}/api/datareliefvalve`, requestOptions)
+      const json = await res.json()
+      console.log(json)
+  
+    }catch (error){
+      console.log(error)
+  
+    }
+  }
 
-  const header = (
-    <div className="table-header">
-      <h5 className="p-m-0">Manage Relief Valve Separators</h5>
-      <span className="p-input-icon-left">
-        <i className="pi pi-search" />
-        <InputText
-          type="search"
-          onInput={(e) => setGlobalFilter(e.target.value)}
-          placeholder="Search..."
-        />
-      </span>
-    </div>
-  );
-
-  const deleteReliefValve = () => {
-    let _products = reliefValves.filter((val) => val.id !== reliefValve.id);
-    setReliefValve(_products);
-    setDeleteReliefValveDialog(false);
-    setReliefValve(emptyReliefValve);
-    toast.current.show({
-      severity: "success",
-      summary: "Successful",
-      detail: "Product Deleted",
-      life: 3000,
-    });
-  };
-
-  const hideDeleteReliefValveDialog = () => {
-    setDeleteReliefValveDialog(false);
-  };
-
-  const hideDeleteReliefValvesDialog = () => {
-    setDeleteReliefValvesDialog(false);
-  };
-
-  const deleteReliefValveDialogFooter = (
-    <React.Fragment>
-      <Button
-        label="No"
-        icon="pi pi-times"
-        className="p-button-text dialog-no"
-        onClick={hideDeleteReliefValveDialog}
-      />
-      <Button
-        label="Yes"
-        icon="pi pi-check"
-        className="p-button-text dialog-yes"
-        onClick={deleteReliefValve}
-      />
-    </React.Fragment>
-  );
-
-  const deleteReliefValvesDialogFooter = (
-    <React.Fragment>
-      <Button
-        label="No"
-        icon="pi pi-times"
-        className="p-button-text dialog-no"
-        onClick={hideDeleteReliefValvesDialog}
-      />
-      <Button
-        label="Yes"
-        icon="pi pi-check"
-        className="p-button-text dialog-yes"
-        onClick={deleteSelectedReliefValves}
-      />
-    </React.Fragment>
-  );
+  const handleDeleteDataReliefValves = async() => {
+  
+    try { 
+      for (const separator of selectedReliefValves) {
+        const requestOptions = {
+          method: 'DELETE',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },        
+          body: JSON.stringify({
+            "separator_tag": separator.separator_tag     
+          })  
+        }
+        console.log(requestOptions.body)
+        const res = await fetch(`${ENDPOINT}/api/datareliefvalve`, requestOptions)
+        const json = await res.json()
+        console.log(json)
+        
+      }
+      
+    }catch (error){
+      console.log(error)
+  
+    }
+  }
 
   return (
     <div className="p-grid p-fluid index">
@@ -310,12 +349,14 @@ export const DataReliefValve = () => {
           editMode="row"
           dataKey="id"
           onRowEditInit={onRowEditInit}
+          onRowEditSave={onRowEditSave}
           onRowEditCancel={onRowEditCancel}
           globalFilter={globalFilter}
           header={header}
           scrollHeight="55vh"
           frozenWidth="15rem"
           scrollable
+          // paginator rows={10}
         >
           <Column
             selectionMode="multiple"
@@ -323,26 +364,26 @@ export const DataReliefValve = () => {
             frozen
           ></Column>
           <Column
-            field="separator"
+            field="separator_tag"
             header="Separator"
             editor={(props) => checkEditor("reliefValves", props)}
             sortable
             frozen
           ></Column>
           <Column
-            field="RV_Tag"
+            field="rvtag"
             header="RV Tag"
             editor={(props) => checkEditor("reliefValves", props)}
             sortable
           ></Column>
           <Column
-            field="RV_set_pressure"
+            field="rvsetpressure"
             header="RV Set Pressure (kPa)"
             editor={(props) => checkEditor("reliefValves", props)}
             sortable
           ></Column>
           <Column
-            field="RV_Orifice_Area_value"
+            field="rvorificearea"
             header="RV Orifice Area (in&sup2;)"
             editor={(props) => checkEditor("reliefValves", props)}
             sortable
@@ -364,43 +405,22 @@ export const DataReliefValve = () => {
         onHide={hideDialog}
       >
         <div className="p-field">
-          <label htmlFor="separator">Relieve Valve Tag</label>
+          <label htmlFor="separator_tag">Relieve Valve Tag</label>
           <InputText
-            id="reliefValve"
-            value={reliefValves.separator}
-            onChange={(e) => onInputChange(e, "separator")}
+            id="separator_tag"
+            value={reliefValve.separator_tag}
+            onChange={(e) => onInputChange(e, "separator_tag")}
             required
             autoFocus
-            className={classNames({
-              "p-invalid": submitted && !reliefValve.separator,
-            })}
           />
-          {submitted && !reliefValve.separator && (
+          {emptySeparatorTag===true? 
             <small className="p-error">Relief Valve Tag is required.</small>
-          )}
+          : null}  
+          {/* {submitted && !reliefValve.separator_tag && (
+            <small className="p-error">Relief Valve Tag is required.</small>
+          )}         */}
         </div>
       </Dialog>
-      <Dialog
-        visible={deleteReliefValveDialog}
-        style={{ width: "450px" }}
-        header="Confirm"
-        modal
-        footer={deleteReliefValveDialogFooter}
-        onHide={hideDeleteReliefValveDialog}
-      >
-        <div className="confirmation-content">
-          <i
-            className="pi pi-exclamation-triangle p-mr-3"
-            style={{ fontSize: "2rem" }}
-          />
-          {reliefValve && (
-            <span>
-              Are you sure you want to delete <b>{reliefValve.separator}</b>?
-            </span>
-          )}
-        </div>
-      </Dialog>
-
       <Dialog
         visible={deleteReliefValvesDialog}
         style={{ width: "450px" }}

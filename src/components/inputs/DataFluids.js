@@ -3,7 +3,8 @@ import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
 import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import "../../index.css";
-import React, { useState,  useContext, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
+import { Context } from "../../store/context";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
@@ -11,14 +12,13 @@ import "./DataReliefValve.css";
 import classNames from "classnames";
 import { Button } from "primereact/button";
 import { Toolbar } from "primereact/toolbar";
-import { Context } from "../../store/context";
 import { Dialog } from "primereact/dialog";
 import { Toast } from "primereact/toast";
 import { FileUpload } from 'primereact/fileupload';
 
 export const DataFluids = () => {
   const toast = useRef(null);
-
+  const [emptySeparatorTag, setEmptySeparatorTag] = useState(true)
   const { store, actions } = useContext(Context);
   const [fluidDialog, setFluidDialog] = useState(false);
   const [selectedFluids, setSelectedFluids] = useState(null);
@@ -27,26 +27,17 @@ export const DataFluids = () => {
   const [globalFilter, setGlobalFilter] = useState(null);
   const [deleteFluidDialog, setDeleteFluidDialog] = useState(false);
   const [fluids, setFluids] = useState();
-  const [fluid, setFluid] = useState();
+  const [fluid, setFluid] = useState(store.input_fluids_data);
   const dt = useRef(null);
   
   let originalRows = {};
 
-  var ENDPOINT = 'https://3001-gold-coyote-2ur3jvsy.ws-eu03.gitpod.io'
+  var ENDPOINT = 'https://3001-azure-porcupine-wlupimh7.ws-eu03.gitpod.io'
 
   useEffect(() => {
     getDataFluid()
   }, []);
-  
-  const dataTableFuncMap = {
-    fluids: setFluids,
-  };
 
-  const hideDialog = () => {
-      setSubmitted(false);
-      setFluidDialog(false);
-    };
-  
   const getDataFluid = () => {
     const requestOptions = {
       method: 'GET',
@@ -62,45 +53,58 @@ export const DataFluids = () => {
       }
   }
 
+  const openNew = () => {
+    setSubmitted(false);
+    setFluidDialog(true);
+  };
+
+  const hideDialog = () => {
+    setSubmitted(false);
+    setFluidDialog(false);
+  };
+
+  const hideDeleteFluidsDialog = () => {
+    setDeleteFluidsDialog(false);
+  }
+
   const saveFluid = async() => {
     
+    try { 
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({       
+          tag: fluid.separator_tag,
+          facility_id: null
+        })
+      }
+      console.log(requestOptions.body)
+      const res = await fetch(`${ENDPOINT}/api/separators`, requestOptions)
+      const json = await res.json()
+      console.log(json)
 
-        try { 
-          const requestOptions = {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({       
-              tag: fluid,
-              facility_id: null
-            })
-          }
-          console.log(requestOptions.body)
-          const res = await fetch(`${ENDPOINT}/api/separators`, requestOptions)
-          const json = await res.json()
-          
-
-          setSubmitted(true); 
-            toast.current.show({
-              severity: "success",
-              summary: "Successful",
-              detail: "Separator Created",
-              life: 3000,
-            });
-          
-          getDataFluid()
-          setFluid('')
-          setFluidDialog(false)
+        setSubmitted(true)
+        toast.current.show({
+          severity: "success",
+          summary: "Successful",
+          detail: "Separator Created",
+          life: 3000,
+        });
       
-        }catch (error){
-          console.log(error)
-      
-        }
-      
-    };
-
+      getDataFluid()
+      setFluidDialog(false)
+      setFluid(store.input_fluids_data)
+  
+    }catch (error){
+      console.log(error)
+  
+    }
+  
+  };
+  
   const onRowEditInit = (event) => {
     originalRows[event.index] = { ...fluids[event.index] };
   };
@@ -111,67 +115,39 @@ export const DataFluids = () => {
   }
 
   const onRowEditCancel = (event) => {
-    let products = [...fluids];
-    products[event.index] = originalRows[event.index];
+    let row_fluids = [...fluids];
+    row_fluids[event.index] = originalRows[event.index];
     delete originalRows[event.index];
-    setFluids(products);
+    setFluids(row_fluids);
   };
 
-  const onEditorValueChange = (productKey, props, value) => {
-    let updatedProducts = [...props.value];
-    updatedProducts[props.rowIndex][props.field] = value;
-    dataTableFuncMap[`${productKey}`](updatedProducts);
-  };
-
-  const InletNozzleParametersCalc = async() => {
-    try {
-      const requestOptions = {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-      }
-      const res = await fetch(`${ENDPOINT}/api/inletnozzleparameterscalc`, requestOptions)
-      const json = await res.json()
-      console.log(json) 
-    }
-    catch (error){
-      console.log(error)  
-    }   
+  const exportCSV = () => {
+    dt.current.exportCSV();
   }
-
-  const fluidDialogFooter = (
-    <React.Fragment>
-      <Button
-        label="Cancel"
-        icon="pi pi-times"
-        className="p-button-text dialog-no"
-        onClick={hideDialog}
-      />
-      <Button
-        label="Save"
-        className="p-button-text dialog-yes"
-        icon="pi pi-check"
-        onClick={saveFluid}
-      />
-    </React.Fragment>
-  );
-
-  const deleteSelectedFluids = () => {
-
-    let _products = fluids.filter(val => !selectedFluids.includes(val));
-    console.log(_products)
-    setFluids(_products);
-    setDeleteFluidsDialog(false);
-    setSelectedFluids(null);
-    toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
-    handleDeleteDataFluids();
-}
 
   const confirmDeleteSelected = () => {
     setDeleteFluidsDialog(true);
     
+  };
+
+  const deleteSelectedFluids = () => {
+
+    let _selectedFluids = fluids.filter(val => !selectedFluids.includes(val));
+    setFluids(_selectedFluids);
+    setDeleteFluidsDialog(false);
+    setSelectedFluids(null);
+    toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
+    handleDeleteDataFluids();
+  }
+  
+  const onInputChange = (e, name) => {
+    const val = (e.target && e.target.value) || "";
+    let _input = { ...fluid };
+    _input[`${name}`] = val;
+    setFluid(_input);
+
+    if (e.target.value.length === 0) { return setEmptySeparatorTag(true) }
+    else{ return setEmptySeparatorTag(false)}
   };
 
   const leftToolbarTemplate = () => {
@@ -194,11 +170,83 @@ export const DataFluids = () => {
     );
   };
 
-  const openNew = () => {
-    
-    setSubmitted(false);
-    setFluidDialog(true);
-  };
+  const header = (
+    <div className="table-header">
+        <h5 className="p-m-0">Manage Fluids Separators</h5>
+        <span className="p-input-icon-left">
+            <i className="pi pi-search" />
+            <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />
+        </span>
+    </div>
+  )
+
+  const fluidDialogFooter = (
+    <React.Fragment>
+      <Button
+        label="Cancel"
+        icon="pi pi-times"
+        className="p-button-text dialog-no"
+        onClick={hideDialog}
+      />
+      <Button
+        label="Save"
+        className="p-button-text dialog-yes"
+        icon="pi pi-check"
+        onClick={saveFluid}
+      />
+    </React.Fragment>
+  )
+
+  const deleteFluidsDialogFooter = (
+    <React.Fragment>
+        <Button label="No" icon="pi pi-times" className="p-button-text dialog-no" onClick={hideDeleteFluidsDialog} />
+        <Button label="Yes" icon="pi pi-check" className="p-button-text dialog-yes" onClick={deleteSelectedFluids} />
+    </React.Fragment>
+  )
+  
+  const dataTableFuncMap = {
+    fluids: setFluids,
+  }
+
+  const onEditorValueChange = (productKey, props, value) => {
+    let updatedValues = [...props.value];
+    updatedValues[props.rowIndex][props.field] = value;
+    dataTableFuncMap[`${productKey}`](updatedValues);
+  }
+
+  
+
+  
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  const InletNozzleParametersCalc = async() => {
+    try {
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      }
+      const res = await fetch(`${ENDPOINT}/api/inletnozzleparameterscalc`, requestOptions)
+      const json = await res.json()
+      console.log(json) 
+    }
+    catch (error){
+      console.log(error)  
+    }   
+  }
 
   const inputTextEditor = (productKey, props, field) => {
     return (
@@ -208,15 +256,7 @@ export const DataFluids = () => {
         onChange={(e) => onEditorValueChange(productKey, props, e.target.value)}
       />
     );
-  };
-
-  const onInputChange = (e, name) => {
-    const val = (e.target && e.target.value) || "";
-    let _product = { ...fluid };
-    _product[`${name}`] = val;
-
-    setFluid(_product);
-  };
+  }
 
   const checkEditor = (productKey, props) => {
     switch (props.field) {
@@ -274,49 +314,7 @@ export const DataFluids = () => {
             <Button label="Export" icon="pi pi-upload" className="export-button" onClick={exportCSV} />
         </React.Fragment>
     )
-}
-
-const exportCSV = () => {
-  dt.current.exportCSV();
-}
-
-  const header = (
-    <div className="table-header">
-        <h5 className="p-m-0">Manage Fluids Separators</h5>
-        <span className="p-input-icon-left">
-            <i className="pi pi-search" />
-            <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />
-        </span>
-    </div>
-);
-
-const deleteFluid = () => {
-  let _products = fluids.filter(val => val.id !== fluid.id);
-  setFluid(_products);
-  setDeleteFluidDialog(false);
-  toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
-}
-
-const hideDeleteFluidDialog = () => {
-  setDeleteFluidDialog(false);
-}
-
-const hideDeleteFluidsDialog = () => {
-  setDeleteFluidsDialog(false);
-}
-
-const deleteFluidDialogFooter = (
-  <React.Fragment>
-      <Button label="No" icon="pi pi-times" className="p-button-text dialog-no" onClick={hideDeleteFluidDialog} />
-      <Button label="Yes" icon="pi pi-check" className="p-button-text dialog-yes" onClick={deleteFluid} />
-  </React.Fragment>
-);
-const deleteFluidsDialogFooter = (
-  <React.Fragment>
-      <Button label="No" icon="pi pi-times" className="p-button-text dialog-no" onClick={hideDeleteFluidsDialog} />
-      <Button label="Yes" icon="pi pi-check" className="p-button-text dialog-yes" onClick={deleteSelectedFluids} />
-  </React.Fragment>
-);
+  }
 
  const handleUpdateDataFluids = async datafluid => {
   
@@ -354,7 +352,7 @@ const deleteFluidsDialogFooter = (
     console.log(requestOptions.body)
     const res = await fetch(`${ENDPOINT}/api/datafluids`, requestOptions)
     const json = await res.json()
-    
+    console.log(json)
 
   }catch (error){
     console.log(error)
@@ -364,18 +362,18 @@ const deleteFluidsDialogFooter = (
 
   const handleDeleteDataFluids = async() => {
   
-  try { 
-    for (const separator of selectedFluids) {
-      const requestOptions = {
-        method: 'DELETE',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },        
-        body: JSON.stringify({
-          "separator_tag": separator.separator_tag     
-        })  
-      }
+    try { 
+      for (const separator of selectedFluids) {
+        const requestOptions = {
+          method: 'DELETE',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },        
+          body: JSON.stringify({
+            "separator_tag": separator.separator_tag     
+          })  
+        }
       console.log(requestOptions.body)
       const res = await fetch(`${ENDPOINT}/api/datafluids`, requestOptions)
       const json = await res.json()
@@ -541,35 +539,39 @@ const deleteFluidsDialogFooter = (
         onHide={hideDialog}
       >
         <div className="p-field">
-          <label htmlFor="separator">Data Fluids Tag</label>
+          <label htmlFor="separator_tag">Data Fluids Tag</label>
           <InputText
-            id="separator"
-            value={fluid ||''}
-            onChange={(e) => setFluid(e.target.value)}
+            id="separator_tag"
+            value={fluid.separator_tag}
+            onChange={(e) => onInputChange(e, "separator_tag")}
             required
             autoFocus
             className={classNames({
-              "p-invalid": submitted && !fluid,
+              "p-invalid":  !fluid
             })}
           />
-          {submitted && !fluid && (
+          {emptySeparatorTag===true? 
+            <small className="p-error">Data Fluid Tag is required.</small>
+          : null} 
+          {/* {submitted && !fluid && (
             <small className="p-error">Separator Tag is required.</small>
+          )} */}
+        </div>
+      </Dialog>
+      <Dialog
+        visible={deleteFluidsDialog}
+        style={{ width: '450px' }}
+        header="Confirm"
+        modal
+        footer={deleteFluidsDialogFooter}
+        onHide={hideDeleteFluidsDialog}>
+        <div className="confirmation-content">
+          <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}} />
+          {fluid && (
+            <span>Are you sure you want to delete the selected Fluids data?</span>
           )}
         </div>
       </Dialog>
-      <Dialog visible={deleteFluidDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteFluidDialogFooter} onHide={hideDeleteFluidDialog}>
-                <div className="confirmation-content">
-                    <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}} />
-                    <span>Are you sure you want to delete?</span>
-                </div>
-            </Dialog>
-
-            <Dialog visible={deleteFluidsDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteFluidsDialogFooter} onHide={hideDeleteFluidsDialog}>
-                <div className="confirmation-content">
-                    <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}} />
-                    <span>Are you sure you want to delete the selected fluids data?</span>
-                </div>
-            </Dialog>
     </div>
   );
 };

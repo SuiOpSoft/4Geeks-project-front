@@ -4,8 +4,7 @@ import loginServices from '../services/LoginServices'
 
 export default function UseUser () {
     const {access_token, setAccess_token} = useContext(ContextToken)
-    const [state, setstate] = useState({ loading: false,
-    error: false})
+    const [state, setstate] = useState({ loading: false, error: false})
 
     const login = useCallback(({email , password}) => {
         setstate({ loading: true , error: false})
