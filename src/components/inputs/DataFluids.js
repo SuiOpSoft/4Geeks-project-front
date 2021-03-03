@@ -16,7 +16,9 @@ import { Dialog } from "primereact/dialog";
 import { Toast } from "primereact/toast";
 import { FileUpload } from 'primereact/fileupload';
 
+
 export const DataFluids = () => {
+
   const toast = useRef(null);
   const [emptySeparatorTag, setEmptySeparatorTag] = useState(true)
   const { store, actions } = useContext(Context);
@@ -25,20 +27,21 @@ export const DataFluids = () => {
   const [submitted, setSubmitted] = useState(false);
   const [deleteFluidsDialog, setDeleteFluidsDialog] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
-  const [deleteFluidDialog, setDeleteFluidDialog] = useState(false);
   const [fluids, setFluids] = useState();
   const [fluid, setFluid] = useState(store.input_fluids_data);
   const dt = useRef(null);
-  
+
   let originalRows = {};
 
   var ENDPOINT = 'https://3001-azure-porcupine-wlupimh7.ws-eu03.gitpod.io'
-
-  useEffect(() => {
-    getDataFluid()
+ 
+ useEffect(() => {
+  getDataFluid()
+   
   }, []);
-
+   
   const getDataFluid = () => {
+ 
     const requestOptions = {
       method: 'GET',
       headers: {

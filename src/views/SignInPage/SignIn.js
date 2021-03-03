@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {Link, useHistory} from "react-router-dom"
-//import {useLocation} from "react-router-dom"
 import UseUser from "../../hooks/UseUser"
 import { ProgressSpinner } from 'primereact/progressspinner';
 
@@ -8,9 +7,7 @@ export const SignIn = () => {
 
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-	//const navigate = useLocation();
 	const {isLoginLoading, hasLoginError, login, isLogged} = UseUser()
-
 	const history = useHistory()
 
 	useEffect(() => {
