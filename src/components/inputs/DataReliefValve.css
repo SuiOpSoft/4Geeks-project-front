@@ -348,5 +348,18 @@ td .pi-check{
 }
 
 .charts{
+    margin-top: 0.6rem;
     opacity: 0.9;
+}
+
+canvas{
+    height: 80.3vh !important;
+}
+
+.calculate-button{
+    position: absolute !important;
+    z-index: 6 !important;
+    top: 8.3em;
+    right: 49%;
+    
 }

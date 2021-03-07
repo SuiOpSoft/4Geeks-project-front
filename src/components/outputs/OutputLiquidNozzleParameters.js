@@ -3,7 +3,7 @@ import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
 import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import "../../index.css";
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import "../inputs/DataReliefValve.css";
@@ -14,8 +14,10 @@ import { Toolbar } from "primereact/toolbar";
 export const OutputLiquidNozzleParameters = () => {
   
   const { store, actions } = useContext(Context);
-  const [liquidNozzleParameters, setLiquidNozzleParameters] = useState(store.output_liquid_nozzle_parameters);
+  const [liquidNozzleParameters, setLiquidNozzleParameters] = useState();
   const dt = useRef(null);
+
+  var ENDPOINT = store.endpoint;
   
   const rightToolbarTemplate = () => {
     return (
@@ -28,11 +30,20 @@ const exportCSV = () => {
   dt.current.exportCSV();
 }
   
-
-
-  // useEffect(() => {
-  //       fetchProductData('reliefValves');
-  //   }, []); // eslint-disable-line react-hooks/exhaustive-deps*/
+useEffect( () => {
+  const requestOptions = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },}
+    try {fetch(`${ENDPOINT}/api/liquidnozzleparameterscalc`, requestOptions)
+    .then(response => response.json())
+    .then(data => setLiquidNozzleParameters(data))}
+    catch(error){
+      throw error;
+    }
+  }, []);
 
   return (
     <div className="p-grid p-fluid index">
@@ -45,23 +56,23 @@ const exportCSV = () => {
           ref={dt}
           value={liquidNozzleParameters}>
           <Column
-            field="separator"
+            field="separator_tag"
             header="Separator"            
           ></Column>
           <Column
-            field="Liquid_Nozzle_Velocity"
+            field="liquidnozzlevelocity"
             header="Liquid Nozzle velocity (m/s)"
           ></Column>
           <Column
-            field="Maximum_Liquid_Nozzle_Velocity"
+            field="maximumliquidnozzlevelocity"
             header="Maximum Liquid Nozzle Velocity (m/s)"
           ></Column>
           <Column
-            field="Maximum_Liquid_Nozzle_Flow"
+            field="maximumliquidnozzleflow"
             header="Maximum Liquid Nozzle Flow (m&sup3;/h)"
           ></Column>
           <Column
-            field="Status_Liquid_Nozzle"
+            field="statusliquidnozzle"
             header="Status Liquid Nozzle"
           ></Column>
         </DataTable>

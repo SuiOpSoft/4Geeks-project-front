@@ -4,7 +4,7 @@ import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import "../../index.css";
 
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import "../inputs/DataReliefValve.css";
@@ -15,8 +15,10 @@ import { Toolbar } from "primereact/toolbar";
 export const OutputVesselGasCapacityParameters = () => {
   
   const { store, actions } = useContext(Context);
-  const [vesselGasCapacityParameters, setVesselGasCapacityParameters] = useState(store.output_vessel_gas_capacity_parameters);
+  const [vesselGasCapacityParameters, setVesselGasCapacityParameters] = useState();
   const dt = useRef(null);
+
+  var ENDPOINT = store.endpoint;
   
   const rightToolbarTemplate = () => {
     return (
@@ -29,11 +31,20 @@ const exportCSV = () => {
   dt.current.exportCSV();
 }
   
-
-
-  // useEffect(() => {
-  //       fetchProductData('reliefValves');
-  //   }, []); // eslint-disable-line react-hooks/exhaustive-deps*/
+useEffect( () => {
+  const requestOptions = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },}
+    try {fetch(`${ENDPOINT}/api/vesselgascapacitycalc`, requestOptions)
+    .then(response => response.json())
+    .then(data => setVesselGasCapacityParameters(data))}
+    catch(error){
+      throw error;
+    }
+  }, [])
 
   return (
     <div className="p-grid p-fluid index">
@@ -46,27 +57,27 @@ const exportCSV = () => {
           frozenWidth="15rem"
           scrollable>
           <Column headerStyle={{ width: '15rem' }}
-            field="separator"
+            field="separator_tag"
             header="Separator" frozen          
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="Gas_Load_Factor"
+            field="gasloadfactor"
             header="Gas Load Factor(m/s)"
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="Maximum_Gas_Flow_at_HH_level"
+            field="maximumgasflowathhlevel"
             header="Maximum Gas Flow at HH level (m&sup3;/h)"
           ></Column>
           <Column headerStyle={{ width: '25rem' }}
-            field="Maximum_Gas_Flow_at_Normal_level"
+            field="maximumgasflowatnormallevel"
             header="Maximum Gas Flow at Normal level (m&sup3;/h)"
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="Status_Gas_Capacity_at_high_level"
+            field="statusgascapacityathighlevel"
             header="Status Gas Capacity at high level"
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
-            field="Status_Gas_Capacity_at_normal_level"
+            field="statusgascapacityatnormallevel"
             header="Status Gas Capacity at normal level"
           ></Column>
         </DataTable>

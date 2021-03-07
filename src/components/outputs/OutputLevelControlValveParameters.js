@@ -3,7 +3,7 @@ import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
 import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import "../../index.css";
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import "../inputs/DataReliefValve.css";
@@ -16,6 +16,8 @@ export const OutputLevelControlValveParameters = () => {
   const { store, actions } = useContext(Context);
   const [levelControlValveParameters, setlevelControlValveParameters] = useState(store.output_level_control_valve_parameters);
   const dt = useRef(null);
+
+  var ENDPOINT = store.endpoint;
   
   const rightToolbarTemplate = () => {
     return (
@@ -27,10 +29,21 @@ export const OutputLevelControlValveParameters = () => {
 const exportCSV = () => {
   dt.current.exportCSV();
 }
+useEffect( () => {
+  const requestOptions = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },}
+    try {fetch(`${ENDPOINT}/api/levelcontrolcalc`, requestOptions)
+    .then(response => response.json())
+    .then(data => setlevelControlValveParameters(data))}
+    catch(error){
+      throw error;
+    }
+  }, []);
 
-  // useEffect(() => {
-  //       fetchProductData('reliefValves');
-  //   }, []); // eslint-disable-line react-hooks/exhaustive-deps*/
 
   return (
     <div className="p-grid p-fluid index">
@@ -43,19 +56,19 @@ const exportCSV = () => {
           ref={dt}
           value={levelControlValveParameters}>
           <Column
-            field="separator"
+            field="separator_tag"
             header="Separator"            
           ></Column>
           <Column
-            field="LCV_Liquid_Flow_Capacity"
+            field="liquidflowcapacity"
             header="LCV_Liquid_Flow_Capacity (m&sup3;/h)"
           ></Column>
           <Column
-            field="Level_Valve_required_Cv"
+            field="levelvalverequiredcv"
             header="Level Valve required Cv (gpm)"
           ></Column>
           <Column
-            field="Level_Control_Valve_Status"
+            field="levelcontrolvalvestatus"
             header="Level Control Valve Status"
           ></Column>
         </DataTable>

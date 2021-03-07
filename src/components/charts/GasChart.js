@@ -7,8 +7,8 @@ export const GasChart = () => {
         datasets: [{
             type: 'line',
             label: 'Actual Gas Flow m3/h',
-            borderColor: '#42A5F5',
-            borderWidth: 2,
+            borderColor: '#96C5F7',
+            borderWidth: 3,
             fill: false,
             data: [
                 50,
@@ -22,7 +22,7 @@ export const GasChart = () => {
         }, {
             type: 'bar',
             label: "Maximun Gas Flow Inlet Nozzle m3/h",
-            backgroundColor: '#66BB6A',
+            backgroundColor: '#59C9A5',
             data: [
                 21,
                 84,
@@ -37,7 +37,7 @@ export const GasChart = () => {
         }, {
             type: 'bar',
             label: 'Maximum Gas Nozzle m3/h',
-            backgroundColor: '#FFA726',
+            backgroundColor: '#E3C16F',
             data: [
                 41,
                 52,
@@ -46,11 +46,13 @@ export const GasChart = () => {
                 23,
                 21,
                 32
-            ]
+                ],
+            borderColor: 'white',
+            borderWidth: 2
         },{
             type: 'bar',
             label: 'Maximum Gas Flow at HH level m3/h',
-            backgroundColor: '#000000',
+            backgroundColor: '#D81E5B',
             data: [
                 41,
                 52,
@@ -59,11 +61,13 @@ export const GasChart = () => {
                 23,
                 21,
                 32
-            ]
+                ],
+                borderColor: 'white',
+                borderWidth: 2
         },{
             type: 'bar',
             label: 'Maximum Gas Flow at Normal level m3/h',
-            backgroundColor: '#008500',
+            backgroundColor: '#716A5C',
             data: [
                 41,
                 52,
@@ -72,11 +76,13 @@ export const GasChart = () => {
                 23,
                 21,
                 32
-            ]
+            ],
+            borderColor: 'white',
+            borderWidth: 2
         },{
             type: 'bar',
             label: 'Relief Valve Capacity m3/h',
-            backgroundColor: '#430000',
+            backgroundColor: '#FF9770',
             data: [
                 41,
                 52,
@@ -85,7 +91,9 @@ export const GasChart = () => {
                 23,
                 21,
                 32
-            ]
+            ],
+            borderColor: 'white',
+            borderWidth: 2
         }]
     };
 

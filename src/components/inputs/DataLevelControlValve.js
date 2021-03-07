@@ -33,7 +33,7 @@ export const DataLevelControlValves = () => {
 
   let originalRows = {};
 
-  var ENDPOINT = 'https://3001-azure-porcupine-wlupimh7.ws-eu03.gitpod.io'
+  var ENDPOINT = store.endpoint;
 
   useEffect(() => {
     getDataLevelControlValve()
@@ -51,7 +51,7 @@ export const DataLevelControlValves = () => {
         .then(data => setLevelControlValves(data))}
         catch(error){
           throw error;
-        }
+      }     
   }
   
   const openNew = () => {
@@ -98,7 +98,8 @@ export const DataLevelControlValves = () => {
       
       getDataLevelControlValve()
       setLevelControlValve(store.input_level_control_valve)
-      setLevelControlValveDialog(false);
+      setLevelControlValveDialog(false)
+      setEmptySeparatorTag(true)
   
     }catch (error){
       console.log(error)

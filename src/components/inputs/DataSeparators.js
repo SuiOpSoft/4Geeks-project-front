@@ -34,7 +34,7 @@ export const DataSeparators = () => {
     separators: setSeparators,
   }
 
-  var ENDPOINT = 'https://3001-azure-porcupine-wlupimh7.ws-eu03.gitpod.io'
+  var ENDPOINT = store.endpoint;
 
   useEffect(() => {
     getDataSeparator()
@@ -100,7 +100,8 @@ export const DataSeparators = () => {
 
       getDataSeparator();
       setSeparatorDialog(false);
-      setSeparator(store.input_separators_data);
+      setSeparator(store.input_separators_data)
+      setEmptySeparatorTag(true)
   
       }catch (error){
         console.log(error)
@@ -332,26 +333,6 @@ const onInputChange = (e, name) => {
     }
   }
 
-  const SeparatorGasAndLiquidAreasCalc = async() => {
-    try {
-      const requestOptions = {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-      }
-      const res = await fetch('https://3001-teal-cougar-26i4nl9q.ws-eu03.gitpod.io/api/gasandliquidareascalc', requestOptions)
-      const json = await res.json()
-      console.log(json)
-  
-    }catch (error){
-      console.log(error)
-  
-    }
-    
-  }
-
   return (
     <div className="p-grid p-fluid index">
       <Toast className="index-toast" ref={toast} />
@@ -426,7 +407,7 @@ const onInputChange = (e, name) => {
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
             field="inletdevicetype"
-            header="Inlet Device Tupe (NID, HOP or SP)"
+            header="Inlet Device Type (NID, HOP or SP)"
             editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
@@ -440,12 +421,6 @@ const onInputChange = (e, name) => {
             bodyStyle={{ textAlign: "center" }}
           ></Column>        
         </DataTable>
-        <Button
-        className="mt-4 p-button-help"
-          label="Calcular"
-          value=""
-          onClick={() => SeparatorGasAndLiquidAreasCalc()}
-        ></Button>
       </div>
       <Dialog
         visible={separatorDialog}

@@ -5,7 +5,6 @@ import "primeflex/primeflex.css";
 import "../../index.css";
 import { Button } from "primereact/button";
 import { Toolbar } from "primereact/toolbar";
-
 import React, { useState, useRef, useContext, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -17,6 +16,8 @@ export const OutputSeparatorGasAndLiquidAreas = () => {
   const { store, actions } = useContext(Context);
   const [separatorGasAndLiquidAreas, setSeparatorGasAndLiquidAreas] = useState([]);
   const dt = useRef(null);
+
+  var ENDPOINT = store.endpoint;
   
   const rightToolbarTemplate = () => {
     return (
@@ -36,7 +37,7 @@ useEffect( () => {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },}
-    try {fetch('https://3001-teal-cougar-26i4nl9q.ws-eu03.gitpod.io/api/gasandliquidareascalc', requestOptions)
+    try {fetch(`${ENDPOINT}/api/gasandliquidareascalc`, requestOptions)
     .then(response => response.json())
     .then(data => setSeparatorGasAndLiquidAreas(data))}
     catch(error){
@@ -56,7 +57,7 @@ useEffect( () => {
           frozenWidth="15rem"
           scrollable>
           <Column headerStyle={{ width: '15rem' }}
-            field="separator_id"
+            field="separator_tag"
             header="Separator" frozen          
           ></Column>
           <Column headerStyle={{ width: '20rem' }}

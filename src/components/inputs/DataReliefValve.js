@@ -30,7 +30,7 @@ export const DataReliefValve = () => {
 
   let originalRows = {};
 
-  var ENDPOINT = 'https://3001-azure-porcupine-wlupimh7.ws-eu03.gitpod.io'
+  var ENDPOINT = store.endpoint;
 
   useEffect(() => {
     getDataReliefValve()
@@ -95,7 +95,8 @@ export const DataReliefValve = () => {
 
     getDataReliefValve()
     setReliefValveDialog(false);
-    setReliefValve(store.input_relief_valve_data);
+    setReliefValve(store.input_relief_valve_data)
+    setEmptySeparatorTag(true)
   
       }catch (error){
         console.log(error)

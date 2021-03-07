@@ -1,6 +1,8 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
+
+			endpoint: 'https://3001-fuchsia-bedbug-nu1k5ciw.ws-eu03.gitpod.io',
 			
 			input_fluids_data: 
 				{

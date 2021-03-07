@@ -15,6 +15,7 @@ import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
 import { Toast } from "primereact/toast";
 import { FileUpload } from 'primereact/fileupload';
+import CalculationsButton from '../calculations/CalculationsButton'
 
 
 export const DataFluids = () => {
@@ -33,7 +34,7 @@ export const DataFluids = () => {
 
   let originalRows = {};
 
-  var ENDPOINT = 'https://3001-azure-porcupine-wlupimh7.ws-eu03.gitpod.io'
+  var ENDPOINT = store.endpoint;
  
  useEffect(() => {
   getDataFluid()
@@ -53,25 +54,25 @@ export const DataFluids = () => {
       .then(data => setFluids(data))}
       catch(error){
         throw error;
-      }
+    }
   }
 
   const openNew = () => {
     setSubmitted(false);
     setFluidDialog(true);
-  };
+  }
 
   const hideDialog = () => {
     setSubmitted(false);
     setFluidDialog(false);
-  };
+  }
 
   const hideDeleteFluidsDialog = () => {
     setDeleteFluidsDialog(false);
   }
 
   const saveFluid = async() => {
-    
+    if (emptySeparatorTag==false)
     try { 
       const requestOptions = {
         method: 'POST',
@@ -95,22 +96,21 @@ export const DataFluids = () => {
           summary: "Successful",
           detail: "Separator Created",
           life: 3000,
-        });
+        })
       
       getDataFluid()
       setFluidDialog(false)
       setFluid(store.input_fluids_data)
-  
+      setTimeout(function(){ setEmptySeparatorTag(true); }, 1000) 
     }catch (error){
       console.log(error)
   
-    }
-  
-  };
+      }
+  }
   
   const onRowEditInit = (event) => {
     originalRows[event.index] = { ...fluids[event.index] };
-  };
+  }
 
   const onRowEditSave = (event) => {
     originalRows[event.index] = { ...fluids[event.index] };
@@ -122,7 +122,7 @@ export const DataFluids = () => {
     row_fluids[event.index] = originalRows[event.index];
     delete originalRows[event.index];
     setFluids(row_fluids);
-  };
+  }
 
   const exportCSV = () => {
     dt.current.exportCSV();
@@ -131,7 +131,7 @@ export const DataFluids = () => {
   const confirmDeleteSelected = () => {
     setDeleteFluidsDialog(true);
     
-  };
+  }
 
   const deleteSelectedFluids = () => {
 
@@ -149,9 +149,14 @@ export const DataFluids = () => {
     _input[`${name}`] = val;
     setFluid(_input);
 
-    if (e.target.value.length === 0) { return setEmptySeparatorTag(true) }
-    else{ return setEmptySeparatorTag(false)}
-  };
+    if (e.target.value === '') {
+      setEmptySeparatorTag(true)
+      console.log('true')
+    }
+    else {
+      setEmptySeparatorTag(false)
+    }   
+  }
 
   const leftToolbarTemplate = () => {
     return (
@@ -170,8 +175,8 @@ export const DataFluids = () => {
           disabled={!selectedFluids || !selectedFluids.length}
         />
       </React.Fragment>
-    );
-  };
+    )
+  }
 
   const header = (
     <div className="table-header">
@@ -217,22 +222,6 @@ export const DataFluids = () => {
     dataTableFuncMap[`${productKey}`](updatedValues);
   }
 
-  
-
-  
-
-
-
-
-
-
-
-  
-
-  
-
-  
-
   const InletNozzleParametersCalc = async() => {
     try {
       const requestOptions = {
@@ -258,7 +247,7 @@ export const DataFluids = () => {
         value={props.rowData[field]}
         onChange={(e) => onEditorValueChange(productKey, props, e.target.value)}
       />
-    );
+    )
   }
 
   const checkEditor = (productKey, props) => {
@@ -305,10 +294,12 @@ export const DataFluids = () => {
         return inputTextEditor(productKey, props, "actualgasflow");
       case "actualliquidflow":
         return inputTextEditor(productKey, props, "actualliquidflow");
+        case "kcp":
+          return inputTextEditor(productKey, props, "kcp");
       default:
         break;
     }
-  };
+  }
 
   const rightToolbarTemplate = () => {
     return (
@@ -340,6 +331,7 @@ export const DataFluids = () => {
         "liquidviscosity": datafluid.liquidviscosity,
         "gasviscosity": datafluid.gasviscosity,
         "gasmw": datafluid.gasmw,
+        "kcp": datafluid.kcp,
         "liqmw": datafluid.liqmw,
         "gascomprz": datafluid.gascomprz,
         "especificheatratio": datafluid.especificheatratio,
@@ -382,17 +374,17 @@ export const DataFluids = () => {
       const json = await res.json()
       console.log(json)
       
-    };
+    }
     
-
   }catch (error){
     console.log(error)
 
   }
 }
 
-
   return (
+    <>
+    <CalculationsButton/>
     <div className="p-grid p-fluid index">
       <Toast className="index-toast" ref={toast} />
       <div className="card card-color">
@@ -478,6 +470,11 @@ export const DataFluids = () => {
             field="gascomprz"
             header="Gas Compressor (Z)"
             editor={(props) => checkEditor("fluids", props)} sortable
+            ></Column>
+            <Column headerStyle={{ width: '20rem' }}
+            field="kcp"
+            header="k = Cp / Cv"
+            editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
             field="especificheatratio"
@@ -525,12 +522,6 @@ export const DataFluids = () => {
             bodyStyle={{ textAlign: "center" }}
           ></Column>
         </DataTable>
-        <Button
-            className="mt-4 p-button-help"
-            label="Calcular"
-            value=""
-            onClick={() => InletNozzleParametersCalc()}
-          ></Button>
       </div>
       <Dialog
         visible={fluidDialog}
@@ -553,7 +544,7 @@ export const DataFluids = () => {
               "p-invalid":  !fluid
             })}
           />
-          {emptySeparatorTag===true? 
+          {emptySeparatorTag==true? 
             <small className="p-error">Data Fluid Tag is required.</small>
           : null} 
           {/* {submitted && !fluid && (
@@ -575,6 +566,7 @@ export const DataFluids = () => {
           )}
         </div>
       </Dialog>
-    </div>
+      </div>
+    </>
   );
 };

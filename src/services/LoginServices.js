@@ -1,4 +1,4 @@
-const ENDPOINT = "https://3001-azure-porcupine-wlupimh7.ws-eu03.gitpod.io"
+const ENDPOINT = "https://3001-fuchsia-bedbug-nu1k5ciw.ws-eu03.gitpod.io"
 
 export default function loginServices ({email , password}) {
     return fetch(`${ENDPOINT}/api/signIn`, {

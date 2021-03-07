@@ -14,30 +14,31 @@ import { Toolbar } from "primereact/toolbar";
 export const OutputInletNozzleParameters = () => {
   
   const { store, actions } = useContext(Context);
-
   const [inletNozzleParameters, setInletNozzleParameters] = useState([]);
-  const dt = useRef(null);
-  
+  const dt = useRef(null)
+
+  var ENDPOINT = store.endpoint;
+
   const rightToolbarTemplate = () => {
     return (
         <React.Fragment>
             <Button label="Export" icon="pi pi-upload" className="export-button" onClick={exportCSV} />
         </React.Fragment>
     )
-}
+  }
+
   const exportCSV = () => {
   dt.current.exportCSV();
-}
+  }
   
-
-useEffect( () => {
+  useEffect(() => {
   const requestOptions = {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },}
-    try {fetch('https://3001-teal-cougar-26i4nl9q.ws-eu03.gitpod.io/api/inletnozzleparameterscalc', requestOptions)
+    try {fetch(`${ENDPOINT}/api/inletnozzleparameterscalc`, requestOptions)
     .then(response => response.json())
     .then(data => setInletNozzleParameters(data))}
     catch(error){
@@ -57,7 +58,7 @@ useEffect( () => {
           frozenWidth="15rem"
           scrollable>
           <Column headerStyle={{ width: '15rem', textAlign: 'center' }}
-            field="separator_id"
+            field="separator_tag"
             header="Separator" frozen            
           ></Column>
           <Column headerStyle={{ width: '20rem', textAlign: 'center' }}

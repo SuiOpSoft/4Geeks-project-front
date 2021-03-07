@@ -3,7 +3,7 @@ import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
 import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import "../../index.css";
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import "../inputs/DataReliefValve.css";
@@ -16,6 +16,8 @@ export const OutputReliefValveParameters = () => {
   const { store, actions } = useContext(Context);
   const [outputReliefValveParameters, setOutputReliefValveParameters] = useState(store.output_relief_valve_parameters);
   const dt = useRef(null);
+
+  var ENDPOINT = store.endpoint;
   
   const rightToolbarTemplate = () => {
     return (
@@ -28,11 +30,21 @@ const exportCSV = () => {
   dt.current.exportCSV();
 }
   
-
-
-  // useEffect(() => {
-  //       fetchProductData('reliefValves');
-  //   }, []); // eslint-disable-line react-hooks/exhaustive-deps*/
+useEffect( () => {
+  const requestOptions = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },}
+    try {fetch(`${ENDPOINT}/api/reliefvalvecalc`, requestOptions)
+    .then(response => response.json())
+      .then(data => setOutputReliefValveParameters(data))
+    }
+    catch(error){
+      throw error;
+    }
+  }, []);
 
   return (
     <div className="p-grid p-fluid index">
@@ -44,15 +56,15 @@ const exportCSV = () => {
         <DataTable ref={dt}
           value={outputReliefValveParameters}>
           <Column
-            field="separator"
+            field="separator_tag"
             header="Separator"            
           ></Column>
           <Column
-            field="Relief_Valve_Capacity"
+            field="reliefvalvecapacity"
             header="Relief Valve Capacity  (m&sup3;/h)"
           ></Column>
           <Column
-            field="Relief_Valve_Capacity_Status"
+            field="reliefvalvecapacitystatus"
             header="Relief Valve Capacity Status"
           ></Column>
         </DataTable>
