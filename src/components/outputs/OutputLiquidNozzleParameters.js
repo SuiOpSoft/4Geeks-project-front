@@ -55,23 +55,28 @@ useEffect( () => {
         <DataTable
           ref={dt}
           value={liquidNozzleParameters}>
-          <Column
+          <Column fieldStyle={{ width: '15rem',textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="separator_tag"
             header="Separator"            
           ></Column>
-          <Column
+          <Column fieldStyle={{textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="liquidnozzlevelocity"
             header="Liquid Nozzle velocity (m/s)"
           ></Column>
-          <Column
+          <Column fieldStyle={{textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="maximumliquidnozzlevelocity"
             header="Maximum Liquid Nozzle Velocity (m/s)"
           ></Column>
-          <Column
+          <Column fieldStyle={{textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="maximumliquidnozzleflow"
             header="Maximum Liquid Nozzle Flow (m&sup3;/h)"
           ></Column>
-          <Column
+          <Column fieldStyle={{textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="statusliquidnozzle"
             header="Status Liquid Nozzle"
           ></Column>

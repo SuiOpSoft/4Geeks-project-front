@@ -15,6 +15,7 @@ import { Button } from "primereact/button";
 import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
 import { FileUpload } from 'primereact/fileupload';
+import CalculationsButton from '../calculations/CalculationsButton'
 
 
 
@@ -340,6 +341,8 @@ const deleteLevelControlValvesDialogFooter = (
   }
 
   return (
+    <>
+      <CalculationsButton/>
     <div className="p-grid p-fluid index">     
         <Toast className="index-toast" ref={toast} />
         <div className="card card-color">
@@ -439,6 +442,7 @@ const deleteLevelControlValvesDialogFooter = (
                     <span>Are you sure you want to delete the selected Level Control Valves?</span>
                 </div>
             </Dialog>
-    </div>
+      </div>
+    </>
   );
 };

@@ -406,10 +406,16 @@ export const DataFluids = () => {
           scrollable
         > 
           <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} frozen></Column>
-          <Column headerStyle={{ width: '15rem' }}
+          <Column headerStyle={{ width: '8rem' }}
             field="separator_tag"
             header="Separator"
-            editor={(props) => checkEditor("fluids", props)} sortable frozen
+              editor={(props) => checkEditor("fluids", props)}
+              sortable frozen
+            ></Column>
+            <Column
+            rowEditor
+            headerStyle={{ width: "5rem" }}
+            bodyStyle={{ textAlign: "center" }}
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
             field="operatingpressure"

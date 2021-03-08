@@ -1,97 +1,164 @@
-import React from 'react';
+import React,{useContext, useState, useEffect} from 'react';
 import { Chart } from 'primereact/chart';
+import { Context } from "../../store/context";
 
 export const GasChart = () => {
+
+    const { store, actions } = useContext(Context);
+    const [labels, setLabels] = useState([])
+    const [fluids, setFluids] = useState([])
+    const [gasFlowInletNozzle, setGasFlowInletNozzle] = useState([])
+    const [maximumGasNozzle, setMaximumGasNozzle] = useState([])
+    const [maximumGasFlowHHLevel, setMaximumGasFlowHHLevel] = useState([])
+    const [maximumGasFlowNormalLevel, setMaximumGasFlowNormalLevel] = useState([])
+    const [reliefValve, setReliefValve] = useState([])
+
+    var ENDPOINT = store.endpoint;
+
+    useEffect(() => {
+        getDataLabels()
+        getDataFluids()
+        getDataMaximumGasFlowInletNozzle()
+        getDataMaximumGasNozzle()
+        getDataMaximumGasFlowHHLevel()
+        getDataMaximumGasFlowNormalLevel()
+        getDataReliefValve()
+        }, []);
+
+    const getDataLabels = async() => {
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+          }
+        const res = await fetch(`${ENDPOINT}/api/separators`, requestOptions)
+        const json = await res.json()
+        const data = setLabels(json.map(element => element.tag))
+    }
+
+    const getDataFluids = async() => {
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+          }
+        const res = await fetch(`${ENDPOINT}/api/datafluids`, requestOptions)
+        const json = await res.json()
+        const data = setFluids(json.map(element => element.actualgasflow))
+    }
+
+    const getDataMaximumGasFlowInletNozzle = async() => {
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+          }
+        const res = await fetch(`${ENDPOINT}/api/inletnozzleparameterscalc`, requestOptions)
+        const json = await res.json()
+        const data = setGasFlowInletNozzle(json.map(element => element.maximumgasflowinletnozzle))
+    }
+
+    const getDataMaximumGasNozzle = async() => {
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+          }
+        const res = await fetch(`${ENDPOINT}/api/gasnozzleparameterscalc`, requestOptions)
+        const json = await res.json()
+        const data = setMaximumGasNozzle(json.map(element => element.maximumgasnozzleflow))
+    }
+
+    const getDataMaximumGasFlowHHLevel = async() => {
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+          }
+        const res = await fetch(`${ENDPOINT}/api/vesselgascapacitycalc`, requestOptions)
+        const json = await res.json()
+        const data = setMaximumGasFlowHHLevel(json.map(element => element.maximumgasflowathhlevel))
+    }
+
+    const getDataMaximumGasFlowNormalLevel = async() => {
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+          }
+        const res = await fetch(`${ENDPOINT}/api/vesselgascapacitycalc`, requestOptions)
+        const json = await res.json()
+        const data = setMaximumGasFlowNormalLevel(json.map(element => element.maximumgasflowatnormallevel))
+    }
+
+    const getDataReliefValve = async() => {
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+          }
+        const res = await fetch(`${ENDPOINT}/api/reliefvalvecalc`, requestOptions)
+        const json = await res.json()
+        const data = setReliefValve(json.map(element => element.reliefvalvecapacity))
+    }
+ 
+
     const chartData = {
-        labels: ['V-36102', 'V-36101', 'V-3602', 'V-36103', 'V-36107', 'V-36109', 'V-36108'],
+        labels: [...labels],
         datasets: [{
             type: 'line',
             label: 'Actual Gas Flow m3/h',
             borderColor: '#96C5F7',
             borderWidth: 3,
             fill: false,
-            data: [
-                50,
-                25,
-                12,
-                48,
-                56,
-                76,
-                42
-            ]
+            data: [...fluids]
         }, {
             type: 'bar',
             label: "Maximun Gas Flow Inlet Nozzle m3/h",
             backgroundColor: '#59C9A5',
-            data: [
-                21,
-                84,
-                24,
-                75,
-                37,
-                65,
-                34
-            ],
+            data: [...gasFlowInletNozzle],
             borderColor: 'white',
             borderWidth: 2
         }, {
             type: 'bar',
             label: 'Maximum Gas Nozzle m3/h',
             backgroundColor: '#E3C16F',
-            data: [
-                41,
-                52,
-                24,
-                74,
-                23,
-                21,
-                32
-                ],
+            data: [...maximumGasNozzle],
             borderColor: 'white',
             borderWidth: 2
         },{
             type: 'bar',
             label: 'Maximum Gas Flow at HH level m3/h',
             backgroundColor: '#D81E5B',
-            data: [
-                41,
-                52,
-                24,
-                74,
-                23,
-                21,
-                32
-                ],
+            data: [...maximumGasFlowHHLevel],
                 borderColor: 'white',
                 borderWidth: 2
         },{
             type: 'bar',
             label: 'Maximum Gas Flow at Normal level m3/h',
             backgroundColor: '#716A5C',
-            data: [
-                41,
-                52,
-                24,
-                74,
-                23,
-                21,
-                32
-            ],
+            data: [...maximumGasFlowNormalLevel],
             borderColor: 'white',
             borderWidth: 2
         },{
             type: 'bar',
             label: 'Relief Valve Capacity m3/h',
             backgroundColor: '#FF9770',
-            data: [
-                41,
-                52,
-                24,
-                74,
-                23,
-                21,
-                32
-            ],
+            data: [...reliefValve],
             borderColor: 'white',
             borderWidth: 2
         }]

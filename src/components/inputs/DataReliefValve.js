@@ -14,6 +14,7 @@ import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
 import "./DataReliefValve.css";
 import { FileUpload } from "primereact/fileupload";
+import CalculationsButton from '../calculations/CalculationsButton'
 
 export const DataReliefValve = () => {
   const toast = useRef(null);
@@ -333,6 +334,8 @@ export const DataReliefValve = () => {
   }
 
   return (
+    <>
+      <CalculationsButton/>
     <div className="p-grid p-fluid index">
       <Toast className="index-toast" ref={toast} />
       <div className="card card-color">
@@ -442,6 +445,7 @@ export const DataReliefValve = () => {
           )}
         </div>
       </Dialog>
-    </div>
+      </div>
+    </>
   );
 };

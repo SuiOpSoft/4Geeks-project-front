@@ -55,19 +55,23 @@ useEffect( () => {
         <DataTable
           ref={dt}
           value={levelControlValveParameters}>
-          <Column
+          <Column headerStyle={{ textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="separator_tag"
             header="Separator"            
           ></Column>
-          <Column
+          <Column headerStyle={{ textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="liquidflowcapacity"
             header="LCV_Liquid_Flow_Capacity (m&sup3;/h)"
           ></Column>
-          <Column
+          <Column headerStyle={{ textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="levelvalverequiredcv"
             header="Level Valve required Cv (gpm)"
           ></Column>
-          <Column
+          <Column headerStyle={{ textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="levelcontrolvalvestatus"
             header="Level Control Valve Status"
           ></Column>

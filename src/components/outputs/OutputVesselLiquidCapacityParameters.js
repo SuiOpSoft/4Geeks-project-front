@@ -55,14 +55,17 @@ useEffect( () => {
         <DataTable ref={dt}
           value={vesselLiquidCapacityParameters}>
           <Column
+            style={{textAlign: 'center' }}
             field="separator_tag"
             header="Separator"            
           ></Column>
           <Column
+            style={{textAlign: 'center' }}
             field="maximumvesselliquidflowcapacityatnormallevel"
             header="Maximum Vessel Liquid Flow Capacity at Normal Level (m&sup3;/h)"
           ></Column>
           <Column
+            style={{textAlign: 'center' }}
             field="statusvesselliquidcapacity"
             header="Status Vessel Liquid Capacity"
           ></Column>

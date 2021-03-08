@@ -14,6 +14,7 @@ import { Context } from "../../store/context";
 import { Dialog } from "primereact/dialog";
 import { Toast } from "primereact/toast";
 import { FileUpload } from 'primereact/fileupload';
+import CalculationsButton from '../calculations/CalculationsButton'
 
 export const DataSeparators = () => {
   const toast = useRef(null)
@@ -334,6 +335,8 @@ const onInputChange = (e, name) => {
   }
 
   return (
+    <>
+      <CalculationsButton/>
     <div className="p-grid p-fluid index">
       <Toast className="index-toast" ref={toast} />
       <div className="card card-color">
@@ -454,6 +457,7 @@ const onInputChange = (e, name) => {
                     {separator && <span>Are you sure you want to delete the selected separators?</span>}
                 </div>
             </Dialog>
-    </div>
+      </div>
+    </>
   );
 };

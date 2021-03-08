@@ -57,31 +57,38 @@ useEffect( () => {
           frozenWidth="15rem"
           scrollable          
           >
-          <Column headerStyle={{ width: '15rem' }}
+          <Column headerStyle={{ width: '15rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="separator_tag"
             header="Separator" frozen           
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="gasnozzlevelocity"
             header="Gas Nozzle Velocity (m/s)"
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="gasnozzlemomentum"
             header="Gas Nozzle Momentum (kg/(m*sec&sup2;))"
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="maximumgasnozzlevelocity"
             header="Maximum Gas Nozzle Velocity (m/s)"
           ></Column>
-          <Column headerStyle={{ width: '25rem' }}
+          <Column headerStyle={{ width: '25rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="maximumgasnozzlemomentum"
             header="Maximum Gas Nozzle Momentum (kg/(m*sec&sup2;))"
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="maximumgasnozzleflow"
             header="Maximum Gas Nozzle Flow (m&sup3;/h)"
           ></Column>
-          <Column headerStyle={{ width: '15rem' }}
+          <Column headerStyle={{ width: '15rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="statusgasnozzle"
             header="Status_Gas_Nozzle"
           ></Column>

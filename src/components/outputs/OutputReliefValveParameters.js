@@ -28,7 +28,7 @@ export const OutputReliefValveParameters = () => {
 }
 const exportCSV = () => {
   dt.current.exportCSV();
-}
+  }
   
 useEffect( () => {
   const requestOptions = {
@@ -44,33 +44,34 @@ useEffect( () => {
     catch(error){
       throw error;
     }
-  }, []);
+}, [])
 
   return (
     <div className="p-grid p-fluid index">
-          <div className="datatable-editing-demo">
-
+        <div className="datatable-editing-demo">
       <div className="card card-color">
         <h5>Relief Valve Parameters</h5>
         <Toolbar className="p-mb-4" right={rightToolbarTemplate}></Toolbar>
         <DataTable ref={dt}
-          value={outputReliefValveParameters}>
-          <Column
+            value={outputReliefValveParameters}>
+          <Column fieldStyle={{textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="separator_tag"
             header="Separator"            
           ></Column>
-          <Column
+          <Column fieldStyle={{textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="reliefvalvecapacity"
             header="Relief Valve Capacity  (m&sup3;/h)"
           ></Column>
-          <Column
+          <Column fieldStyle={{textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="reliefvalvecapacitystatus"
             header="Relief Valve Capacity Status"
           ></Column>
         </DataTable>
       </div>
     </div>
-    </div>
-
-  );
-};
+  </div>
+  )
+}

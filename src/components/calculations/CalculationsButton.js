@@ -167,9 +167,8 @@ export default function CalculationsButton () {
 
     return (
         <Button
-            className="calculate-button p-button-help"
+            className="calculate-button"
             label="Calcular"
-            value=""
             onClick={handleClick}
         ></Button>
     )

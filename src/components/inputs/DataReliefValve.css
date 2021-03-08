@@ -276,7 +276,19 @@ td .pi-check{
 
 .layout-topbar-icon:hover{
     box-shadow: 0 0 40px 1px #f9fafa;
-    color: white; 
+    color: white;
+     
+}
+
+#dropdown-basic{
+    background-color: transparent !important;  
+    margin: 0px; 
+}
+
+#dropdown-basic:hover{
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
 }
 
 .layout-topbar-icon:active{
@@ -360,6 +372,16 @@ canvas{
     position: absolute !important;
     z-index: 6 !important;
     top: 8.3em;
-    right: 49%;
-    
+    right: 43%;  
+}
+
+.calculate-button{
+    background-color: #8d3f51a2;
+    border-color: #8D3F51;
+    width: 20em;
+}
+
+.calculate-button:hover{
+    background-color: #8D3F51 !important;
+    border-color: #8D3F51 !important;
 }

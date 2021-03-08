@@ -56,27 +56,33 @@ useEffect( () => {
           scrollHeight="55vh" 
           frozenWidth="15rem"
           scrollable>
-          <Column headerStyle={{ width: '15rem' }}
+          <Column headerStyle={{ width: '15rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="separator_tag"
             header="Separator" frozen          
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="gasloadfactor"
             header="Gas Load Factor(m/s)"
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="maximumgasflowathhlevel"
             header="Maximum Gas Flow at HH level (m&sup3;/h)"
           ></Column>
-          <Column headerStyle={{ width: '25rem' }}
+          <Column headerStyle={{ width: '25rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="maximumgasflowatnormallevel"
             header="Maximum Gas Flow at Normal level (m&sup3;/h)"
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="statusgascapacityathighlevel"
             header="Status Gas Capacity at high level"
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="statusgascapacityatnormallevel"
             header="Status Gas Capacity at normal level"
           ></Column>
