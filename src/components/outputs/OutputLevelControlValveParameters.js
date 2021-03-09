@@ -62,7 +62,7 @@ useEffect( () => {
           ></Column>
           <Column headerStyle={{ textAlign: 'center' }}
             style={{textAlign: 'center' }}
-            field="liquidflowcapacity"
+            field="lcvliquidflowcapacity"
             header="LCV_Liquid_Flow_Capacity (m&sup3;/h)"
           ></Column>
           <Column headerStyle={{ textAlign: 'center' }}

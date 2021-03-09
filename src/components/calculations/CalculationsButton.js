@@ -162,7 +162,7 @@ export default function CalculationsButton () {
       VesselGasCapacityParametersCalc()
       VesselLiquidCapacityParametersCalc()
       ReliefValveCalc()
-      //LevelControlValveCalc()    
+      LevelControlValveCalc()    
     } 
 
     return (

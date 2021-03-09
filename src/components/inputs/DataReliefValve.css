@@ -30,6 +30,15 @@
     border-color: #D62246;
 }
 
+.delete-button:focus{
+    box-shadow: none;
+}
+
+.delete-button:active{
+    background-color: #d63a5a !important;
+    border-color: #d63a5a !important;
+}
+
 .delete-button:hover{
     background-color: #d1002a !important;
     border-color: #d1002a !important; 
@@ -40,6 +49,15 @@
     border-color: #2f437e;
 }
 
+.success-button:focus{
+    box-shadow: none;
+}
+
+.success-button:active{
+    background-color: #43517c !important;
+    border-color: #43517c !important;
+}
+
 .success-button:hover{
     background-color: #43517c !important;
     border-color: #43517c !important;
@@ -48,6 +66,15 @@
 .export-button{
     background-color: #2f437e;
     border-color: #2f437e;
+}
+
+.export-button:focus{
+    box-shadow: none;
+}
+
+.export-button:active{
+    background-color: #2f437e !important;
+    border-color: #2f437e !important;
 }
 
 .export-button:hover{
@@ -135,11 +162,19 @@ td .pi-check{
 }
 
 .dialog-yes{
-    color: rgb(36, 211, 36) !important;
+    color: #3f518b !important;
 }
 
 .dialog-yes:hover{
-    color: rgb(20, 177, 20) !important;
+    color: #011f83 !important;
+}
+
+.dialog-yes:focus{
+    box-shadow: none !important;
+}
+
+.dialog-no:focus{
+    box-shadow: none !important;
 }
 
 .dialog-no:hover{
@@ -240,6 +275,10 @@ td .pi-check{
 .index-toast{
     position: absolute;
     z-index: 4 !important;
+    /* background-color: #6377b4;
+    border-radius: 5px; */
+    /* opacity: 0.8; */
+    /* color: white !important; */
 }
 
 .layout-footer{
@@ -293,8 +332,7 @@ td .pi-check{
 
 .layout-topbar-icon:active{
     box-shadow: none;
-    color: gray;
-    
+    color: gray;   
 }
 
 .layout-topbar button:focus{
@@ -362,6 +400,7 @@ td .pi-check{
 .charts{
     margin-top: 0.6rem;
     opacity: 0.9;
+    background:#eaf4fdda;
 }
 
 canvas{
@@ -377,11 +416,28 @@ canvas{
 
 .calculate-button{
     background-color: #8d3f51a2;
-    border-color: #8D3F51;
+    border-color: #8d3f512a;
     width: 20em;
 }
 
 .calculate-button:hover{
     background-color: #8D3F51 !important;
     border-color: #8D3F51 !important;
+}
+
+.calculate-button:active{
+    background-color: #8f5966 !important;
+}
+
+.calculate-button:focus{
+    box-shadow: none;
+}
+
+.new-tag-dialog{
+    opacity: 0.85;
+
+}
+
+.p-inputtext:focus{
+    box-shadow: none !important;
 }

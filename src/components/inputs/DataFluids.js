@@ -409,13 +409,8 @@ export const DataFluids = () => {
           <Column headerStyle={{ width: '8rem' }}
             field="separator_tag"
             header="Separator"
-              editor={(props) => checkEditor("fluids", props)}
-              sortable frozen
-            ></Column>
-            <Column
-            rowEditor
-            headerStyle={{ width: "5rem" }}
-            bodyStyle={{ textAlign: "center" }}
+            editor={(props) => checkEditor("fluids", props)}
+            sortable frozen
           ></Column>
           <Column headerStyle={{ width: '20rem' }}
             field="operatingpressure"
@@ -534,11 +529,11 @@ export const DataFluids = () => {
         style={{ width: "450px" }}
         header="New Data Fluids"
         modal
-        className="p-fluid"
+        className="p-fluid new-tag-dialog"
         footer={fluidDialogFooter}
         onHide={hideDialog}
       >
-        <div className="p-field">
+        <div className="p-field ">
           <label htmlFor="separator_tag">Data Fluids Tag</label>
           <InputText
             id="separator_tag"
