@@ -4,11 +4,11 @@ import loginServices from '../services/LoginServices'
 
 export default function UseUser () {
     const {access_token, setAccess_token} = useContext(ContextToken)
-    const [state, setstate] = useState({ loading: false, error: false})
+    const [state, setstate] = useState({ loading: false, error: false })
 
     const login = useCallback(({email , password}) =>{
         setstate({ loading: true , error: false})
-        loginServices({ email , password})
+        loginServices({ email, password })
         .then(access_token => {
             window.sessionStorage.setItem('access_token', access_token)
             setstate({ loading: false , error: false})
@@ -19,7 +19,7 @@ export default function UseUser () {
             setstate({ loading: false , error: true})
             console.error(err)
         })
-    },[setAccess_token])
+    }, [setAccess_token])
 
     const logout = useCallback(() => {
         window.sessionStorage.removeItem('access_token')
@@ -31,6 +31,6 @@ export default function UseUser () {
         isLoginLoading: state.loading,
         hasLoginError: state.error,
         login,
-        logout
+        logout,
     }
 }
