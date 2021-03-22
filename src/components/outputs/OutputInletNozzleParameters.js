@@ -13,7 +13,7 @@ import { Toolbar } from "primereact/toolbar";
 
 export const OutputInletNozzleParameters = () => {
   
-  const { store, actions } = useContext(Context);
+  const { store } = useContext(Context);
   const [inletNozzleParameters, setInletNozzleParameters] = useState([]);
   const dt = useRef(null)
 
@@ -22,7 +22,7 @@ export const OutputInletNozzleParameters = () => {
   const rightToolbarTemplate = () => {
     return (
         <React.Fragment>
-            <Button label="Export" icon="pi pi-upload" className="export-button" onClick={exportCSV} />
+            <Button label="Export" icon="pi pi-upload" className="export-button p-button-outlined" onClick={exportCSV} />
         </React.Fragment>
     )
   }
@@ -58,7 +58,7 @@ export const OutputInletNozzleParameters = () => {
           frozenWidth="15rem"
           scrollable>
           <Column headerStyle={{ width: '15rem', textAlign: 'center' }}
-            style={{textAlign: 'center' }}
+            style={{textAlign: 'center', fontWeight:"700" }}
             field="separator_tag"
             header="Separator" frozen            
           ></Column>

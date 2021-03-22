@@ -3,7 +3,7 @@ import React from "react";
 export const GetStarted = () =>{
     return(
 		<section className="section section-lg bg-get-start">
-		<div className="bg-overlay" />
+		<div className="bg-overlay3" />
 		<div className="container">
 			<div className="row">
 				<div className="text-center col-lg-8 offset-lg-2">

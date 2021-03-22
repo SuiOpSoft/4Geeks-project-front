@@ -13,20 +13,21 @@ import { Toolbar } from "primereact/toolbar";
 import { Context } from "../../store/context";
 import { Dialog } from "primereact/dialog";
 import { Toast } from "primereact/toast";
-import { FileUpload } from 'primereact/fileupload';
 import CalculationsButton from '../calculations/CalculationsButton'
 
 export const DataSeparators = () => {
   const toast = useRef(null)
   const [emptySeparatorTag, setEmptySeparatorTag] = useState(true)
-  const { store, actions } = useContext(Context);
+  const { store } = useContext(Context);
   const [separatorDialog, setSeparatorDialog] = useState(false);
   const [selectedSeparators, setSelectedSeparators] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [deleteSeparatorsDialog, setDeleteSeparatorsDialog] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
   const [separators, setSeparators] = useState();
-  const [separator, setSeparator] = useState(store.input_separators_data); 
+  const [separator, setSeparator] = useState(store.input_separators_data);
+  const [visible, setVisible] = useState(false)
+  const [addError, setAddError] = useState()
   const dt = useRef(null);
 
   let originalRows = {};
@@ -121,10 +122,11 @@ export const DataSeparators = () => {
   }
 
   const onRowEditCancel = (event) => {
-    let row_separators = [...separators];
-    row_separators[event.index] = originalRows[event.index];
-    delete originalRows[event.index];
-    setSeparators(row_separators);
+    // let row_separators = [...separators];
+    // row_separators[event.index] = originalRows[event.index];
+    // delete originalRows[event.index];
+    // setSeparators(row_separators);
+    getDataSeparator()
   }
 
   const exportCSV = () => {
@@ -165,13 +167,13 @@ const onInputChange = (e, name) => {
         <Button
           label="New"
           icon="pi pi-plus"
-          className="success-button p-mr-2"
+          className="success-button p-button-outlined p-mr-2"
           onClick={openNew}
         />
         <Button
           label="Delete"
           icon="pi pi-trash"
-          className="delete-button"
+          className="delete-button p-button-outlined"
           onClick={confirmDeleteSelected}
           disabled={!selectedSeparators || !selectedSeparators.length}
         />
@@ -180,7 +182,7 @@ const onInputChange = (e, name) => {
   }
 
   const header = (
-    <div className="table-header">
+    <div className="table-header d-flex align-items-end">
         <h5 className="p-m-0">Manage Separators</h5>
         <span className="p-input-icon-left">
             <i className="pi pi-search" />
@@ -267,15 +269,14 @@ const onInputChange = (e, name) => {
   const rightToolbarTemplate = () => {
     return (
         <React.Fragment>
-            <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} label="Import" chooseLabel="Import" className="p-mr-2 p-d-inline-block" />
-            <Button label="Export" icon="pi pi-upload" className="export-button" onClick={exportCSV} />
+            <Button label="Export" icon="pi pi-upload" className="export-button p-button-outlined" onClick={exportCSV} />
         </React.Fragment>
     )
   }
   
   const handleUpdateDataSeparators = async dataseparator => {
   
-    try {
+    
       const requestOptions = {
         method: 'PUT',
         headers: {
@@ -300,11 +301,17 @@ const onInputChange = (e, name) => {
       console.log(requestOptions.body)
       const res = await fetch(`${ENDPOINT}/api/dataseparators`, requestOptions)
       const json = await res.json()
-      console.log(json)
-      
-    }catch (error){
-      console.log(error)
+      console.log(json["message"])
+      if (json["message"] != "Success") {
+        showError(json)
     }
+  }
+
+  const showError = (error) => {
+    setVisible(true)
+    setAddError(error)
+    console.log(error)
+  
   }
 
   const handleDeleteDataSeparators = async() => {
@@ -358,62 +365,74 @@ const onInputChange = (e, name) => {
           scrollable
         >
           <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} frozen></Column>
-          <Column headerStyle={{ width: '15rem' }}
+          <Column headerStyle={{ width: '8rem', textAlign: 'center' }}
+            style={{textAlign: 'center', fontWeight:"700" }}
             field="separator_tag"
             header="Separator"
             editor={(props) => checkEditor("separators", props)} sortable frozen
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center'  }}
+            style={{textAlign: 'center' }}
             field="internaldiameter"
             header="Internal Diameter (mm)"
             editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center'  }}
+            style={{textAlign: 'center' }}
             field="ttlength"
             header="T-T Length (mm)"
             editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center'  }}
+            style={{textAlign: 'center' }}
             field="highleveltrip"
             header="High Level trip (mm)"
             editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center'  }}
+            style={{textAlign: 'center' }}
             field="highlevelalarm"
             header="High Level Alarm (mm)"
             editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center'  }}
+            style={{textAlign: 'center' }}
             field="normalliquidlevel"
             header="Normal Liquid Level (mm)"
             editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center'  }}
+            style={{textAlign: 'center' }}
             field="lowlevelalarm"
             header="Low Level Alarm (mm)"
             editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center'  }}
+            style={{textAlign: 'center' }}
             field="inletnozzle"
             header="Inlet Nozzle (mm)"
             editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center'  }}
+            style={{textAlign: 'center' }}
             field="gasoutletnozzle"
-            header="gas Outlet Nozzle (mm)"
+            header="Gas Outlet Nozzle (mm)"
             editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center'  }}
+            style={{textAlign: 'center' }}
             field="liquidoutletnozzle"
             header="Liquid Outlet Nozzle (mm)"
             editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center'  }}
+            style={{textAlign: 'center' }}
             field="inletdevicetype"
             header="Inlet Device Type (NID, HOP or SP)"
             editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center'  }}
+            style={{textAlign: 'center' }}
             field="demistertype"
             header="Demister Type (KO, VD, HD or HVD)"
             editor={(props) => checkEditor("separators", props)} sortable
@@ -456,7 +475,18 @@ const onInputChange = (e, name) => {
                     <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}} />
                     {separator && <span>Are you sure you want to delete the selected separators?</span>}
                 </div>
-            </Dialog>
+        </Dialog>
+        <Dialog
+        visible={visible}
+        style={{ width: '450px' }}
+        header="Error"
+        modal
+        icon="pi pi-exclamation-triangle"
+        onHide={() => setVisible(false)}>
+          <div className="confirmation-content mb-5">
+          <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}}/><span>{addError}</span>
+        </div>
+        </Dialog>
       </div>
     </>
   );

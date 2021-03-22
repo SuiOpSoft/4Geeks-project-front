@@ -122,42 +122,42 @@ export const GasChart = () => {
         datasets: [{
             type: 'line',
             label: 'Actual Gas Flow m3/h',
-            borderColor: '#96C5F7',
+            borderColor: '#282D36',
             borderWidth: 3,
             fill: false,
             data: [...fluids]
         }, {
             type: 'bar',
             label: "Maximun Gas Flow Inlet Nozzle m3/h",
-            backgroundColor: '#59C9A5',
+            backgroundColor: '#43d39e',
             data: [...gasFlowInletNozzle],
             borderColor: 'white',
             borderWidth: 2
         }, {
             type: 'bar',
             label: 'Maximum Gas Nozzle m3/h',
-            backgroundColor: '#E3C16F',
+            backgroundColor: 'rgb(247, 126, 83)',
             data: [...maximumGasNozzle],
             borderColor: 'white',
             borderWidth: 2
         },{
             type: 'bar',
             label: 'Maximum Gas Flow at HH level m3/h',
-            backgroundColor: '#D81E5B',
+            backgroundColor: 'rgb(255, 190, 11)',
             data: [...maximumGasFlowHHLevel],
                 borderColor: 'white',
                 borderWidth: 2
         },{
             type: 'bar',
             label: 'Maximum Gas Flow at Normal level m3/h',
-            backgroundColor: '#716A5C',
+            backgroundColor: 'rgb(83, 105, 248)',
             data: [...maximumGasFlowNormalLevel],
             borderColor: 'white',
             borderWidth: 2
         },{
             type: 'bar',
             label: 'Relief Valve Capacity m3/h',
-            backgroundColor: '#FF9770',
+            backgroundColor: '#ff5c75',
             data: [...reliefValve],
             borderColor: 'white',
             borderWidth: 2

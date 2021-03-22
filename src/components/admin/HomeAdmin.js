@@ -12,10 +12,10 @@ import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
-import "./DataReliefValve.css";
+import "../inputs/DataReliefValve.css";
 import CalculationsButton from '../calculations/CalculationsButton'
 
-export const DataReliefValve = () => {
+export const HomeAdmin = () => {
   const toast = useRef(null);
   const { store } = useContext(Context);
   const [emptySeparatorTag, setEmptySeparatorTag] = useState(true);

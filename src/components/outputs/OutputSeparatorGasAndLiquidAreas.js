@@ -13,7 +13,7 @@ import {Context} from "../../store/context"
 
 export const OutputSeparatorGasAndLiquidAreas = () => {
   
-  const { store, actions } = useContext(Context);
+  const { store } = useContext(Context);
   const [separatorGasAndLiquidAreas, setSeparatorGasAndLiquidAreas] = useState([]);
   const dt = useRef(null);
 
@@ -22,7 +22,7 @@ export const OutputSeparatorGasAndLiquidAreas = () => {
   const rightToolbarTemplate = () => {
     return (
         <React.Fragment>
-            <Button label="Export" icon="pi pi-upload" className="export-button" onClick={exportCSV} />
+            <Button label="Export" icon="pi pi-upload" className="export-button p-button-outlined" onClick={exportCSV} />
         </React.Fragment>
     )
 }
@@ -57,14 +57,14 @@ useEffect( () => {
           frozenWidth="15rem"
           scrollable>
           <Column headerStyle={{ width: '15rem', textAlign: 'center' }}
-            style={{textAlign: 'center' }}
+            style={{textAlign: 'center', fontWeight:"700" }}
             field="separator_tag"
             header="Separator" frozen          
           ></Column>
           <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
             style={{textAlign: 'center' }}
             field="separatorcrosssectionalarearatio"
-            header="Sectional Area Ratio (mm)"
+            header="Sectional Area Radio (mm)"
           ></Column>
           <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
             style={{textAlign: 'center' }}
@@ -104,17 +104,17 @@ useEffect( () => {
           <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
             style={{textAlign: 'center' }}
             field="highleveltripliquidarea"
-            header="High LEvel Trip Liquid Area (m&sup2;)"
+            header="High Level Trip Liquid Area (m&sup2;)"
           ></Column>
           <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
             style={{textAlign: 'center' }}
             field="normalleveltriparea"
-            header="Normal LEvel Trip Liquid Area (m&sup2;)"
+            header="Normal Level Trip Liquid Area (m&sup2;)"
           ></Column>
           <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
             style={{textAlign: 'center' }}
             field="lowleveltripliquidarea"
-            header="Low LEvel Trip Liquid Area (m&sup2;)"
+            header="Low Level Trip Liquid Area (m&sup2;)"
           ></Column>
         </DataTable>
       </div>

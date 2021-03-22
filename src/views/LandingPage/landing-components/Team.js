@@ -9,7 +9,7 @@ export const Team = () =>{
 								<h1 className="section-title text-center">BEHIND THE PEOPLE</h1>
 								<div className="section-title-border mt-3" />
 								<p className="section-subtitle text-muted text-center pt-4 font-secondary">
-									...
+									If you work as a team you'll be able to achieve it.
 								</p>
 							</div>
 						</div>

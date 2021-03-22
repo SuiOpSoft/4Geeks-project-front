@@ -13,7 +13,7 @@ import { Toolbar } from "primereact/toolbar";
 
 export const OutputLiquidNozzleParameters = () => {
   
-  const { store, actions } = useContext(Context);
+  const { store } = useContext(Context);
   const [liquidNozzleParameters, setLiquidNozzleParameters] = useState();
   const dt = useRef(null);
 
@@ -22,7 +22,7 @@ export const OutputLiquidNozzleParameters = () => {
   const rightToolbarTemplate = () => {
     return (
         <React.Fragment>
-            <Button label="Export" icon="pi pi-upload" className="export-button" onClick={exportCSV} />
+            <Button label="Export" icon="pi pi-upload" className="export-button p-button-outlined" onClick={exportCSV} />
         </React.Fragment>
     )
 }
@@ -48,15 +48,16 @@ useEffect( () => {
   return (
     <div className="p-grid p-fluid index">
           <div className="datatable-editing-demo">
-
       <div className="card card-color">
         <h5>Liquid Nozzle Parameters</h5>
         <Toolbar className="p-mb-4" right={rightToolbarTemplate}></Toolbar>
-        <DataTable
+          <DataTable
           ref={dt}
-          value={liquidNozzleParameters}>
+          value={liquidNozzleParameters}
+          scrollable
+          >
           <Column fieldStyle={{ width: '15rem',textAlign: 'center' }}
-            style={{textAlign: 'center' }}
+            style={{textAlign: 'center', fontWeight:"700" }}
             field="separator_tag"
             header="Separator"            
           ></Column>

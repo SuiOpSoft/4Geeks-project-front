@@ -2,7 +2,7 @@ import React from "react";
 
 export const WorkProcess = () =>{
     return(
-                <section className="section bg-light">
+                <section className="section work-proccess">
 					<div className="container">
 						<div className="row">
 							<div className="col-lg-8 offset-lg-2">

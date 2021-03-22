@@ -13,7 +13,7 @@ import { Toolbar } from "primereact/toolbar";
 
 export const OutputGasNozzleParameters = () => {
   
-  const { store, actions } = useContext(Context);
+  const { store } = useContext(Context);
   const [gasNozzleParameters, setGasNozzleParameters] = useState();
   const dt = useRef(null);
 
@@ -22,7 +22,7 @@ export const OutputGasNozzleParameters = () => {
   const rightToolbarTemplate = () => {
     return (
         <React.Fragment>
-            <Button label="Export" icon="pi pi-upload" className="export-button" onClick={exportCSV} />
+            <Button label="Export" icon="pi pi-upload" className="export-button p-button-outlined" onClick={exportCSV} />
         </React.Fragment>
     )
 }
@@ -58,7 +58,7 @@ useEffect( () => {
           scrollable          
           >
           <Column headerStyle={{ width: '15rem', textAlign: 'center' }}
-            style={{textAlign: 'center' }}
+            style={{textAlign: 'center', fontWeight:"700" }}
             field="separator_tag"
             header="Separator" frozen           
           ></Column>
@@ -90,7 +90,7 @@ useEffect( () => {
           <Column headerStyle={{ width: '15rem', textAlign: 'center' }}
             style={{textAlign: 'center' }}
             field="statusgasnozzle"
-            header="Status_Gas_Nozzle"
+            header="Status Gas Nozzle"
           ></Column>
         </DataTable>
       </div>

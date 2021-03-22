@@ -1,12 +1,12 @@
-const ENDPOINT = "https://3001-red-gibbon-q5181dkd.ws-eu03.gitpod.io"
+const ENDPOINT = "https://3001-jade-bass-e47unguq.ws-eu03.gitpod.io"
 
-export default function loginServices ({email , password}) {
-    return fetch(`${ENDPOINT}/api/signIn`, {
+export default function loginServices ({email , passwordUser}) {
+    return fetch(`${ENDPOINT}/api/signInUser`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({email, password})
+        body: JSON.stringify({email, passwordUser})
     }).then(res=> {
         if (!res.ok) throw new Error('Response is NOT ok')
         return res.json()

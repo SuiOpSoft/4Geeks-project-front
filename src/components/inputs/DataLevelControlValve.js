@@ -14,14 +14,13 @@ import classNames from "classnames";
 import { Button } from "primereact/button";
 import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
-import { FileUpload } from 'primereact/fileupload';
 import CalculationsButton from '../calculations/CalculationsButton'
 
 
 
 export const DataLevelControlValves = () => {
   const toast = useRef(null);
-  const { store, actions } = useContext(Context);
+  const { store } = useContext(Context);
   const [emptySeparatorTag, setEmptySeparatorTag] = useState(true);
   const [levelControlValveDialog, setLevelControlValveDialog] = useState(false);
   const [selectedLevelControlValves, setSelectedLevelControlValves] = useState(null);
@@ -30,6 +29,8 @@ export const DataLevelControlValves = () => {
   const [globalFilter, setGlobalFilter] = useState(null);
   const [levelControlValves, setLevelControlValves] = useState();
   const [levelControlValve, setLevelControlValve] = useState(store.input_level_control_valve);
+  const [visible, setVisible] = useState(false)
+  const [addError, setAddError] = useState()
   const dt = useRef(null);
 
   let originalRows = {};
@@ -117,10 +118,11 @@ export const DataLevelControlValves = () => {
   }
 
   const onRowEditCancel = (event) => {
-    let row_levelControlValves = [...levelControlValves];
-    row_levelControlValves[event.index] = originalRows[event.index];
-    delete originalRows[event.index];
-    setLevelControlValves(row_levelControlValves);
+    // let row_levelControlValves = [...levelControlValves];
+    // row_levelControlValves[event.index] = originalRows[event.index];
+    // delete originalRows[event.index];
+    // setLevelControlValves(row_levelControlValves);
+    getDataLevelControlValve()
   }
 
   const exportCSV = () => {
@@ -161,13 +163,13 @@ export const DataLevelControlValves = () => {
         <Button
           label="New"
           icon="pi pi-plus"
-          className="success-button p-mr-2"
+          className="success-button p-button-outlined p-mr-2"
           onClick={openNew}
         />
         <Button
           label="Delete"
           icon="pi pi-trash"
-          className="delete-button"
+          className="delete-button p-button-outlined"
           onClick={confirmDeleteSelected}
           disabled={!selectedLevelControlValves || !selectedLevelControlValves.length}
         />
@@ -176,7 +178,7 @@ export const DataLevelControlValves = () => {
   }
 
   const header = (
-    <div className="table-header">
+    <div className="table-header d-flex align-items-end">
         <h5 className="p-m-0">Manage Level Control Valves</h5>
         <span className="p-input-icon-left">
             <i className="pi pi-search" />
@@ -266,17 +268,10 @@ const deleteLevelControlValvesDialogFooter = (
   const rightToolbarTemplate = () => {
     return (
         <React.Fragment>
-        <FileUpload
-          mode="basic"
-          accept="image/*"
-          maxFileSize={1000000}
-          label="Import"
-          chooseLabel="Import"
-          className="p-mr-2 p-d-inline-block" />
         <Button
           label="Export"
           icon="pi pi-upload"
-          className="export-button"
+          className="export-button p-button-outlined"
           onClick={exportCSV} />
         </React.Fragment>
     )
@@ -284,7 +279,6 @@ const deleteLevelControlValvesDialogFooter = (
   
   const handleUpdateDataLevelControlValves = async datalevelcontrolvalve => {
   
-    try { 
       const requestOptions = {
         method: 'PUT',
         headers: {
@@ -305,12 +299,16 @@ const deleteLevelControlValvesDialogFooter = (
       console.log(requestOptions.body)
       const res = await fetch(`${ENDPOINT}/api/datalevelcontrolvalve`, requestOptions)
       const json = await res.json()
-      console.log(json)
-  
-    }catch (error){
-      console.log(error)
-  
+      console.log(json["message"])
+      if (json["message"] != "Success") {
+        showError(json)
     }
+  }
+
+  const showError = (error) => {
+    setVisible(true)
+    setAddError(error)
+    console.log(error)
   }
 
   const handleDeleteDataLevelControlValves = async() => {
@@ -365,37 +363,44 @@ const deleteLevelControlValvesDialogFooter = (
              
           >
             <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} frozen></Column>
-            <Column headerStyle={{ width: '15rem' }}
+            <Column headerStyle={{ width: '8rem', textAlign: 'center' }}
+              style={{textAlign: 'center', fontWeight:"700" }}
               field="separator_tag"
               header="Separator"
               editor={(props) => checkEditor("levelControlValves", props)}sortable frozen
             ></Column>
-            <Column headerStyle={{ width: '20rem' }}
+            <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+              style={{textAlign: 'center' }}
               field="lcvtag"
-              header="Lcv Tag"
+              header="LCV Tag"
               editor={(props) => checkEditor("levelControlValves", props)}sortable 
             ></Column>
-            <Column headerStyle={{ width: '20rem' }}
+            <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+              style={{textAlign: 'center' }}
               field="lcvcv"
-              header="Lcv Cv (US gpm)"
+              header="LCV Cv (US gpm)"
               editor={(props) => checkEditor("levelControlValves", props)}sortable
             ></Column>
-            <Column headerStyle={{ width: '20rem' }}
+            <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+              style={{textAlign: 'center' }}
               field="lcvfactorfl"
               header="LCV Factor FL (constant)"
               editor={(props) => checkEditor("levelControlValves", props)}sortable
             ></Column>
-            <Column headerStyle={{ width: '20rem' }}
+            <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+              style={{textAlign: 'center' }}
               field="lcvfactorfp"
               header="LCV Factor FP (constant)"
               editor={(props) => checkEditor("levelControlValves", props)}sortable
             ></Column>
-            <Column headerStyle={{ width: '20rem' }}
+            <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+              style={{textAlign: 'center' }}
               field="lcvinletpressure"
               header="LCV Inlet Pressure (kpa)"
               editor={(props) => checkEditor("levelControlValves", props)}sortable
             ></Column>
-            <Column headerStyle={{ width: '20rem' }}
+            <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+              style={{textAlign: 'center' }}
               field="lcvoutletpressure"
               header="LCV Outlet Pressure (kpa)"
               editor={(props) => checkEditor("levelControlValves", props)}sortable
@@ -436,12 +441,23 @@ const deleteLevelControlValvesDialogFooter = (
           )} */}
         </div>
       </Dialog>
-            <Dialog visible={deleteLevelControlValvesDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteLevelControlValvesDialogFooter} onHide={hideDeleteLevelControlValvesDialog}>
-                <div className="confirmation-content">
-                    <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}} />
-                    <span>Are you sure you want to delete the selected Level Control Valves?</span>
-                </div>
-            </Dialog>
+      <Dialog visible={deleteLevelControlValvesDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteLevelControlValvesDialogFooter} onHide={hideDeleteLevelControlValvesDialog}>
+        <div className="confirmation-content">
+            <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}} />
+            <span>Are you sure you want to delete the selected Level Control Valves?</span>
+        </div>
+      </Dialog>
+      <Dialog
+        visible={visible}
+        style={{ width: '450px' }}
+        header="Error"
+        modal
+        icon="pi pi-exclamation-triangle"
+        onHide={() => setVisible(false)}>
+          <div className="confirmation-content mb-5">
+          <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}}/><span>{addError}</span>
+        </div>
+        </Dialog>
       </div>
     </>
   );

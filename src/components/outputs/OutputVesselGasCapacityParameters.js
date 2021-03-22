@@ -14,7 +14,7 @@ import { Toolbar } from "primereact/toolbar";
 
 export const OutputVesselGasCapacityParameters = () => {
   
-  const { store, actions } = useContext(Context);
+  const { store } = useContext(Context);
   const [vesselGasCapacityParameters, setVesselGasCapacityParameters] = useState();
   const dt = useRef(null);
 
@@ -23,7 +23,7 @@ export const OutputVesselGasCapacityParameters = () => {
   const rightToolbarTemplate = () => {
     return (
         <React.Fragment>
-            <Button label="Export" icon="pi pi-upload" className="export-button" onClick={exportCSV} />
+            <Button label="Export" icon="pi pi-upload" className="export-button p-button-outlined" onClick={exportCSV} />
         </React.Fragment>
     )
 }
@@ -57,7 +57,7 @@ useEffect( () => {
           frozenWidth="15rem"
           scrollable>
           <Column headerStyle={{ width: '15rem', textAlign: 'center' }}
-            style={{textAlign: 'center' }}
+            style={{textAlign: 'center', fontWeight:"700" }}
             field="separator_tag"
             header="Separator" frozen          
           ></Column>

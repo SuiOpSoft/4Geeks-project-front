@@ -20,6 +20,8 @@ import { OutputLevelControlValveParameters } from "../components/outputs/OutputL
 import {GasChart} from "../components/charts/GasChart"
 import {LiquidChart} from "../components/charts/LiquidChart"
 import UseUser from '../hooks/UseUser'
+import UseCompany from '../hooks/UseCompany'
+import {HomeAdmin} from "../components/admin/HomeAdmin"
 
 export const Home = () => {
   const [layoutMode, setLayoutMode] = useState("static");
@@ -29,12 +31,13 @@ export const Home = () => {
   const [mobileMenuActive, setMobileMenuActive] = useState(false);
   const [inputStyle, setInputStyle] = useState("outlined");
   const sidebar = useRef();
-  const {isLogged} = UseUser()
+  const { isLogged } = UseUser()
+  const {isLoggedCompany} = UseCompany()
   let menuClick = false;
 
   const logo =
     layoutColorMode === "dark"
-      ? "/assets/layout/images/SuiOpSoft-logo-sm.png"
+      ? "/assets/layout/images/SuiOpSoft-logo-disfuminado.png"
       : "/assets/layout/images/SuiOpSoft-logo-sm.png";
   
       const menu = [
@@ -178,11 +181,12 @@ export const Home = () => {
   };
 
 
-  if(!isLogged){
+  if(!isLogged && !isLoggedCompany){
     return <Redirect to="/signin" />
   }else{
-  return (
-    <div className={wrapperClass} onClick={onWrapperClick}>
+    return (
+      <div className={wrapperClass} onClick={onWrapperClick}>
+        {isLogged || isLoggedCompany && <Redirect to="/home/homeuser" />}
       <Navbar onToggleMenu={onToggleMenu} />
       <SideBar
         isSidebarVisible={isSidebarVisible}
@@ -197,7 +201,7 @@ export const Home = () => {
       <div className="layout-main">
         <Switch>
         <Route exact path="/home/homeuser" component={HomeUser} />
-        <Route exact path="/home/datafluids" component = {DataFluids} />
+        <Route path="/home/datafluids" component = {DataFluids} />
         <Route path="/home/separators" component={DataSeparators} />  
         <Route path="/home/datareliefvalve" component={DataReliefValve} />
         <Route path="/home/datalevelcontrolvalves" component={DataLevelControlValves} />
@@ -211,10 +215,10 @@ export const Home = () => {
         <Route path="/home/levelControlValveParameters" component={OutputLevelControlValveParameters} />
         <Route path="/home/gaschart" component={GasChart} />
         <Route path="/home/liquidchart" component={LiquidChart} />
+        <Route path="/home/homeadmin" component={HomeAdmin} />
         </Switch>
       </div>
       <Footer />
-      
     </div>
   );
   }

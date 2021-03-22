@@ -6,9 +6,9 @@ export default function UseUser () {
     const {access_token, setAccess_token} = useContext(ContextToken)
     const [state, setstate] = useState({ loading: false, error: false })
 
-    const login = useCallback(({email , password}) =>{
+    const login = useCallback(({email , passwordUser}) =>{
         setstate({ loading: true , error: false})
-        loginServices({ email, password })
+        loginServices({ email, passwordUser })
         .then(access_token => {
             window.sessionStorage.setItem('access_token', access_token)
             setstate({ loading: false , error: false})

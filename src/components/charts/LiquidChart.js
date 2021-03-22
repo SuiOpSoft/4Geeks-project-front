@@ -98,7 +98,7 @@ export const LiquidChart = () => {
           }
         const res = await fetch(`${ENDPOINT}/api/levelcontrolcalc`, requestOptions)
         const json = await res.json()
-        const data = setLiquidFlowCapacity(json.map(element => element.liquidflowcapacity))
+        const data = setLiquidFlowCapacity(json.map(element => element.lcvliquidflowcapacity))
     }
 
     const chartData = {

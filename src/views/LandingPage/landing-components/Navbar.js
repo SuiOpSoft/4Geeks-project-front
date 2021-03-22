@@ -6,12 +6,6 @@ import UseUser from '../../../hooks/UseUser'
 
 
 export const Navbar = () => {
-	//const isLogged= false
-	const {isLogged, logout} = UseUser()
-
-	const handleClick = e => {
-		logout()
-	}
 
     return(
 			<nav className="navbar-custom    navbar navbar-expand-lg fixed-top">

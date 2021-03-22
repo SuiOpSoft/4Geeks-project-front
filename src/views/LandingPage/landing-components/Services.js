@@ -58,7 +58,7 @@ export const Services = () =>{
 									<h4 className="pt-3">Simple interface</h4>
 									<p className="pt-3 text-muted">
 									A simple settings where nothing distracts you and you can focus only on what you need.
-									</p>
+							</p>
 								</div>
 							</div>
 							<div className="mt-3 col-lg-4">

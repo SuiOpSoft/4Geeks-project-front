@@ -14,15 +14,15 @@ import { Button } from "primereact/button";
 import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
 import { Toast } from "primereact/toast";
-import { FileUpload } from 'primereact/fileupload';
 import CalculationsButton from '../calculations/CalculationsButton'
+
 
 
 export const DataFluids = () => {
 
   const toast = useRef(null);
   const [emptySeparatorTag, setEmptySeparatorTag] = useState(true)
-  const { store, actions } = useContext(Context);
+  const { store } = useContext(Context);
   const [fluidDialog, setFluidDialog] = useState(false);
   const [selectedFluids, setSelectedFluids] = useState(null);
   const [submitted, setSubmitted] = useState(false);
@@ -30,6 +30,8 @@ export const DataFluids = () => {
   const [globalFilter, setGlobalFilter] = useState(null);
   const [fluids, setFluids] = useState();
   const [fluid, setFluid] = useState(store.input_fluids_data);
+  const [visible, setVisible] = useState(false)
+  const [addError, setAddError] = useState()
   const dt = useRef(null);
 
   let originalRows = {};
@@ -118,10 +120,11 @@ export const DataFluids = () => {
   }
 
   const onRowEditCancel = (event) => {
-    let row_fluids = [...fluids];
-    row_fluids[event.index] = originalRows[event.index];
-    delete originalRows[event.index];
-    setFluids(row_fluids);
+    // let row_fluids = [...fluids];
+    // row_fluids[event.index] = originalRows[event.index];
+    // delete originalRows[event.index];
+    // setFluids(row_fluids);
+    getDataFluid()
   }
 
   const exportCSV = () => {
@@ -164,13 +167,13 @@ export const DataFluids = () => {
         <Button
           label="New"
           icon="pi pi-plus"
-          className="success-button p-mr-2"
+          className="success-button p-button-outlined p-mr-2"
           onClick={openNew}
         />
         <Button
           label="Delete"
           icon="pi pi-trash"
-          className="delete-button"
+          className="delete-button p-button-outlined"
           onClick={confirmDeleteSelected}
           disabled={!selectedFluids || !selectedFluids.length}
         />
@@ -179,7 +182,7 @@ export const DataFluids = () => {
   }
 
   const header = (
-    <div className="table-header">
+    <div className="table-header d-flex align-items-end">
         <h5 className="p-m-0">Manage Fluids Separators</h5>
         <span className="p-input-icon-left">
             <i className="pi pi-search" />
@@ -304,15 +307,13 @@ export const DataFluids = () => {
   const rightToolbarTemplate = () => {
     return (
         <React.Fragment>
-            <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} label="Import" chooseLabel="Import" className="p-mr-2 p-d-inline-block" />
-            <Button label="Export" icon="pi pi-upload" className="export-button" onClick={exportCSV} />
+            <Button label="Export" icon="pi pi-upload" className="export-button p-button-outlined" onClick={exportCSV} />
         </React.Fragment>
     )
   }
 
  const handleUpdateDataFluids = async datafluid => {
   
-  try { 
     const requestOptions = {
       method: 'PUT',
       headers: {
@@ -347,13 +348,18 @@ export const DataFluids = () => {
     console.log(requestOptions.body)
     const res = await fetch(`${ENDPOINT}/api/datafluids`, requestOptions)
     const json = await res.json()
-    console.log(json)
-
-  }catch (error){
-    console.log(error)
-
+   console.log(json["message"])
+   if (json["message"] != "Success") {
+     showError(json)
+   }
   }
-}
+  
+  const showError = (error) => {
+    setVisible(true)
+    setAddError(error)
+    console.log(error)
+  
+  }
 
   const handleDeleteDataFluids = async() => {
   
@@ -394,6 +400,7 @@ export const DataFluids = () => {
           ref={dt}
           value={fluids}
           selection={selectedFluids} onSelectionChange={(e) => setSelectedFluids(e.value)}
+          editMode="cell"
           editMode="row"
           dataKey="id"
           onRowEditInit={onRowEditInit}
@@ -406,113 +413,135 @@ export const DataFluids = () => {
           scrollable
         > 
           <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} frozen></Column>
-          <Column headerStyle={{ width: '8rem' }}
+          <Column headerStyle={{ width: '8rem', textAlign: 'center' }}
             field="separator_tag"
             header="Separator"
             editor={(props) => checkEditor("fluids", props)}
+            style={{textAlign: 'center', fontWeight:"700"  }}
             sortable frozen
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center'}}
             field="operatingpressure"
             header="Operating Pressure (kPa)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="operatingtemperature"
             header="Operating Temperature (oC)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="oildensity"
             header="Oil Density (kg/m&sup3;)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="gasdensity"
             header="Gas Density (kg/m&sup3;)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="mixturedensity"
             header="Mixture Density (kg/m&sup3;)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="waterdensity"
             header="Water Density (kg/m&sup3;)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="feedbsw"
             header="Feed BSW (%v/v)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="liquidviscosity"
             header="Liquid Viscosity (cP)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="gasviscosity"
             header="Gas viscosity (oC)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="gasmw"
             header="Gas Mw (kg/kmol)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="liqmw"
             header="Liq MW (kg/kmol)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="gascomprz"
             header="Gas Compressor (Z)"
             editor={(props) => checkEditor("fluids", props)} sortable
             ></Column>
-            <Column headerStyle={{ width: '20rem' }}
+            <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+              style={{textAlign: 'center' }}
             field="kcp"
             header="k = Cp / Cv"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="especificheatratio"
             header="Specific Heat Ratio"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="liquidsurfacetension"
             header="Liquid Surface Tension (dyne/cm)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="liquidvaporpressure"
             header="Liquid Vapor Pressure (kPa)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="liquidcriticalpressure"
             header="Liquid Critical Pressure (kPa)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="standardgasflow"
             header="Standard Gas Flow (S m&sup3;/h)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="standardliquidflow"
             header="Standard Liquid Flow (S m&sup3;/h)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="actualgasflow"
             header="Actual Gas Flow (m&sup3;/h)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem' }}
+          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+            style={{textAlign: 'center' }}
             field="actualliquidflow"
             header="Actual Liquid Flow (m&sup3;/h)"
             editor={(props) => checkEditor("fluids", props)} sortable
@@ -566,7 +595,18 @@ export const DataFluids = () => {
             <span>Are you sure you want to delete the selected Fluids data?</span>
           )}
         </div>
-      </Dialog>
+        </Dialog>
+        <Dialog
+        visible={visible}
+        style={{ width: '450px' }}
+        header="Error"
+        modal
+        icon="pi pi-exclamation-triangle"
+        onHide={() => setVisible(false)}>
+          <div className="confirmation-content mb-5">
+          <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}}/><span>{addError}</span>
+        </div>
+        </Dialog>
       </div>
     </>
   );

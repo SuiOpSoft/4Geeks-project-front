@@ -12,15 +12,17 @@ import {ContactSocial} from '../LandingPage/landing-components/ContactSocial'
 import {Footer} from '../LandingPage/landing-components/Footer'
 import { Redirect } from 'react-router-dom'
 import UseUser from "../../hooks/UseUser"
+import UseCompany from "../../hooks/UseCompany"
 
 
 
 export const LandingPage = () => {
-    const {isLogged} = UseUser()
+    const { isLogged } = UseUser()
+    const {isLoggedCompany} = UseCompany()
 
     return(
         <div>
-            {isLogged && <Redirect to='/home/homeuser' />}
+            {isLogged || isLoggedCompany && <Redirect to='/home/homeuser' />}
             <Navbar />
             <Header />
             <Services />
