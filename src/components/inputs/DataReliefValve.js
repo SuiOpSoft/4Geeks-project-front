@@ -290,10 +290,10 @@ export const DataReliefValve = () => {
           "rvorificearea":datareliefvalve.rvorificearea
         })
       }
-      console.log(requestOptions.body)
+      //console.log(requestOptions.body)
       const res = await fetch(`${ENDPOINT}/api/datareliefvalve`, requestOptions)
       const json = await res.json()
-      console.log(json["message"])
+      //console.log(json["message"])
       if (json["message"] != "Success") {
         showError(json)
     }
@@ -302,7 +302,7 @@ export const DataReliefValve = () => {
   const showError = (error) => {
     setVisible(true)
     setAddError(error)
-    console.log(error)
+    //console.log(error)
   
   }
 

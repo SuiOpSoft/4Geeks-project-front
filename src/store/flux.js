@@ -2,7 +2,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 
-			endpoint: 'https://3001-jade-bass-e47unguq.ws-eu03.gitpod.io',
+			endpoint: 'https://3001-green-cat-adjwdr4x.ws-eu03.gitpod.io',
 			
 			input_fluids_data: 
 				{
@@ -63,6 +63,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 					lcvfactorfp: "-",
 					lcvinletpressure: "-",
 					lcvoutletpressure: "-",
+			}
+			,
+			user:
+				{
+					company_id: "",
+					email: "-",
+					firstname: "-",
+					id: "-",
+					lastname: "-"
 			}
 	
 

@@ -345,10 +345,10 @@ export const DataFluids = () => {
         "actualliquidflow": datafluid.actualliquidflow
       })
     }
-    console.log(requestOptions.body)
+    //console.log(requestOptions.body)
     const res = await fetch(`${ENDPOINT}/api/datafluids`, requestOptions)
     const json = await res.json()
-   console.log(json["message"])
+   //console.log(json["message"])
    if (json["message"] != "Success") {
      showError(json)
    }
@@ -357,7 +357,7 @@ export const DataFluids = () => {
   const showError = (error) => {
     setVisible(true)
     setAddError(error)
-    console.log(error)
+    //console.log(error)
   
   }
 

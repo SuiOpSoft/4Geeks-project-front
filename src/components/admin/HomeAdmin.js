@@ -24,8 +24,8 @@ export const HomeAdmin = () => {
   const [submitted, setSubmitted] = useState(false);
   const [deleteReliefValvesDialog, setDeleteReliefValvesDialog] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
-  const [reliefValves, setReliefValves] = useState();
-  const [reliefValve, setReliefValve] = useState(store.input_relief_valve_data);
+  const [users, setUsers] = useState();
+  const [user, setUser] = useState(store.user);
   const [visible, setVisible] = useState(false)
   const [addError, setAddError] = useState()
   const dt = useRef(null);
@@ -35,26 +35,35 @@ export const HomeAdmin = () => {
   var ENDPOINT = store.endpoint;
 
   useEffect(() => {
-    getDataReliefValve()
+    getDataAdmin()
   }, []);
 
-  const getDataReliefValve = () => {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },}
-      try {fetch(`${ENDPOINT}/api/datareliefvalve`, requestOptions)
-      .then(response => response.json())
-      .then(data => setReliefValves(data))}
-      catch(error){
+  const getDataAdmin = async() => {
+    try {
+      const requestOptions = {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      }
+      const companyUser = await fetch(`${ENDPOINT}/api/companies/ShellUx`, requestOptions)
+      const companyUserRes = await companyUser.json()
+      console.log(companyUserRes[0].id)
+      const companyId = companyUserRes[0].id
+      const usersByCompanyId = await fetch(`${ENDPOINT}/api/users/${companyId}`)
+      const usersByCompanyIdRes = await usersByCompanyId.json()
+      console.log(usersByCompanyIdRes)
+      setUsers(usersByCompanyIdRes)
+      
+    }catch (error) {
         throw error;
       }
+    
   }
 
   const openNew = () => {
-    setReliefValve(store.input_relief_valve_data);
+    setUser(store.input_relief_valve_data);
     setSubmitted(false);
     setReliefValveDialog(true);
   }
@@ -78,8 +87,8 @@ export const HomeAdmin = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        tag: reliefValve.separator_tag,
-        facility_id: null
+        company_id: user.company_id,
+        //id: null
       })
     }
     console.log(requestOptions.body)
@@ -91,13 +100,13 @@ export const HomeAdmin = () => {
     toast.current.show({
       severity: "success",
       summary: "Successful",
-      detail: "ReliefValve Created",
+      detail: "user Created",
       life: 3000,
     })
 
-    getDataReliefValve()
+    getDataAdmin()
     setReliefValveDialog(false);
-    setReliefValve(store.input_relief_valve_data)
+    setUser(store.input_relief_valve_data)
     setEmptySeparatorTag(true)
   
       }catch (error){
@@ -107,22 +116,22 @@ export const HomeAdmin = () => {
   }
 
   const onRowEditInit = (event) => {
-    originalRows[event.index] = { ...reliefValves[event.index] };
+    originalRows[event.index] = { ...users[event.index] };
   }
 
   const onRowEditSave = (event) => {
-    originalRows[event.index] = { ...reliefValves[event.index] };
-    handleUpdateDataReliefValves(originalRows[event.index])
+    originalRows[event.index] = { ...users[event.index] };
+    handleUpdateDataCompanyUsers(originalRows[event.index])
   }
   
   const onRowEditCancel = (event) => {
-    // let row_relief_valves = [...reliefValves];
-    // console.log([...reliefValves])
+    // let row_relief_valves = [...users];
+    // console.log([...users])
     // row_relief_valves[event.index] = originalRows[event.index];
     // console.log(originalRows[event.index])
     // delete originalRows[event.index];
-    getDataReliefValve()
-    //setReliefValves([...reliefValves]);
+    getDataAdmin()
+    //setUsers([...users]);
   }
 
   const exportCSV = () => {
@@ -134,8 +143,8 @@ export const HomeAdmin = () => {
   }
 
   const deleteSelectedReliefValves = () => {
-    let _deleteReliefValves = reliefValves.filter((val) => !selectedReliefValves.includes(val))
-    setReliefValves(_deleteReliefValves);
+    let _deleteReliefValves = users.filter((val) => !selectedReliefValves.includes(val))
+    setUsers(_deleteReliefValves);
     setDeleteReliefValvesDialog(false);
     setSelectedReliefValves(null);
     toast.current.show({
@@ -149,9 +158,9 @@ export const HomeAdmin = () => {
     
   const onInputChange = (e, name) => {
     const val = (e.target && e.target.value)|| '';
-    let _input = { ...reliefValve };
+    let _input = { ...user };
     _input[`${name}`] = val;
-    setReliefValve(_input);
+    setUser(_input);
     
     if (e.target.value.length === 0) { return setEmptySeparatorTag(true) }
     else{ return setEmptySeparatorTag(false)}
@@ -179,7 +188,7 @@ export const HomeAdmin = () => {
 
   const header = (
     <div className="table-header d-flex align-items-end">
-      <h5 className="p-m-0">Manage Relief Valve Separators</h5>
+      <h5 className="p-m-0">Manage Facilities</h5>
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
         <InputText
@@ -226,7 +235,7 @@ export const HomeAdmin = () => {
   )
 
   const dataTableFuncMap = {
-    reliefValves: setReliefValves,
+    users: setUsers,
   }
 
   const onEditorValueChange = (valueKey, props, value) => {
@@ -248,34 +257,23 @@ export const HomeAdmin = () => {
 
   const checkEditor = (valueKey, props) => {
     switch (props.field) {
-      case "separator_tag":
-        return inputTextEditor(valueKey, props, "separator_tag");
-      case "rvtag":
-        return inputTextEditor(valueKey, props, "rvtag");
-      case "rvsetpressure":
-        return inputTextEditor(valueKey, props, "rvsetpressure");
-      case "rvorificearea":
-        return inputTextEditor(valueKey, props, "rvorificearea");
+      case "company_id":
+        return inputTextEditor(valueKey, props, "company_id");
+      case "email":
+        return inputTextEditor(valueKey, props, "email");
+      case "firstname":
+        return inputTextEditor(valueKey, props, "firstname");
+      case "lastname":
+        return inputTextEditor(valueKey, props, "lastname");
+      case "id":
+        return inputTextEditor(valueKey, props, "id");
       default:
         break;
       
     }
-  };
+  }  
 
-  const rightToolbarTemplate = () => {
-    return (
-      <React.Fragment>
-        <Button
-          label="Export"
-          icon="pi pi-upload"
-          className="export-button p-button-outlined"
-          onClick={exportCSV}
-        />
-      </React.Fragment>
-    );
-  };  
-
-  const handleUpdateDataReliefValves = async datareliefvalve => {
+  const handleUpdateDataCompanyUsers = async user => {
   
       const requestOptions = {
         method: 'PUT',
@@ -284,10 +282,11 @@ export const HomeAdmin = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({       
-          "separator_tag": datareliefvalve.separator_tag,
-          "rvtag": datareliefvalve.rvtag,
-          "rvsetpressure":datareliefvalve.rvsetpressure, 
-          "rvorificearea":datareliefvalve.rvorificearea
+          "company_id": user.company_id,
+          "email": user.email,
+          "firstname":user.firstname, 
+          "id": user.id,
+          "lastname": user.lastname,
         })
       }
       console.log(requestOptions.body)
@@ -335,19 +334,17 @@ export const HomeAdmin = () => {
 
   return (
     <>
-      <CalculationsButton/>
     <div className="p-grid p-fluid index">
       <Toast className="index-toast" ref={toast} />
       <div className="card card-color">
-        <h5>Relief Valve</h5>
+        <h5>Admin</h5>
         <Toolbar
           className="p-mb-4"
           left={leftToolbarTemplate}
-          right={rightToolbarTemplate}
         ></Toolbar>
         <DataTable
           ref={dt}
-          value={reliefValves}
+          value={users}
           selection={selectedReliefValves}
           onSelectionChange={(e) => setSelectedReliefValves(e.value)}
           editMode="row"
@@ -362,35 +359,42 @@ export const HomeAdmin = () => {
           scrollable
         >
           <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} frozen></Column>
+          <Column headerStyle={{width: '20rem', textAlign: 'center' }}
+            field="id"
+            header="Id"
+            editor={(props) => checkEditor("users", props)}
+            style={{textAlign: 'center' }}
+            sortable
+          ></Column>
           <Column headerStyle={{ width: '8rem',textAlign: 'center' }}
-            field="separator_tag"
-            header="Separator"
-            editor={(props) => checkEditor("reliefValves", props)}
+            field="company_id"
+            header="Company Id"
+            editor={(props) => checkEditor("users", props)}
             style={{textAlign: 'center', fontWeight:"700" }}
             sortable
             frozen
           ></Column>
           <Column headerStyle={{width: '10rem', textAlign: 'center' }}
-            field="rvtag"
-            header="RV Tag"
-            editor={(props) => checkEditor("reliefValves", props)}
+            field="email"
+            header="Email"
+            editor={(props) => checkEditor("users", props)}
             style={{textAlign: 'center' }}
             sortable
           ></Column>
           <Column headerStyle={{width: '20rem', textAlign: 'center' }}
-            field="rvsetpressure"
-            header="RV Set Pressure (kPa)"
-            editor={(props) => checkEditor("reliefValves", props)}
+            field="firstname"
+            header="Firstname"
+            editor={(props) => checkEditor("users", props)}
             style={{textAlign: 'center' }}
             sortable
           ></Column>
           <Column headerStyle={{width: '20rem', textAlign: 'center' }}
-            field="rvorificearea"
-            header="RV Orifice Area (in&sup2;)"
-            editor={(props) => checkEditor("reliefValves", props)}
+            field="lastname"
+            header="Lastname"
+            editor={(props) => checkEditor("users", props)}
             style={{textAlign: 'center' }}
             sortable
-          ></Column>
+            ></Column>
           <Column
             rowEditor
             headerStyle={{ width: "7rem" }}
@@ -401,25 +405,25 @@ export const HomeAdmin = () => {
       <Dialog
         visible={reliefValveDialog}
         style={{ width: "450px" }}
-        header="New Relief Valve"
+        header="New User"
         modal
         className="p-fluid"
         footer={reliefValveDialogFooter}
         onHide={hideDialog}
       >
         <div className="p-field">
-          <label htmlFor="separator_tag">Relieve Valve Tag</label>
+          <label htmlFor="company_id">User data</label>
           <InputText
-            id="separator_tag"
-            value={reliefValve.separator_tag}
+            id="company_id"
+            value={user.company_id}
             onChange={(e) => onInputChange(e, "separator_tag")}
             required
             autoFocus
           />
           {emptySeparatorTag===true? 
-            <small className="p-error">Relief Valve Tag is required.</small>
+            <small className="p-error">User is required.</small>
           : null}  
-          {/* {submitted && !reliefValve.separator_tag && (
+          {/* {submitted && !user.separator_tag && (
             <small className="p-error">Relief Valve Tag is required.</small>
           )}         */}
         </div>
@@ -437,7 +441,7 @@ export const HomeAdmin = () => {
             className="pi pi-exclamation-triangle p-mr-3"
             style={{ fontSize: "2rem" }}
           />
-          {reliefValve && (
+          {user && (
             <span>
               Are you sure you want to delete the selected Relief Valves?
             </span>

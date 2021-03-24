@@ -296,10 +296,10 @@ const deleteLevelControlValvesDialogFooter = (
           "lcvoutletpressure": datalevelcontrolvalve.lcvoutletpressure,
         })
       }
-      console.log(requestOptions.body)
+      //console.log(requestOptions.body)
       const res = await fetch(`${ENDPOINT}/api/datalevelcontrolvalve`, requestOptions)
       const json = await res.json()
-      console.log(json["message"])
+      //console.log(json["message"])
       if (json["message"] != "Success") {
         showError(json)
     }
@@ -308,7 +308,7 @@ const deleteLevelControlValvesDialogFooter = (
   const showError = (error) => {
     setVisible(true)
     setAddError(error)
-    console.log(error)
+    //console.log(error)
   }
 
   const handleDeleteDataLevelControlValves = async() => {

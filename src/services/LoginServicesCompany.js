@@ -1,4 +1,4 @@
-const ENDPOINT = "https://3001-jade-bass-e47unguq.ws-eu03.gitpod.io"
+const ENDPOINT = "https://3001-green-cat-adjwdr4x.ws-eu03.gitpod.io"
 
 export default function loginServicesCompany({ companyUser, passwordCompany }) {
     

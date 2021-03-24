@@ -298,10 +298,10 @@ const onInputChange = (e, name) => {
           "demistertype" : dataseparator.demistertype       
         })
       }
-      console.log(requestOptions.body)
+      //console.log(requestOptions.body)
       const res = await fetch(`${ENDPOINT}/api/dataseparators`, requestOptions)
       const json = await res.json()
-      console.log(json["message"])
+      //console.log(json["message"])
       if (json["message"] != "Success") {
         showError(json)
     }
@@ -310,7 +310,7 @@ const onInputChange = (e, name) => {
   const showError = (error) => {
     setVisible(true)
     setAddError(error)
-    console.log(error)
+    //console.log(error)
   
   }
 
