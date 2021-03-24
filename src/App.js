@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "primereact/resources/themes/saga-blue/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
+import "primeflex/primeflex.css";
+import "prismjs/themes/prism-coy.css";
+import "./layout/layout.scss";
+import "./App.scss";
+import { LandingPage } from "../src/views/LandingPage/LandingPage";
+import "../src/views/LandingPage/landing-styles/landing-style.scss";
+import "../src/views/LandingPage/landing-styles/pe-icon-7-stroke.scss";
+import { SignIn } from "../src/views/SignInPage/SignIn";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import ScrollToTop from "../src/components/shared/ScrollTotop";
+import { Home } from "../src/views/Home";
+import injectContext from "../src/store/context";
+import { UserContextProvider } from "../src/store/UserContext"
+import {UserContextProviderCompany} from "../src/store/CompanyContext"
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+  return (   
+      <BrowserRouter >
+        <ScrollToTop>
+        <UserContextProvider>
+        <UserContextProviderCompany>
+          <Switch>
+            <Route  exact path="/" component = {LandingPage} />
+            <Route  path="/signin" component = {SignIn} />	  
+            <Route path="/home" component={Home} />
+            <Route>
+              <h1>Not found!</h1>
+            </Route>
+          </Switch>
+          </UserContextProviderCompany>
+          </UserContextProvider>
+        </ScrollToTop>
+      </BrowserRouter>   
   );
 }
 
-export default App;
+export default injectContext(App);
