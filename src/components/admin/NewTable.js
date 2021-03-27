@@ -13,20 +13,19 @@ import { Button } from "primereact/button";
 import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
 import "../inputs/DataReliefValve.css";
-import { NewTable } from "../admin/NewTable"
 
-export const HomeAdmin = () => {
+export const NewTable = () => {
   const toast = useRef(null);
   const { store } = useContext(Context);
-  const [emptyUserEmail, setEmptyUserEmail] = useState(true);
-  const [userDialog, setUserDialog] = useState(false);
-  const [selectedUsers, setSelectedUsers] = useState(null);
-  const [submitted, setSubmitted] = useState(false);
-  const [deleteUsersDialog, setDeleteUsersDialog] = useState(false);
-  const [globalFilter, setGlobalFilter] = useState(null);
-  const [users, setUsers] = useState();
-  const [user, setUser] = useState(store.user);
-  const [visible, setVisible] = useState(false)
+  const [emptyFacilityName, setEmptyFacilityName] = useState(true);
+  const [facilityDialog, setFacilityDialog] = useState(false);
+  const [selectedFacilities, setSelectedFacilities] = useState(null);
+  const [submittedFacility, setSubmittedFacility] = useState(false);
+  const [deleteFacilitiesDialog, setDeleteFacilitiesDialog] = useState(false);
+  const [globalFilterFacility, setGlobalFilterFacility] = useState(null);
+  const [facilities, setFacilities] = useState();
+  const [facility, setFacility] = useState(store.facility);
+  const [visibleFacility, setVisibleFacility] = useState(false)
   const [addError, setAddError] = useState()
   const dt = useRef(null);
   const [companyId, setCompanyId] = useState()
@@ -52,13 +51,12 @@ export const HomeAdmin = () => {
       }
       const companyUser = await fetch(`${ENDPOINT}/api/companies/${companyUserSS}`, requestOptions)
       const companyUserRes = await companyUser.json()
-      console.log(companyUserRes[0].id)
       const companyId = companyUserRes[0].id
-      const usersByCompanyId = await fetch(`${ENDPOINT}/api/users/${companyId}`)
-      const usersByCompanyIdRes = await usersByCompanyId.json()
-      console.log(usersByCompanyIdRes)
+      const facilitiesByCompanyId = await fetch(`${ENDPOINT}/api/facilities/${companyId}`)
+      const facilitiesByCompanyIdRes = await facilitiesByCompanyId.json()
+      console.log(facilitiesByCompanyIdRes)
       setCompanyId(companyId)
-      setUsers(usersByCompanyIdRes)
+      setFacilities(facilitiesByCompanyIdRes)
       
     }catch (error) {
         throw error;
@@ -67,22 +65,22 @@ export const HomeAdmin = () => {
   }
 
   const openNew = () => {
-    setUser(store.user);
-    setSubmitted(false);
-    setUserDialog(true);
+    setFacility(store.facility);
+    setSubmittedFacility(false);
+    setFacilityDialog(true);
   }
 
   const hideDialog = () => {
-    setSubmitted(false);
-    setUserDialog(false);
+    setSubmittedFacility(false);
+    setFacilityDialog(false);
   }
 
   const hideDeleteUsersDialog = () => {
-    setDeleteUsersDialog(false);
+    setDeleteFacilitiesDialog(false);
   }
 
   const saveCompanyUser = async() => {
-    if (emptyUserEmail===false)
+    if (emptyFacilityName===false)
   try {
     const requestOptions = {
       method: 'POST',
@@ -92,26 +90,26 @@ export const HomeAdmin = () => {
       },
       body: JSON.stringify({
         company_id: companyId,
-        email: user.email
+        facilitycode: facility.facilitycode
       })
     }
     console.log(requestOptions.body)
-    const res = await fetch(`${ENDPOINT}/api/users`, requestOptions)
+    const res = await fetch(`${ENDPOINT}/api/facilities`, requestOptions)
     const json = await res.json()
     console.log(json)
 
-    setSubmitted(true)
+    setSubmittedFacility(true)
     toast.current.show({
       severity: "success",
       summary: "Successful",
-      detail: "user Created",
+      detail: "Facility Created",
       life: 3000,
     })
 
     getDataAdmin()
-    setUserDialog(false);
-    setUser(store.user)
-    setEmptyUserEmail(true)
+    setFacilityDialog(false);
+    setFacility(store.facility)
+    setEmptyFacilityName(true)
   
       }catch (error){
         console.log(error)
@@ -120,22 +118,22 @@ export const HomeAdmin = () => {
   }
 
   const onRowEditInit = (event) => {
-    originalRows[event.index] = { ...users[event.index] };
+    originalRows[event.index] = { ...facilities[event.index] };
   }
 
   const onRowEditSave = (event) => {
-    originalRows[event.index] = { ...users[event.index] };
+    originalRows[event.index] = { ...facilities[event.index] };
     handleUpdateDataCompanyUsers(originalRows[event.index])
   }
   
   const onRowEditCancel = (event) => {
-    // let row_relief_valves = [...users];
-    // console.log([...users])
+    // let row_relief_valves = [...facilities];
+    // console.log([...facilities])
     // row_relief_valves[event.index] = originalRows[event.index];
     // console.log(originalRows[event.index])
     // delete originalRows[event.index];
     getDataAdmin()
-    //setUsers([...users]);
+    //setFacilities([...facilities]);
   }
 
   const exportCSV = () => {
@@ -143,14 +141,14 @@ export const HomeAdmin = () => {
   }
 
   const confirmDeleteSelected = () => {
-    setDeleteUsersDialog(true);
+    setDeleteFacilitiesDialog(true);
   }
 
   const deleteSelectedUsers = () => {
-    let _deleteReliefValves = users.filter((val) => !selectedUsers.includes(val))
-    setUsers(_deleteReliefValves);
-    setDeleteUsersDialog(false);
-    setSelectedUsers(null);
+    let _deleteReliefValves = facilities.filter((val) => !selectedFacilities.includes(val))
+    setFacilities(_deleteReliefValves);
+    setDeleteFacilitiesDialog(false);
+    setSelectedFacilities(null);
     toast.current.show({
       severity: "success",
       summary: "Successful",
@@ -162,12 +160,12 @@ export const HomeAdmin = () => {
     
   const onInputChange = (e, name) => {
     const val = (e.target && e.target.value)|| '';
-    let _input = { ...user };
+    let _input = { ...facility };
     _input[`${name}`] = val;
-    setUser(_input);
+    setFacility(_input);
     
-    if (e.target.value.length === 0) { return setEmptyUserEmail(true) }
-    else{ return setEmptyUserEmail(false)}
+    if (e.target.value.length === 0) { return setEmptyFacilityName(true) }
+    else{ return setEmptyFacilityName(false)}
   }
 
   const leftToolbarTemplate = () => {
@@ -184,7 +182,7 @@ export const HomeAdmin = () => {
           icon="pi pi-trash"
           className="delete-button delete-button-admin p-button-outlined"
           onClick={confirmDeleteSelected}
-          disabled={!selectedUsers || !selectedUsers.length}
+          disabled={!selectedFacilities || !selectedFacilities.length}
         />
       </React.Fragment>
     )
@@ -192,12 +190,12 @@ export const HomeAdmin = () => {
 
   const header = (
     <div className="table-header table-header-admin d-flex align-items-end">
-      <h5 className="p-m-0">Manage Users</h5>
+      <h5 className="p-m-0">Manage Facilities</h5>
       <span className="p-input-icon-left filter-admin">
         <i className="pi pi-search" />
         <InputText
           type="search"
-          onInput={(e) => setGlobalFilter(e.target.value)}
+          onInput={(e) => setGlobalFilterFacility(e.target.value)}
           placeholder="Search..."
         />
       </span>
@@ -239,7 +237,7 @@ export const HomeAdmin = () => {
   )
 
   const dataTableFuncMap = {
-    users: setUsers,
+    facilities: setFacilities,
   }
 
   const onEditorValueChange = (valueKey, props, value) => {
@@ -261,21 +259,19 @@ export const HomeAdmin = () => {
 
   const checkEditor = (valueKey, props) => {
     switch (props.field) {
-      case "email":
-        return inputTextEditor(valueKey, props, "email");
-      case "firstname":
-        return inputTextEditor(valueKey, props, "firstname");
-      case "lastname":
-        return inputTextEditor(valueKey, props, "lastname");
-      case "password":
-          return inputTextEditor(valueKey, props, "password");
+      case "facilitycode":
+        return inputTextEditor(valueKey, props, "facilitycode");
+      case "location":
+        return inputTextEditor(valueKey, props, "location");
+      case "name":
+        return inputTextEditor(valueKey, props, "name");
       default:
         break;
       
     }
   }  
 
-  const handleUpdateDataCompanyUsers = async user => {
+  const handleUpdateDataCompanyUsers = async facility => {
   
       const requestOptions = {
         method: 'PUT',
@@ -284,14 +280,13 @@ export const HomeAdmin = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({       
-          "email": user.email,
-          "firstname":user.firstname, 
-          "lastname": user.lastname,
-          "password": user.password
+          "facilitycode": facility.facilitycode,
+          "name": facility.name,
+          "location":facility.location
         })
       }
       console.log(requestOptions.body)
-      const res = await fetch(`${ENDPOINT}/api/users`, requestOptions)
+      const res = await fetch(`${ENDPOINT}/api/facilities`, requestOptions)
       const json = await res.json()
       console.log(json["message"])
       if (json["message"] != "Success") {
@@ -300,7 +295,7 @@ export const HomeAdmin = () => {
   }
 
   const showError = (error) => {
-    setVisible(true)
+    setVisibleFacility(true)
     setAddError(error)
     console.log(error)
   
@@ -309,7 +304,7 @@ export const HomeAdmin = () => {
   const handleDeleteUsers = async() => {
   
     try { 
-      for (const user of selectedUsers) {
+      for (const facility of selectedFacilities) {
         const requestOptions = {
           method: 'DELETE',
           headers: {
@@ -317,11 +312,11 @@ export const HomeAdmin = () => {
             'Content-Type': 'application/json'
           },        
           body: JSON.stringify({
-            "email": user.email   
+            "facilitycode": facility.facilitycode   
           })  
         }
         console.log(requestOptions.body)
-        const res = await fetch(`${ENDPOINT}/api/users`, requestOptions)
+        const res = await fetch(`${ENDPOINT}/api/facilities`, requestOptions)
         const json = await res.json()
         console.log(json)
         
@@ -335,55 +330,45 @@ export const HomeAdmin = () => {
 
   return (
     <>
-    <div className="p-grid p-fluid index">
       <Toast className="index-toast" ref={toast} />
-      <div className="card card-color">
-        <h4>Admin</h4>
         <Toolbar
           className="toolbar-new-table"
           left={leftToolbarTemplate}
         ></Toolbar>
         <DataTable
           ref={dt}
-          value={users}
-          selection={selectedUsers}
-          onSelectionChange={(e) => setSelectedUsers(e.value)}
+          value={facilities}
+          selection={selectedFacilities}
+          onSelectionChange={(e) => setSelectedFacilities(e.value)}
           editMode="row"
           dataKey="id"
           onRowEditInit={onRowEditInit}
           onRowEditSave={onRowEditSave}
           onRowEditCancel={onRowEditCancel}
-          globalFilter={globalFilter}
+          globalFilter={globalFilterFacility}
           header={header}
           scrollHeight="23vh"
           scrollable
         >
           <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} ></Column>
           <Column headerStyle={{width: '20rem', textAlign: 'center' }}
-            field="email"
-            header="Email"
-            editor={(props) => checkEditor("users", props)}
+            field="facilitycode"
+            header="Facility Code"
+            editor={(props) => checkEditor("facilities", props)}
             style={{textAlign: 'center' }}
             sortable
           ></Column>
           <Column headerStyle={{width: '20rem', textAlign: 'center' }}
-            field="firstname"
-            header="Firstname"
-            editor={(props) => checkEditor("users", props)}
+            field="location"
+            header="Location"
+            editor={(props) => checkEditor("facilities", props)}
             style={{textAlign: 'center' }}
             sortable
           ></Column>
           <Column headerStyle={{width: '20rem', textAlign: 'center' }}
-            field="lastname"
-            header="Lastname"
-            editor={(props) => checkEditor("users", props)}
-            style={{textAlign: 'center' }}
-            sortable
-            ></Column>
-            <Column headerStyle={{width: '20rem', textAlign: 'center' }}
-            field="password"
-            header="Password"
-            editor={(props) => checkEditor("users", props)}
+            field="name"
+            header="Name"
+            editor={(props) => checkEditor("facilities", props)}
             style={{textAlign: 'center' }}
             sortable
             ></Column>
@@ -392,39 +377,35 @@ export const HomeAdmin = () => {
             headerStyle={{ width: "7rem" }}
             bodyStyle={{ textAlign: "center" }}
           ></Column>
-          </DataTable>
-          </div>
-          <div className="new-table card card-color">
-          <NewTable />
-        </div>
+        </DataTable>
       <Dialog
-        visible={userDialog}
+        visible={facilityDialog}
         style={{ width: "450px" }}
-        header="New User"
+        header="New Facility"
         modal
         className="p-fluid"
         footer={reliefValveDialogFooter}
         onHide={hideDialog}
       >
         <div className="p-field">
-          <label htmlFor="email">User data</label>
+          <label htmlFor="facilitycode">Facility data</label>
           <InputText
-            id="email"
-            value={user.email}
-            onChange={(e) => onInputChange(e, "email")}
+            id="facilitycode"
+            value={facility.facilitycode}
+            onChange={(e) => onInputChange(e, "facilitycode")}
             required
             autoFocus
           />
-          {emptyUserEmail===true? 
-            <small className="p-error">User email is required.</small>
+          {emptyFacilityName===true? 
+            <small className="p-error">Facility code is required.</small>
           : null}  
-          {/* {submitted && !user.separator_tag && (
+          {/* {submittedFacility && !facility.separator_tag && (
             <small className="p-error">Relief Valve Tag is required.</small>
           )}         */}
         </div>
       </Dialog>
       <Dialog
-        visible={deleteUsersDialog}
+        visible={deleteFacilitiesDialog}
         style={{ width: "450px" }}
         header="Confirm"
         modal
@@ -436,7 +417,7 @@ export const HomeAdmin = () => {
             className="pi pi-exclamation-triangle p-mr-3"
             style={{ fontSize: "2rem" }}
           />
-          {user && (
+          {facility && (
             <span>
               Are you sure you want to delete the selected Relief Valves?
             </span>
@@ -444,18 +425,16 @@ export const HomeAdmin = () => {
         </div>
         </Dialog>
         <Dialog
-        visible={visible}
+        visible={visibleFacility}
         style={{ width: '450px' }}
         header="Error"
         modal
         icon="pi pi-exclamation-triangle"
-        onHide={() => setVisible(false)}>
+        onHide={() => setVisibleFacility(false)}>
           <div className="confirmation-content mb-5">
           <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}}/><span>{addError}</span>
         </div>
         </Dialog>
-        
-      </div>
     </>
   );
 };

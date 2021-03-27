@@ -2,7 +2,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 
-			endpoint: 'https://3001-green-cat-adjwdr4x.ws-eu03.gitpod.io',
+			endpoint: 'https://3001-turquoise-moose-ksnnjong.ws-eu03.gitpod.io',
 			
 			input_fluids_data: 
 				{
@@ -68,11 +68,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 			user:
 				{
 					company_id: "",
-					email: "-",
+					email: "",
 					firstname: "-",
 					id: "-",
-					lastname: "-"
+					lastname: "-",
+					password: "-"
 			}
+			,
+			facility:
+			{
+				company_id: "",
+				facilitycode: "",
+				id: "-",
+				location: "-",
+				name: "-",
+		}
 	
 
 		},
