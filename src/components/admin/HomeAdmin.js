@@ -13,7 +13,7 @@ import { Button } from "primereact/button";
 import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
 import "../inputs/DataReliefValve.css";
-import { NewTable } from "../admin/NewTable"
+import { NewTable } from "./FacilityTable"
 
 export const HomeAdmin = () => {
   const toast = useRef(null);
@@ -138,9 +138,9 @@ export const HomeAdmin = () => {
     //setUsers([...users]);
   }
 
-  const exportCSV = () => {
-    dt.current.exportCSV();
-  }
+  // const exportCSV = () => {
+  //   dt.current.exportCSV();
+  // }
 
   const confirmDeleteSelected = () => {
     setDeleteUsersDialog(true);
@@ -294,7 +294,7 @@ export const HomeAdmin = () => {
       const res = await fetch(`${ENDPOINT}/api/users`, requestOptions)
       const json = await res.json()
       console.log(json["message"])
-      if (json["message"] != "Success") {
+      if (json["message"] !== "Success") {
         showError(json)
     }
   }
@@ -407,7 +407,7 @@ export const HomeAdmin = () => {
         onHide={hideDialog}
       >
         <div className="p-field">
-          <label htmlFor="email">User data</label>
+          <label htmlFor="email">User email</label>
           <InputText
             id="email"
             value={user.email}

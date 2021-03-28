@@ -56,62 +56,62 @@ useEffect( () => {
           scrollHeight="55vh" 
           frozenWidth="15rem"
           scrollable>
-          <Column headerStyle={{ width: '15rem', textAlign: 'center' }}
+          <Column headerStyle={{ width: '15em', textAlign: 'center' }}
             style={{textAlign: 'center', fontWeight:"700" }}
             field="separator_tag"
             header="Separator" frozen          
           ></Column>
-          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+          <Column headerStyle={{ width: '20em', textAlign: 'center' }}
             style={{textAlign: 'center' }}
             field="separatorcrosssectionalarearatio"
             header="Sectional Area Radio (mm)"
           ></Column>
-          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+          <Column headerStyle={{ width: '20em', textAlign: 'center' }}
             style={{textAlign: 'center' }}
             field="separatorcrosssectionalarea"
             header="Cross-sectional Area (m&sup2;)"
           ></Column>
-          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+          <Column headerStyle={{ width: '20em', textAlign: 'center' }}
             style={{textAlign: 'center' }}
             field="inletnozzlearea"
             header="Inlet Nozzle Area (m&sup2;)"
           ></Column>
-          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+          <Column headerStyle={{ width: '20em', textAlign: 'center' }}
             style={{textAlign: 'center' }}
             field="gasnozzlearea"
             header="Gas Nozzle Area (m&sup2;)"
           ></Column>
-          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+          <Column headerStyle={{ width: '20em', textAlign: 'center' }}
             style={{textAlign: 'center' }}
             field="liquidnozzlearea"
             header="Liquid Nozzle Area (m&sup2;)"
           ></Column>
-          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+          <Column headerStyle={{ width: '20em', textAlign: 'center' }}
             style={{textAlign: 'center' }}
             field="highleveltripgasarea"
             header="High Level Trip Gas Area (m&sup2;)"
           ></Column>
-          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+          <Column headerStyle={{ width: '20em', textAlign: 'center' }}
             style={{textAlign: 'center' }}
             field="normallevelgasarea"
             header="Normal Level Gas Area (m&sup2;)"
           ></Column>
-          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+          <Column headerStyle={{ width: '20em', textAlign: 'center' }}
             style={{textAlign: 'center' }}
             field="lowlevelgasarea"
             header="Low Level Gas Area (m&sup2;)"
           ></Column>
-          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+          <Column headerStyle={{ width: '20em', textAlign: 'center' }}
             style={{textAlign: 'center' }}
             field="highleveltripliquidarea"
             header="High Level Trip Liquid Area (m&sup2;)"
           ></Column>
-          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+          <Column headerStyle={{ width: '20em', textAlign: 'center' }}
             style={{textAlign: 'center' }}
             field="normalleveltriparea"
             header="Normal Level Trip Liquid Area (m&sup2;)"
           ></Column>
-          <Column headerStyle={{ width: '20rem', textAlign: 'center' }}
+          <Column headerStyle={{ width: '20em', textAlign: 'center' }}
             style={{textAlign: 'center' }}
             field="lowleveltripliquidarea"
             header="Low Level Trip Liquid Area (m&sup2;)"

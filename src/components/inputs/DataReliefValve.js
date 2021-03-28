@@ -294,7 +294,7 @@ export const DataReliefValve = () => {
       const res = await fetch(`${ENDPOINT}/api/datareliefvalve`, requestOptions)
       const json = await res.json()
       //console.log(json["message"])
-      if (json["message"] != "Success") {
+      if (json["message"] !== "Success") {
         showError(json)
     }
   }

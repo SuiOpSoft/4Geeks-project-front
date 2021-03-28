@@ -943,3 +943,43 @@ td .p-inputtext{
 .table-header-admin{
     height: 2.5em;
 }
+
+/* --------------------------- */
+
+.p-tabview-panels{
+    background: #282D36 !important;
+    border: #282D36 !important;
+}
+
+.p-tabview-nav-link{
+    background: #282D36 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom:1px solid rgb(67, 211, 158) !important;
+}
+
+.p-tabview-nav{
+    border-bottom:1px solid rgb(67, 211, 158) !important;
+}
+
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link{
+    border-bottom: 1px solid transparent !important;
+    color: rgb(67, 211, 158) !important;
+}
+
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link:focus{
+    box-shadow: none !important;
+}
+
+.p-tabview-nav-link:active{
+    box-shadow: none !important;
+}
+
+#pr_id_1_header_0{
+    border-right: 1px solid rgb(67, 211, 158) !important;
+}
+
+#pr_id_1_header_1{
+    border-left: 1px solid rgb(67, 211, 158) !important;
+}

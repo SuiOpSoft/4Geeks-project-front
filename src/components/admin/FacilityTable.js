@@ -136,9 +136,9 @@ export const NewTable = () => {
     //setFacilities([...facilities]);
   }
 
-  const exportCSV = () => {
-    dt.current.exportCSV();
-  }
+  // const exportCSV = () => {
+  //   dt.current.exportCSV();
+  // }
 
   const confirmDeleteSelected = () => {
     setDeleteFacilitiesDialog(true);
@@ -289,7 +289,7 @@ export const NewTable = () => {
       const res = await fetch(`${ENDPOINT}/api/facilities`, requestOptions)
       const json = await res.json()
       console.log(json["message"])
-      if (json["message"] != "Success") {
+      if (json["message"] !== "Success") {
         showError(json)
     }
   }
@@ -388,7 +388,7 @@ export const NewTable = () => {
         onHide={hideDialog}
       >
         <div className="p-field">
-          <label htmlFor="facilitycode">Facility data</label>
+          <label htmlFor="facilitycode">Facility code</label>
           <InputText
             id="facilitycode"
             value={facility.facilitycode}

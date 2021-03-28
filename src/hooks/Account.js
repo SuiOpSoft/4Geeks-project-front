@@ -9,34 +9,31 @@ export const Account = () => {
     const [getUserCompany, setGetUserCompany] = useState([])
     const [id, setId] = useState('')
   
-  var email = window.sessionStorage.getItem('email', email)
-  var ENDPOINT = store.endpoint;
+    var email = window.sessionStorage.getItem('email', email)
+    var ENDPOINT = store.endpoint;
 
-    useEffect(() => {
-      UserInformation()
-      UserCompany()
-  },[])
-  
-  const UserInformation = () => {
-    try {
-      const requestOptions = {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
+  useEffect(() => {
+    
+    const UserInformation = () => {
+      try {
+        const requestOptions = {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+        }
+        fetch (`${ENDPOINT}/api/users/${email}`, requestOptions)
+              .then(res => res.json())
+              .then(data => setGetUserInformation(data[0]))
       }
-      fetch (`${ENDPOINT}/api/users/${email}`, requestOptions)
-            .then(res => res.json())
-            .then(data => setGetUserInformation(data[0]))
+      catch (error){
+        console.log(error)  
+      }
+      setId(getUserInformation.id)
     }
-    catch (error){
-      console.log(error)  
-    }
-    setId(getUserInformation.id)
-  }
-  
-  const UserCompany = () => {
+    UserInformation()
+    const UserCompany = () => {
     try {
       const requestOptions = {
         method: 'GET',
@@ -53,7 +50,13 @@ export const Account = () => {
       console.log(error)  
     }   
   }
-  console.log(getUserCompany)
+      UserCompany()
+  },[])
+  
+  
+  
+  
+  
   const label = getUserInformation.firstname+" "+getUserInformation.lastname
 
   return (
