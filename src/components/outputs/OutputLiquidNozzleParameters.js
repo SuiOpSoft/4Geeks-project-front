@@ -56,7 +56,7 @@ useEffect( () => {
           value={liquidNozzleParameters}
           scrollable
           >
-          <Column fieldStyle={{ width: '15rem',textAlign: 'center' }}
+          <Column fieldStyle={{ width: '15em',textAlign: 'center' }}
             style={{textAlign: 'center', fontWeight:"700" }}
             field="separator_tag"
             header="Separator"            

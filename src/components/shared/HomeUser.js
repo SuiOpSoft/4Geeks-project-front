@@ -1,6 +1,6 @@
 import React, { useState }from "react";
 import { Dialog } from 'primereact/dialog';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+// import { MapContainer, TitleLayer, Marker, Popup } from 'react-leaflet'
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import icon from "leaflet/dist/images/marker-icon.png";
@@ -32,26 +32,29 @@ export const HomeUser = () => {
     
   return (
     <div className="index">
+      <div className="layout-home-user">
+        <img className="layout-home-user-img" src="/assets/layout/images/Background-HomeUser.png" />
+      </div>
       <div className="dialog-demo home-user-grid">
         <div className="card home-user-img-input " onClick={() => onClick('displayBasicInput')}>
-          <img className="home-user-img " alt="Logo" src="/assets/layout/images/input-icon.png"/>                
+          {/* <img className="home-user-img " alt="Logo" src="/assets/layout/images/input-icon.png"/>                 */}
         </div>
         <div className="card home-user-img-out " onClick={() => onClick('displayBasicOutput')}>
-          <img className="home-user-img" alt="Logo" src="/assets/layout/images/output-icon.png"/>            
+          {/* <img className="home-user-img" alt="Logo" src="/assets/layout/images/output-icon.png"/>             */}
         </div>
         <div className="card home-user-img-chart " onClick={() => onClick('displayBasicChart')}>
-          <img className="home-user-img" alt="Logo" src="/assets/layout/images/charts-icon.png" />
+          {/* <img className="home-user-img" alt="Logo" src="/assets/layout/images/charts-icon.png" /> */}
         </div>
       </div>
-      <iframe id="eia_widget" style={{width:"49%", height:"25em"}} src="//www.eia.gov/opendata/embed/iframe.php?series_id=STEO.BREPUUS.A" load="iframe_load"></iframe>
-      <iframe id="eia_widget_1" style={{ width: "49%", height: "25em" }} src="//www.eia.gov/opendata/embed/iframe.php?geoset_id=INTL.53-1-TBPD.Q&map=world&relation_mode=line&regions=USA;SAU&start=2005Q1&end=2020Q1&analysis=indexval"></iframe>
-      <div id="mapid">
+      {/* <iframe id="eia_widget" style={{width:"49%", height:"25em"}} src="//www.eia.gov/opendata/embed/iframe.php?series_id=STEO.BREPUUS.A" load="iframe_load"></iframe>
+      <iframe id="eia_widget_1" style={{ width: "49%", height: "25em" }} src="//www.eia.gov/opendata/embed/iframe.php?geoset_id=INTL.53-1-TBPD.Q&map=world&relation_mode=line&regions=USA;SAU&start=2005Q1&end=2020Q1&analysis=indexval"></iframe> */}
+      {/* <div id="mapid">
       <MapContainer
 				center={[51.505, -0.09]}
 				zoom={13}
 				scrollWheelZoom={true}
 				style={{ height: "45vh", width: "45%", top:"8.9em", left:"1em", borderRadius:"5px" }}>
-			  <TileLayer
+			  <TitleLayer
 			  	attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
 			  	url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 			  />
@@ -61,7 +64,7 @@ export const HomeUser = () => {
 				</Popup>
 			  </Marker>
 			</MapContainer>
-      </div>
+      </div> */}
       <Dialog header="Input Data" visible={displayBasicInput} style={{ width: '70vw' }} onHide={() => onHide('displayBasicInput')}>
         <div className="dialog-learn">
           <div className="row">

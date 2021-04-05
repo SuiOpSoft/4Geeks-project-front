@@ -13,32 +13,45 @@ import { Button } from "primereact/button";
 import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
 import "../inputs/DataReliefValve.css";
-import CalculationsButton from '../calculations/CalculationsButton'
+import { FacilityTable } from "./FacilityTable"
 
 export const HomeAdmin = () => {
   const toast = useRef(null);
   const { store } = useContext(Context);
-  const [emptySeparatorTag, setEmptySeparatorTag] = useState(true);
-  const [reliefValveDialog, setReliefValveDialog] = useState(false);
-  const [selectedReliefValves, setSelectedReliefValves] = useState(null);
+  const [emptyUserEmail, setEmptyUserEmail] = useState(true);
+  const [userDialog, setUserDialog] = useState(false);
+  const [selectedUsers, setSelectedUsers] = useState(null);
   const [submitted, setSubmitted] = useState(false);
-  const [deleteReliefValvesDialog, setDeleteReliefValvesDialog] = useState(false);
+  const [deleteUsersDialog, setDeleteUsersDialog] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
   const [users, setUsers] = useState();
   const [user, setUser] = useState(store.user);
   const [visible, setVisible] = useState(false)
   const [addError, setAddError] = useState()
   const dt = useRef(null);
+  const [companyId, setCompanyId] = useState()
 
   let originalRows = {};
 
   var ENDPOINT = store.endpoint;
+  var companyUserSS = window.sessionStorage.getItem('companyUser')
+  
 
   useEffect(() => {
-    getDataAdmin()
+    const abortController = new AbortController()
+    const signal = abortController.signal
+    async function fetchMyApi() {
+      await getDataAdmin(signal)
+    }
+    fetchMyApi()
+    
+
+    return function cleanup() {
+      abortController.abort()
+    }
   }, []);
 
-  const getDataAdmin = async() => {
+  const getDataAdmin = async(signal) => {
     try {
       const requestOptions = {
         method: 'GET',
@@ -47,13 +60,14 @@ export const HomeAdmin = () => {
           'Content-Type': 'application/json'
         }
       }
-      const companyUser = await fetch(`${ENDPOINT}/api/companies/ShellUx`, requestOptions)
+      const companyUser = await fetch(`${ENDPOINT}/api/companies/${companyUserSS}`, {signal: signal}, requestOptions)
       const companyUserRes = await companyUser.json()
       console.log(companyUserRes[0].id)
       const companyId = companyUserRes[0].id
       const usersByCompanyId = await fetch(`${ENDPOINT}/api/users/${companyId}`)
       const usersByCompanyIdRes = await usersByCompanyId.json()
       console.log(usersByCompanyIdRes)
+      setCompanyId(companyId)
       setUsers(usersByCompanyIdRes)
       
     }catch (error) {
@@ -63,22 +77,22 @@ export const HomeAdmin = () => {
   }
 
   const openNew = () => {
-    setUser(store.input_relief_valve_data);
+    setUser(store.user);
     setSubmitted(false);
-    setReliefValveDialog(true);
+    setUserDialog(true);
   }
 
   const hideDialog = () => {
     setSubmitted(false);
-    setReliefValveDialog(false);
+    setUserDialog(false);
   }
 
-  const hideDeleteReliefValvesDialog = () => {
-    setDeleteReliefValvesDialog(false);
+  const hideDeleteUsersDialog = () => {
+    setDeleteUsersDialog(false);
   }
 
-  const saveReliefValve = async() => {
-    if (emptySeparatorTag===false)
+  const saveCompanyUser = async() => {
+    if (emptyUserEmail===false)
   try {
     const requestOptions = {
       method: 'POST',
@@ -87,12 +101,12 @@ export const HomeAdmin = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        company_id: user.company_id,
-        //id: null
+        company_id: companyId,
+        email: user.email
       })
     }
     console.log(requestOptions.body)
-    const res = await fetch(`${ENDPOINT}/api/separators`, requestOptions)
+    const res = await fetch(`${ENDPOINT}/api/users`, requestOptions)
     const json = await res.json()
     console.log(json)
 
@@ -105,9 +119,9 @@ export const HomeAdmin = () => {
     })
 
     getDataAdmin()
-    setReliefValveDialog(false);
-    setUser(store.input_relief_valve_data)
-    setEmptySeparatorTag(true)
+    setUserDialog(false);
+    setUser(store.user)
+    setEmptyUserEmail(true)
   
       }catch (error){
         console.log(error)
@@ -134,26 +148,26 @@ export const HomeAdmin = () => {
     //setUsers([...users]);
   }
 
-  const exportCSV = () => {
-    dt.current.exportCSV();
-  }
+  // const exportCSV = () => {
+  //   dt.current.exportCSV();
+  // }
 
   const confirmDeleteSelected = () => {
-    setDeleteReliefValvesDialog(true);
+    setDeleteUsersDialog(true);
   }
 
-  const deleteSelectedReliefValves = () => {
-    let _deleteReliefValves = users.filter((val) => !selectedReliefValves.includes(val))
+  const deleteSelectedUsers = () => {
+    let _deleteReliefValves = users.filter((val) => !selectedUsers.includes(val))
     setUsers(_deleteReliefValves);
-    setDeleteReliefValvesDialog(false);
-    setSelectedReliefValves(null);
+    setDeleteUsersDialog(false);
+    setSelectedUsers(null);
     toast.current.show({
       severity: "success",
       summary: "Successful",
       detail: "Products Deleted",
       life: 3000
     })
-    handleDeleteDataReliefValves()
+    handleDeleteUsers()
   }
     
   const onInputChange = (e, name) => {
@@ -162,8 +176,8 @@ export const HomeAdmin = () => {
     _input[`${name}`] = val;
     setUser(_input);
     
-    if (e.target.value.length === 0) { return setEmptySeparatorTag(true) }
-    else{ return setEmptySeparatorTag(false)}
+    if (e.target.value.length === 0) { return setEmptyUserEmail(true) }
+    else{ return setEmptyUserEmail(false)}
   }
 
   const leftToolbarTemplate = () => {
@@ -172,24 +186,24 @@ export const HomeAdmin = () => {
         <Button
           label="New"
           icon="pi pi-plus"
-          className="success-button p-button-outlined p-mr-2"
+          className="success-button success-button-admin p-button-outlined p-mr-2"
           onClick={openNew}
         />
         <Button
           label="Delete"
           icon="pi pi-trash"
-          className="delete-button p-button-outlined"
+          className="delete-button delete-button-admin p-button-outlined"
           onClick={confirmDeleteSelected}
-          disabled={!selectedReliefValves || !selectedReliefValves.length}
+          disabled={!selectedUsers || !selectedUsers.length}
         />
       </React.Fragment>
     )
   }
 
   const header = (
-    <div className="table-header d-flex align-items-end">
-      <h5 className="p-m-0">Manage Facilities</h5>
-      <span className="p-input-icon-left">
+    <div className="table-header table-header-admin d-flex align-items-end">
+      <h5 className="p-m-0">Manage Users</h5>
+      <span className="p-input-icon-left filter-admin">
         <i className="pi pi-search" />
         <InputText
           type="search"
@@ -212,7 +226,7 @@ export const HomeAdmin = () => {
         label="Save"
         icon="pi pi-check"
         className="p-button-text dialog-yes"
-        onClick={saveReliefValve}
+        onClick={saveCompanyUser}
       />
     </React.Fragment>
   )
@@ -223,13 +237,13 @@ export const HomeAdmin = () => {
         label="No"
         icon="pi pi-times"
         className="p-button-text dialog-no"
-        onClick={hideDeleteReliefValvesDialog}
+        onClick={hideDeleteUsersDialog}
       />
       <Button
         label="Yes"
         icon="pi pi-check"
         className="p-button-text dialog-yes"
-        onClick={deleteSelectedReliefValves}
+        onClick={deleteSelectedUsers}
       />
     </React.Fragment>
   )
@@ -257,16 +271,14 @@ export const HomeAdmin = () => {
 
   const checkEditor = (valueKey, props) => {
     switch (props.field) {
-      case "company_id":
-        return inputTextEditor(valueKey, props, "company_id");
       case "email":
         return inputTextEditor(valueKey, props, "email");
       case "firstname":
         return inputTextEditor(valueKey, props, "firstname");
       case "lastname":
         return inputTextEditor(valueKey, props, "lastname");
-      case "id":
-        return inputTextEditor(valueKey, props, "id");
+      case "password":
+          return inputTextEditor(valueKey, props, "password");
       default:
         break;
       
@@ -282,18 +294,17 @@ export const HomeAdmin = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({       
-          "company_id": user.company_id,
           "email": user.email,
           "firstname":user.firstname, 
-          "id": user.id,
           "lastname": user.lastname,
+          "password": user.password
         })
       }
       console.log(requestOptions.body)
-      const res = await fetch(`${ENDPOINT}/api/datareliefvalve`, requestOptions)
+      const res = await fetch(`${ENDPOINT}/api/users`, requestOptions)
       const json = await res.json()
       console.log(json["message"])
-      if (json["message"] != "Success") {
+      if (json["message"] !== "Success") {
         showError(json)
     }
   }
@@ -305,10 +316,10 @@ export const HomeAdmin = () => {
   
   }
 
-  const handleDeleteDataReliefValves = async() => {
+  const handleDeleteUsers = async() => {
   
     try { 
-      for (const separator of selectedReliefValves) {
+      for (const user of selectedUsers) {
         const requestOptions = {
           method: 'DELETE',
           headers: {
@@ -316,11 +327,11 @@ export const HomeAdmin = () => {
             'Content-Type': 'application/json'
           },        
           body: JSON.stringify({
-            "separator_tag": separator.separator_tag     
+            "email": user.email   
           })  
         }
         console.log(requestOptions.body)
-        const res = await fetch(`${ENDPOINT}/api/datareliefvalve`, requestOptions)
+        const res = await fetch(`${ENDPOINT}/api/users`, requestOptions)
         const json = await res.json()
         console.log(json)
         
@@ -337,16 +348,16 @@ export const HomeAdmin = () => {
     <div className="p-grid p-fluid index">
       <Toast className="index-toast" ref={toast} />
       <div className="card card-color">
-        <h5>Admin</h5>
+        <h4>Admin</h4>
         <Toolbar
-          className="p-mb-4"
+          className="toolbar-new-table"
           left={leftToolbarTemplate}
         ></Toolbar>
         <DataTable
           ref={dt}
           value={users}
-          selection={selectedReliefValves}
-          onSelectionChange={(e) => setSelectedReliefValves(e.value)}
+          selection={selectedUsers}
+          onSelectionChange={(e) => setSelectedUsers(e.value)}
           editMode="row"
           dataKey="id"
           onRowEditInit={onRowEditInit}
@@ -354,27 +365,11 @@ export const HomeAdmin = () => {
           onRowEditCancel={onRowEditCancel}
           globalFilter={globalFilter}
           header={header}
-          scrollHeight="55vh"
-          frozenWidth="15rem"
+          scrollHeight="23vh"
           scrollable
         >
-          <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} frozen></Column>
+          <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} ></Column>
           <Column headerStyle={{width: '20rem', textAlign: 'center' }}
-            field="id"
-            header="Id"
-            editor={(props) => checkEditor("users", props)}
-            style={{textAlign: 'center' }}
-            sortable
-          ></Column>
-          <Column headerStyle={{ width: '8rem',textAlign: 'center' }}
-            field="company_id"
-            header="Company Id"
-            editor={(props) => checkEditor("users", props)}
-            style={{textAlign: 'center', fontWeight:"700" }}
-            sortable
-            frozen
-          ></Column>
-          <Column headerStyle={{width: '10rem', textAlign: 'center' }}
             field="email"
             header="Email"
             editor={(props) => checkEditor("users", props)}
@@ -395,15 +390,25 @@ export const HomeAdmin = () => {
             style={{textAlign: 'center' }}
             sortable
             ></Column>
+            <Column headerStyle={{width: '20rem', textAlign: 'center' }}
+            field="password"
+            header="Password"
+            editor={(props) => checkEditor("users", props)}
+            style={{textAlign: 'center' }}
+            sortable
+            ></Column>
           <Column
             rowEditor
             headerStyle={{ width: "7rem" }}
             bodyStyle={{ textAlign: "center" }}
           ></Column>
-        </DataTable>
-      </div>
+          </DataTable>
+          </div>
+          <div className="new-table card card-color">
+          <FacilityTable />
+        </div>
       <Dialog
-        visible={reliefValveDialog}
+        visible={userDialog}
         style={{ width: "450px" }}
         header="New User"
         modal
@@ -412,16 +417,16 @@ export const HomeAdmin = () => {
         onHide={hideDialog}
       >
         <div className="p-field">
-          <label htmlFor="company_id">User data</label>
+          <label htmlFor="email">User email</label>
           <InputText
-            id="company_id"
-            value={user.company_id}
-            onChange={(e) => onInputChange(e, "separator_tag")}
+            id="email"
+            value={user.email}
+            onChange={(e) => onInputChange(e, "email")}
             required
             autoFocus
           />
-          {emptySeparatorTag===true? 
-            <small className="p-error">User is required.</small>
+          {emptyUserEmail===true? 
+            <small className="p-error">User email is required.</small>
           : null}  
           {/* {submitted && !user.separator_tag && (
             <small className="p-error">Relief Valve Tag is required.</small>
@@ -429,12 +434,12 @@ export const HomeAdmin = () => {
         </div>
       </Dialog>
       <Dialog
-        visible={deleteReliefValvesDialog}
+        visible={deleteUsersDialog}
         style={{ width: "450px" }}
         header="Confirm"
         modal
         footer={deleteReliefValvesDialogFooter}
-        onHide={hideDeleteReliefValvesDialog}
+        onHide={hideDeleteUsersDialog}
       >
         <div className="confirmation-content">
           <i
@@ -459,6 +464,7 @@ export const HomeAdmin = () => {
           <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}}/><span>{addError}</span>
         </div>
         </Dialog>
+        
       </div>
     </>
   );

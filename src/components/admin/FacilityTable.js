@@ -12,64 +12,83 @@ import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
-import "./DataReliefValve.css";
-import CalculationsButton from '../calculations/CalculationsButton'
+import "../inputs/DataReliefValve.css";
 
-export const DataReliefValve = () => {
+export const FacilityTable = () => {
   const toast = useRef(null);
   const { store } = useContext(Context);
-  const [emptySeparatorTag, setEmptySeparatorTag] = useState(true);
-  const [reliefValveDialog, setReliefValveDialog] = useState(false);
-  const [selectedReliefValves, setSelectedReliefValves] = useState(null);
-  const [submitted, setSubmitted] = useState(false);
-  const [deleteReliefValvesDialog, setDeleteReliefValvesDialog] = useState(false);
-  const [globalFilter, setGlobalFilter] = useState(null);
-  const [reliefValves, setReliefValves] = useState();
-  const [reliefValve, setReliefValve] = useState(store.input_relief_valve_data);
-  const [visible, setVisible] = useState(false)
+  const [emptyFacilityName, setEmptyFacilityName] = useState(true);
+  const [facilityDialog, setFacilityDialog] = useState(false);
+  const [selectedFacilities, setSelectedFacilities] = useState(null);
+  const [submittedFacility, setSubmittedFacility] = useState(false);
+  const [deleteFacilitiesDialog, setDeleteFacilitiesDialog] = useState(false);
+  const [globalFilterFacility, setGlobalFilterFacility] = useState(null);
+  const [facilities, setFacilities] = useState();
+  const [facility, setFacility] = useState(store.facility);
+  const [visibleFacility, setVisibleFacility] = useState(false)
   const [addError, setAddError] = useState()
   const dt = useRef(null);
+  const [companyId, setCompanyId] = useState()
 
   let originalRows = {};
 
   var ENDPOINT = store.endpoint;
+  var companyUserSS = window.sessionStorage.getItem('companyUser')
+  
 
   useEffect(() => {
-    getDataReliefValve()
+    const abortController = new AbortController()
+    const signal = abortController.signal
+    async function fetchMyApi() {
+      await getDataAdmin(signal)
+    }
+    fetchMyApi()
+
+    return function cleanup() {
+      abortController.abort()
+    }
   }, []);
 
-  const getDataReliefValve = () => {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },}
-      try {fetch(`${ENDPOINT}/api/datareliefvalve`, requestOptions)
-      .then(response => response.json())
-      .then(data => setReliefValves(data))}
-      catch(error){
+  const getDataAdmin = async(signal) => {
+    try {
+      const requestOptions = {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      }
+      const companyUser = await fetch(`${ENDPOINT}/api/companies/${companyUserSS}`, requestOptions, {signal: signal})
+      const companyUserRes = await companyUser.json()
+      const companyId = companyUserRes[0].id
+      const facilitiesByCompanyId = await fetch(`${ENDPOINT}/api/facilities/${companyId}`)
+      const facilitiesByCompanyIdRes = await facilitiesByCompanyId.json()
+      setCompanyId(companyId)
+      setFacilities(facilitiesByCompanyIdRes)
+      
+    }catch (error) {
         throw error;
       }
   }
+  
 
   const openNew = () => {
-    setReliefValve(store.input_relief_valve_data);
-    setSubmitted(false);
-    setReliefValveDialog(true);
+    setFacility(store.facility);
+    setSubmittedFacility(false);
+    setFacilityDialog(true);
   }
 
   const hideDialog = () => {
-    setSubmitted(false);
-    setReliefValveDialog(false);
+    setSubmittedFacility(false);
+    setFacilityDialog(false);
   }
 
-  const hideDeleteReliefValvesDialog = () => {
-    setDeleteReliefValvesDialog(false);
+  const hideDeleteUsersDialog = () => {
+    setDeleteFacilitiesDialog(false);
   }
 
-  const saveReliefValve = async() => {
-    if (emptySeparatorTag===false)
+  const saveCompanyUser = async() => {
+    if (emptyFacilityName===false)
   try {
     const requestOptions = {
       method: 'POST',
@@ -78,27 +97,27 @@ export const DataReliefValve = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        tag: reliefValve.separator_tag,
-        facility_id: null
+        company_id: companyId,
+        facilitycode: facility.facilitycode
       })
     }
     console.log(requestOptions.body)
-    const res = await fetch(`${ENDPOINT}/api/separators`, requestOptions)
+    const res = await fetch(`${ENDPOINT}/api/facilities`, requestOptions)
     const json = await res.json()
     console.log(json)
 
-    setSubmitted(true)
+    setSubmittedFacility(true)
     toast.current.show({
       severity: "success",
       summary: "Successful",
-      detail: "ReliefValve Created",
+      detail: "Facility Created",
       life: 3000,
     })
 
-    getDataReliefValve()
-    setReliefValveDialog(false);
-    setReliefValve(store.input_relief_valve_data)
-    setEmptySeparatorTag(true)
+    getDataAdmin()
+    setFacilityDialog(false);
+    setFacility(store.facility)
+    setEmptyFacilityName(true)
   
       }catch (error){
         console.log(error)
@@ -107,54 +126,54 @@ export const DataReliefValve = () => {
   }
 
   const onRowEditInit = (event) => {
-    originalRows[event.index] = { ...reliefValves[event.index] };
+    originalRows[event.index] = { ...facilities[event.index] };
   }
 
   const onRowEditSave = (event) => {
-    originalRows[event.index] = { ...reliefValves[event.index] };
-    handleUpdateDataReliefValves(originalRows[event.index])
+    originalRows[event.index] = { ...facilities[event.index] };
+    handleUpdateDataCompanyUsers(originalRows[event.index])
   }
   
   const onRowEditCancel = (event) => {
-    // let row_relief_valves = [...reliefValves];
-    // console.log([...reliefValves])
+    // let row_relief_valves = [...facilities];
+    // console.log([...facilities])
     // row_relief_valves[event.index] = originalRows[event.index];
     // console.log(originalRows[event.index])
     // delete originalRows[event.index];
-    getDataReliefValve()
-    //setReliefValves([...reliefValves]);
+    getDataAdmin()
+    //setFacilities([...facilities]);
   }
 
-  const exportCSV = () => {
-    dt.current.exportCSV();
-  }
+  // const exportCSV = () => {
+  //   dt.current.exportCSV();
+  // }
 
   const confirmDeleteSelected = () => {
-    setDeleteReliefValvesDialog(true);
+    setDeleteFacilitiesDialog(true);
   }
 
-  const deleteSelectedReliefValves = () => {
-    let _deleteReliefValves = reliefValves.filter((val) => !selectedReliefValves.includes(val))
-    setReliefValves(_deleteReliefValves);
-    setDeleteReliefValvesDialog(false);
-    setSelectedReliefValves(null);
+  const deleteSelectedUsers = () => {
+    let _deleteReliefValves = facilities.filter((val) => !selectedFacilities.includes(val))
+    setFacilities(_deleteReliefValves);
+    setDeleteFacilitiesDialog(false);
+    setSelectedFacilities(null);
     toast.current.show({
       severity: "success",
       summary: "Successful",
       detail: "Products Deleted",
       life: 3000
     })
-    handleDeleteDataReliefValves()
+    handleDeleteUsers()
   }
     
   const onInputChange = (e, name) => {
     const val = (e.target && e.target.value)|| '';
-    let _input = { ...reliefValve };
+    let _input = { ...facility };
     _input[`${name}`] = val;
-    setReliefValve(_input);
+    setFacility(_input);
     
-    if (e.target.value.length === 0) { return setEmptySeparatorTag(true) }
-    else{ return setEmptySeparatorTag(false)}
+    if (e.target.value.length === 0) { return setEmptyFacilityName(true) }
+    else{ return setEmptyFacilityName(false)}
   }
 
   const leftToolbarTemplate = () => {
@@ -163,28 +182,28 @@ export const DataReliefValve = () => {
         <Button
           label="New"
           icon="pi pi-plus"
-          className="success-button p-button-outlined p-mr-2"
+          className="success-button success-button-admin p-button-outlined p-mr-2"
           onClick={openNew}
         />
         <Button
           label="Delete"
           icon="pi pi-trash"
-          className="delete-button p-button-outlined"
+          className="delete-button delete-button-admin p-button-outlined"
           onClick={confirmDeleteSelected}
-          disabled={!selectedReliefValves || !selectedReliefValves.length}
+          disabled={!selectedFacilities || !selectedFacilities.length}
         />
       </React.Fragment>
     )
   }
 
   const header = (
-    <div className="table-header d-flex align-items-end">
-      <h5 className="p-m-0">Manage Relief Valve Separators</h5>
-      <span className="p-input-icon-left">
+    <div className="table-header table-header-admin d-flex align-items-end">
+      <h5 className="p-m-0">Manage Facilities</h5>
+      <span className="p-input-icon-left filter-admin">
         <i className="pi pi-search" />
         <InputText
           type="search"
-          onInput={(e) => setGlobalFilter(e.target.value)}
+          onInput={(e) => setGlobalFilterFacility(e.target.value)}
           placeholder="Search..."
         />
       </span>
@@ -203,7 +222,7 @@ export const DataReliefValve = () => {
         label="Save"
         icon="pi pi-check"
         className="p-button-text dialog-yes"
-        onClick={saveReliefValve}
+        onClick={saveCompanyUser}
       />
     </React.Fragment>
   )
@@ -214,19 +233,19 @@ export const DataReliefValve = () => {
         label="No"
         icon="pi pi-times"
         className="p-button-text dialog-no"
-        onClick={hideDeleteReliefValvesDialog}
+        onClick={hideDeleteUsersDialog}
       />
       <Button
         label="Yes"
         icon="pi pi-check"
         className="p-button-text dialog-yes"
-        onClick={deleteSelectedReliefValves}
+        onClick={deleteSelectedUsers}
       />
     </React.Fragment>
   )
 
   const dataTableFuncMap = {
-    reliefValves: setReliefValves,
+    facilities: setFacilities,
   }
 
   const onEditorValueChange = (valueKey, props, value) => {
@@ -248,34 +267,19 @@ export const DataReliefValve = () => {
 
   const checkEditor = (valueKey, props) => {
     switch (props.field) {
-      case "separator_tag":
-        return inputTextEditor(valueKey, props, "separator_tag");
-      case "rvtag":
-        return inputTextEditor(valueKey, props, "rvtag");
-      case "rvsetpressure":
-        return inputTextEditor(valueKey, props, "rvsetpressure");
-      case "rvorificearea":
-        return inputTextEditor(valueKey, props, "rvorificearea");
+      case "facilitycode":
+        return inputTextEditor(valueKey, props, "facilitycode");
+      case "location":
+        return inputTextEditor(valueKey, props, "location");
+      case "name":
+        return inputTextEditor(valueKey, props, "name");
       default:
         break;
       
     }
-  };
+  }  
 
-  const rightToolbarTemplate = () => {
-    return (
-      <React.Fragment>
-        <Button
-          label="Export"
-          icon="pi pi-upload"
-          className="export-button p-button-outlined"
-          onClick={exportCSV}
-        />
-      </React.Fragment>
-    );
-  };  
-
-  const handleUpdateDataReliefValves = async datareliefvalve => {
+  const handleUpdateDataCompanyUsers = async facility => {
   
       const requestOptions = {
         method: 'PUT',
@@ -284,32 +288,31 @@ export const DataReliefValve = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({       
-          "separator_tag": datareliefvalve.separator_tag,
-          "rvtag": datareliefvalve.rvtag,
-          "rvsetpressure":datareliefvalve.rvsetpressure, 
-          "rvorificearea":datareliefvalve.rvorificearea
+          "facilitycode": facility.facilitycode,
+          "name": facility.name,
+          "location":facility.location
         })
       }
-      //console.log(requestOptions.body)
-      const res = await fetch(`${ENDPOINT}/api/datareliefvalve`, requestOptions)
+      console.log(requestOptions.body)
+      const res = await fetch(`${ENDPOINT}/api/facilities`, requestOptions)
       const json = await res.json()
-      //console.log(json["message"])
+      console.log(json["message"])
       if (json["message"] !== "Success") {
         showError(json)
     }
   }
 
   const showError = (error) => {
-    setVisible(true)
+    setVisibleFacility(true)
     setAddError(error)
-    //console.log(error)
+    console.log(error)
   
   }
 
-  const handleDeleteDataReliefValves = async() => {
+  const handleDeleteUsers = async() => {
   
     try { 
-      for (const separator of selectedReliefValves) {
+      for (const facility of selectedFacilities) {
         const requestOptions = {
           method: 'DELETE',
           headers: {
@@ -317,11 +320,11 @@ export const DataReliefValve = () => {
             'Content-Type': 'application/json'
           },        
           body: JSON.stringify({
-            "separator_tag": separator.separator_tag     
+            "facilitycode": facility.facilitycode   
           })  
         }
         console.log(requestOptions.body)
-        const res = await fetch(`${ENDPOINT}/api/datareliefvalve`, requestOptions)
+        const res = await fetch(`${ENDPOINT}/api/facilities`, requestOptions)
         const json = await res.json()
         console.log(json)
         
@@ -335,109 +338,94 @@ export const DataReliefValve = () => {
 
   return (
     <>
-      <CalculationsButton/>
-    <div className="p-grid p-fluid index">
       <Toast className="index-toast" ref={toast} />
-      <div className="card card-color">
-        <h5>Relief Valve</h5>
         <Toolbar
-          className="p-mb-4"
+          className="toolbar-new-table"
           left={leftToolbarTemplate}
-          right={rightToolbarTemplate}
         ></Toolbar>
         <DataTable
           ref={dt}
-          value={reliefValves}
-          selection={selectedReliefValves}
-          onSelectionChange={(e) => setSelectedReliefValves(e.value)}
+          value={facilities}
+          selection={selectedFacilities}
+          onSelectionChange={(e) => setSelectedFacilities(e.value)}
           editMode="row"
           dataKey="id"
           onRowEditInit={onRowEditInit}
           onRowEditSave={onRowEditSave}
           onRowEditCancel={onRowEditCancel}
-          globalFilter={globalFilter}
+          globalFilter={globalFilterFacility}
           header={header}
-          scrollHeight="55vh"
-          frozenWidth="15rem"
+          scrollHeight="23vh"
           scrollable
         >
-          <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} frozen></Column>
-          <Column headerStyle={{ width: '8rem',textAlign: 'center' }}
-            field="separator_tag"
-            header="Separator"
-            editor={(props) => checkEditor("reliefValves", props)}
-            style={{textAlign: 'center', fontWeight:"700" }}
-            sortable
-            frozen
-          ></Column>
-          <Column headerStyle={{width: '10rem', textAlign: 'center' }}
-            field="rvtag"
-            header="RV Tag"
-            editor={(props) => checkEditor("reliefValves", props)}
+          <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} ></Column>
+          <Column headerStyle={{width: '20rem', textAlign: 'center' }}
+            field="facilitycode"
+            header="Facility Code"
+            editor={(props) => checkEditor("facilities", props)}
             style={{textAlign: 'center' }}
             sortable
           ></Column>
           <Column headerStyle={{width: '20rem', textAlign: 'center' }}
-            field="rvsetpressure"
-            header="RV Set Pressure (kPa)"
-            editor={(props) => checkEditor("reliefValves", props)}
+            field="location"
+            header="Location"
+            editor={(props) => checkEditor("facilities", props)}
             style={{textAlign: 'center' }}
             sortable
           ></Column>
           <Column headerStyle={{width: '20rem', textAlign: 'center' }}
-            field="rvorificearea"
-            header="RV Orifice Area (in&sup2;)"
-            editor={(props) => checkEditor("reliefValves", props)}
+            field="name"
+            header="Name"
+            editor={(props) => checkEditor("facilities", props)}
             style={{textAlign: 'center' }}
             sortable
-          ></Column>
+            ></Column>
           <Column
             rowEditor
             headerStyle={{ width: "7rem" }}
             bodyStyle={{ textAlign: "center" }}
           ></Column>
         </DataTable>
-      </div>
       <Dialog
-        visible={reliefValveDialog}
+        visible={facilityDialog}
         style={{ width: "450px" }}
-        header="New Relief Valve"
+        header="New Facility"
         modal
         className="p-fluid"
         footer={reliefValveDialogFooter}
         onHide={hideDialog}
       >
         <div className="p-field">
-          <label htmlFor="separator_tag">Relieve Valve Tag</label>
+          <label htmlFor="facilitycode">Facility code</label>
           <InputText
-            id="separator_tag"
-            value={reliefValve.separator_tag}
-            onChange={(e) => onInputChange(e, "separator_tag")}
+            id="facilitycode"
+            value={facility.facilitycode}
+            onChange={(e) => onInputChange(e, "facilitycode")}
             required
             autoFocus
           />
-          {emptySeparatorTag===true? 
-            <small className="p-error">Relief Valve Tag is required.</small>
+          {emptyFacilityName===true? 
+            <small className="p-error">Facility code is required.</small>
           : null}  
-          {/* {submitted && !reliefValve.separator_tag && (
+          {/* {submittedFacility && !facility.separator_tag && (
             <small className="p-error">Relief Valve Tag is required.</small>
           )}         */}
         </div>
       </Dialog>
       <Dialog
-        visible={deleteReliefValvesDialog}
+        visible={deleteFacilitiesDialog}
         style={{ width: "450px" }}
         header="Confirm"
         modal
         footer={deleteReliefValvesDialogFooter}
-        onHide={hideDeleteReliefValvesDialog}
+        onHide={hideDeleteUsersDialog}
       >
         <div className="confirmation-content">
           <i
             className="pi pi-exclamation-triangle p-mr-3"
             style={{ fontSize: "2rem" }}
           />
-          {reliefValve && (
+          {facility && (
             <span>
               Are you sure you want to delete the selected Relief Valves?
             </span>
@@ -445,17 +433,16 @@ export const DataReliefValve = () => {
         </div>
         </Dialog>
         <Dialog
-        visible={visible}
+        visible={visibleFacility}
         style={{ width: '450px' }}
         header="Error"
         modal
         icon="pi pi-exclamation-triangle"
-        onHide={() => setVisible(false)}>
+        onHide={() => setVisibleFacility(false)}>
           <div className="confirmation-content mb-5">
           <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}}/><span>{addError}</span>
         </div>
         </Dialog>
-      </div>
     </>
   );
 };

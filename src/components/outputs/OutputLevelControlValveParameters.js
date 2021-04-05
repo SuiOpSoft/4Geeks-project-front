@@ -48,7 +48,6 @@ useEffect( () => {
   return (
     <div className="p-grid p-fluid index">
           <div className="datatable-editing-demo">
-
       <div className="card card-color">
         <h5>Level Control Valve Parameters</h5>
         <Toolbar className="p-mb-4" right={rightToolbarTemplate}></Toolbar>
