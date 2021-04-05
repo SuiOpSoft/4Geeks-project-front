@@ -14,7 +14,7 @@ import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
 import "../inputs/DataReliefValve.css";
 
-export const NewTable = () => {
+export const FacilityTable = () => {
   const toast = useRef(null);
   const { store } = useContext(Context);
   const [emptyFacilityName, setEmptyFacilityName] = useState(true);
@@ -37,10 +37,19 @@ export const NewTable = () => {
   
 
   useEffect(() => {
-    getDataAdmin()
+    const abortController = new AbortController()
+    const signal = abortController.signal
+    async function fetchMyApi() {
+      await getDataAdmin(signal)
+    }
+    fetchMyApi()
+
+    return function cleanup() {
+      abortController.abort()
+    }
   }, []);
 
-  const getDataAdmin = async() => {
+  const getDataAdmin = async(signal) => {
     try {
       const requestOptions = {
         method: 'GET',
@@ -49,20 +58,19 @@ export const NewTable = () => {
           'Content-Type': 'application/json'
         }
       }
-      const companyUser = await fetch(`${ENDPOINT}/api/companies/${companyUserSS}`, requestOptions)
+      const companyUser = await fetch(`${ENDPOINT}/api/companies/${companyUserSS}`, requestOptions, {signal: signal})
       const companyUserRes = await companyUser.json()
       const companyId = companyUserRes[0].id
       const facilitiesByCompanyId = await fetch(`${ENDPOINT}/api/facilities/${companyId}`)
       const facilitiesByCompanyIdRes = await facilitiesByCompanyId.json()
-      console.log(facilitiesByCompanyIdRes)
       setCompanyId(companyId)
       setFacilities(facilitiesByCompanyIdRes)
       
     }catch (error) {
         throw error;
       }
-    
   }
+  
 
   const openNew = () => {
     setFacility(store.facility);

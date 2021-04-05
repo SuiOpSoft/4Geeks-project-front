@@ -13,7 +13,7 @@ import { Button } from "primereact/button";
 import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
 import "../inputs/DataReliefValve.css";
-import { NewTable } from "./FacilityTable"
+import { FacilityTable } from "./FacilityTable"
 
 export const HomeAdmin = () => {
   const toast = useRef(null);
@@ -38,10 +38,20 @@ export const HomeAdmin = () => {
   
 
   useEffect(() => {
-    getDataAdmin()
+    const abortController = new AbortController()
+    const signal = abortController.signal
+    async function fetchMyApi() {
+      await getDataAdmin(signal)
+    }
+    fetchMyApi()
+    
+
+    return function cleanup() {
+      abortController.abort()
+    }
   }, []);
 
-  const getDataAdmin = async() => {
+  const getDataAdmin = async(signal) => {
     try {
       const requestOptions = {
         method: 'GET',
@@ -50,7 +60,7 @@ export const HomeAdmin = () => {
           'Content-Type': 'application/json'
         }
       }
-      const companyUser = await fetch(`${ENDPOINT}/api/companies/${companyUserSS}`, requestOptions)
+      const companyUser = await fetch(`${ENDPOINT}/api/companies/${companyUserSS}`, {signal: signal}, requestOptions)
       const companyUserRes = await companyUser.json()
       console.log(companyUserRes[0].id)
       const companyId = companyUserRes[0].id
@@ -395,7 +405,7 @@ export const HomeAdmin = () => {
           </DataTable>
           </div>
           <div className="new-table card card-color">
-          <NewTable />
+          <FacilityTable />
         </div>
       <Dialog
         visible={userDialog}

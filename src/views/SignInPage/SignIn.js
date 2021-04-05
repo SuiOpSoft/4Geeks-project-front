@@ -62,7 +62,7 @@ export const SignIn = () => {
 														<div className="form-group">
 															<label  className="">Email</label>
 														<div className="form-group">
-															<input name="Email" value={email} onChange={e=>setEmail(e.target.value)} required placeholder="Enter email"  type="text" className="form-control is-untouched is-pristine av-invalid"  />
+															<input name="Email" value={email} onChange={e=>setEmail(e.target.value)} required placeholder="Enter email"  type="email" className="form-control is-untouched is-pristine av-invalid"  />
 																</div>
 															</div>
 														<div className="form-group mb-5">
