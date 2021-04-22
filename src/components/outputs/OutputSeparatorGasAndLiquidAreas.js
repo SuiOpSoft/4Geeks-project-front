@@ -9,12 +9,14 @@ import React, { useState, useRef, useContext, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import "../inputs/DataReliefValve.css";
-import {Context} from "../../store/context"
+import { Context } from "../../store/context"
+import TourOutputs from "../shared/TourOutputs"
 
 export const OutputSeparatorGasAndLiquidAreas = () => {
   
   const { store } = useContext(Context);
   const [separatorGasAndLiquidAreas, setSeparatorGasAndLiquidAreas] = useState([]);
+  const [runTutorialOutputs, setRunTutorialOutputs] = useState(false)
   const dt = useRef(null);
 
   var ENDPOINT = store.endpoint;
@@ -22,7 +24,7 @@ export const OutputSeparatorGasAndLiquidAreas = () => {
   const rightToolbarTemplate = () => {
     return (
         <React.Fragment>
-            <Button label="Export" icon="pi pi-upload" className="export-button p-button-outlined" onClick={exportCSV} />
+            <Button label="Export" icon="pi pi-upload" className="export-button p-button-outlined tutorial-inputs-export" onClick={exportCSV} />
         </React.Fragment>
     )
 }
@@ -43,8 +45,18 @@ useEffect( () => {
     catch(error){
       throw error;
     }
-  }, []);
+}, []);
+  
+useEffect(() => {
+  if (store.tutorial_outputs == true) {
+    setRunTutorialOutputs(true)
+  }
+}, []);
 
+  const changeRunTutorialOutputs = () => {
+    store.tutorial_outputs = false
+    setRunTutorialOutputs(false)
+}
 
   return (
     <div className="p-grid p-fluid index">
@@ -118,6 +130,7 @@ useEffect( () => {
           ></Column>
         </DataTable>
       </div>
+      <TourOutputs runTutorialOutputs={runTutorialOutputs} changeRunTutorialOutputs={changeRunTutorialOutputs}/>
     </div>
 
   );

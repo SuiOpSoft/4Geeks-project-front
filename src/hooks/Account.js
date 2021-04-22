@@ -66,7 +66,7 @@ export const Account = () => {
       </div>
       <div className="mt-5">
         <div className="p-d-flex p-ai-center p-flex-wrap ml-3">
-          <Chip label={label} image= "https://n2muicpro202010s.s3.eu-west-3.amazonaws.com/base/img/default-profile-icon.png" className="p-mr-2 p-mb-2" />
+          <Chip label={label} icon= "pi pi-users" className="p-mr-2 p-mb-2" />
         </div>
         <div className="p-d-flex p-ai-center p-flex-wrap ml-3">
           <Chip label={getUserInformation.email} image= "https://p7.hiclipart.com/preview/663/97/225/email-computer-icons-message-bounce-address-email-icon.jpg" className="p-mr-2 p-mb-2" />

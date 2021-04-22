@@ -271,13 +271,21 @@ td .pi-check{
     border-bottom: 2px solid rgb(67, 211, 158);
 }
 
-.home-user-img-out{
+.home-user-img-input:hover{
+   cursor:pointer;
+}
+
+.home-user-img-output{
     background: #333742;
     width: 15em;
-    height: 15em;
-    top:7vh;
+    height: 5em;
+    top:17vh;
     border-bottom: 2px solid rgb(67, 211, 158);
 }
+
+.home-user-img-output:hover{
+    cursor:pointer;
+ }
 
 .home-user-img-chart{
     background: #333742;
@@ -602,7 +610,7 @@ canvas{
     position: absolute !important;
     z-index: 6 !important;
     top: 9.75em;
-    right: 50%;  
+    right: 42%;  
     border-color: rgb(247, 126, 83) !important;
     color: rgb(247, 126, 83) !important;
     width: 5% !important;
@@ -785,23 +793,27 @@ td .p-inputtext{
 .dialog-learn-input{
     margin-top: 2em;
     padding-left: 3em;
+    border-radius: 5px;
 }
 
 .dialog-learn-col p{
     padding-left: 2em;
     color: #282D36;
     font-size: 2em;
+    border-radius: 5px;
 }
 
 .dialog-learn-input1{
     margin-top: 2em;
     padding-right: 3em;
+    border-radius: 5px;
 }
 
 .dialog-learn-col1 p{
     padding-left: 4em;
     color: #282D36;
     font-size: 2em;
+    border-radius: 5px;
 }
 
 .arrow-learn{
@@ -813,6 +825,7 @@ td .p-inputtext{
 
 .dialog-learn-new{
     width: 90%;
+    border-radius: 5px;
 }
 
 .arrow-learn-new{
@@ -995,4 +1008,58 @@ td .p-inputtext{
 
 #pr_id_1_header_1{
     border-left: 1px solid rgb(67, 211, 158) !important;
+}
+
+.react-joyride__tooltip{
+    background: #333742 !important;
+    color: #A1A8B8 !important;
+    border: 1px solid rgb(67, 211, 158);
+    border-bottom: 10px solid rgb(67, 211, 158);
+}
+
+.react-joyride__tooltip button:nth-child(1){
+    color: rgb(67, 211, 158) !important;
+    border: none !important;
+    
+}
+
+/* button .react-joyride__tooltip:last-child{
+    background: transparent !important;
+    color: rgb(67, 211, 158) !important;
+    border: 1px solid rgb(67, 211, 158) !important;
+}
+
+button .react-joyride__tooltip:last-child:hover{
+    background: rgb(67, 211, 158) !important;
+    color: #333742 !important;
+    border: 1px solid rgb(67, 211, 158) !important;
+} */
+.react-joyride__tooltip button:last-child path{
+    background: transparent !important;
+    fill: rgb(67, 211, 158) !important;
+    
+}
+
+.react-joyride__tooltip div:nth-child(2) button:last-child{
+    background: transparent !important;
+    color: rgb(67, 211, 158) !important;
+    border: 1px solid rgb(67, 211, 158) !important;
+}
+
+.react-joyride__tooltip div:nth-child(2) button:first-child{
+    background: transparent !important;
+    color: rgb(67, 211, 158) !important;
+    border: none !important;
+}
+
+.react-joyride__tooltip div:nth-child(2) button:last-child:hover{
+    background: rgb(67, 211, 158) !important;
+    color: #333742 !important;
+    border: 1px solid rgb(67, 211, 158) !important;
+}
+
+.react-joyride__tooltip div:nth-child(2) button:first-child:hover{
+    background: transparent !important;
+    color: rgb(67, 211, 158) !important;
+    border: none !important;
 }
