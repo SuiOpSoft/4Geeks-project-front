@@ -4,9 +4,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 			
 			tutorial_inputs: false,
 			
-			tutorial_outputs:false,
+			tutorial_outputs: false,
+			
+			tutorial_charts:false,
 
-			endpoint: 'https://3001-copper-canidae-eoz3dy6c.ws-eu03.gitpod.io',
+			endpoint: 'https://3001-copper-gamefowl-loy4z9ow.ws-eu03.gitpod.io',
 			
 			input_fluids_data: 
 				{
