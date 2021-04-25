@@ -21,7 +21,8 @@ import {GasChart} from "../components/charts/GasChart"
 import {LiquidChart} from "../components/charts/LiquidChart"
 import UseUser from '../hooks/UseUser'
 import UseCompany from '../hooks/UseCompany'
-import {HomeAdmin} from "../components/admin/HomeAdmin"
+import { HomeAdmin } from "../components/admin/HomeAdmin"
+
 
 export const Home = () => {
   const [layoutMode, setLayoutMode] = useState("static");
@@ -187,7 +188,7 @@ export const Home = () => {
     return (
       <div className={wrapperClass} onClick={onWrapperClick}>
         {isLogged || isLoggedCompany && <Redirect to="/home/homeuser" />}
-      <Navbar onToggleMenu={onToggleMenu} />
+        <Navbar onToggleMenu={onToggleMenu} />
       <SideBar
         isSidebarVisible={isSidebarVisible}
         sidebar={sidebar}

@@ -1,6 +1,7 @@
 import React,{useContext, useState, useEffect} from 'react';
 import { Chart } from 'primereact/chart';
 import { Context } from "../../store/context";
+import TourCharts from "../shared/TourCharts"
 
 export const GasChart = () => {
 
@@ -12,6 +13,7 @@ export const GasChart = () => {
     const [maximumGasFlowHHLevel, setMaximumGasFlowHHLevel] = useState([])
     const [maximumGasFlowNormalLevel, setMaximumGasFlowNormalLevel] = useState([])
     const [reliefValve, setReliefValve] = useState([])
+    const [runTutorialCharts, setRunTutorialCharts] = useState(store.tutorial_charts)
 
     var ENDPOINT = store.endpoint;
 
@@ -23,7 +25,18 @@ export const GasChart = () => {
         getDataMaximumGasFlowHHLevel()
         getDataMaximumGasFlowNormalLevel()
         getDataReliefValve()
-        }, []);
+    }, []);
+    
+    useEffect(() => {
+        if (store.tutorial_charts == true) {
+            setRunTutorialCharts(true)
+        }
+      }, []);
+      
+        const changeRunTutorialCharts = () => {
+          store.tutorial_outputs = false
+          setRunTutorialCharts(false)
+      }
 
     const getDataLabels = async() => {
         const requestOptions = {
@@ -185,8 +198,11 @@ export const GasChart = () => {
     };
 
     return (
+        <>
         <div className="card index charts">
             <Chart type="bar" data={chartData} options={lightOptions} />
-        </div>
+            </div>
+            <TourCharts runTutorialCharts={runTutorialCharts} changeRunTutorialCharts={changeRunTutorialCharts}/>
+        </>
     )
 }

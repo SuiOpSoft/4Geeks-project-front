@@ -546,7 +546,7 @@ export const DataFluids = () => {
             header="Actual Liquid Flow (m&sup3;/h)"
             editor={(props) => checkEditor("fluids", props)} sortable
           ></Column>
-          <Column
+            <Column
             rowEditor
             headerStyle={{ width: "7rem" }}
             bodyStyle={{ textAlign: "center" }}

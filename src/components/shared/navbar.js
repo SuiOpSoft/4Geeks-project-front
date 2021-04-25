@@ -6,8 +6,7 @@ import { Button } from 'primereact/button';
 import { Account } from "../../hooks/Account"
 import { Dropdown } from 'primereact/dropdown';
 import { Link } from 'react-router-dom';
-
-
+import Tour from "../shared/Tour"
 
 export const Navbar = (props) => {
     const { logout } = UseUser()
@@ -17,6 +16,7 @@ export const Navbar = (props) => {
     const [selectedCountry, setSelectedCountry] = useState(null);
     const { isLogged } = UseUser()
     const { isLoggedCompany } = UseCompany()
+    const [runTutorial, setRunTutorial] = useState(false)
     
     
     const countries = [
@@ -96,6 +96,15 @@ export const Navbar = (props) => {
         setShowDialog(true)       
     }
 
+    const RunTutorial = () => {
+        setRunTutorial(true)
+        
+    }
+
+    const changeRunTutorial = () => {
+        setRunTutorial(false)
+    }
+
     return (
         <div className="layout-topbar clearfix">
             <button type="button" className="p-link layout-menu-button" onClick={props.onToggleMenu}>
@@ -108,16 +117,21 @@ export const Navbar = (props) => {
                             <span className="layout-topbar-icon pi pi-cog" />
                         </button>
                     </Link>
-                }
-            <Dropdown className="drop-menu custom-target-icon" value={selectedCountry} options={countries} onChange={onCountryChange} optionLabel="name" filter filterBy="name" placeholder="Select a Country"
+                } 
+            <Dropdown className="drop-menu custom-target-icon main-tutorial-facility" value={selectedCountry} options={countries} onChange={onCountryChange} optionLabel="name" filter filterBy="name" placeholder="Select Facility"
                     valueTemplate={selectedCountryTemplate} itemTemplate={countryOptionTemplate} />
+                
+                <button onClick={() => RunTutorial()} type="button" className="p-link">
+                    <span className="layout-topbar-icon pi pi-question-circle" />
+                </button>
                 {isLogged &&
                     <button onClick={() => onClick('account')} type="button" className="p-link ">
-                        <span className="layout-topbar-icon pi pi-user" />
+                        <span className="layout-topbar-icon pi pi-user main-tutorial-user" />
                     </button>
                 }
+                
                 <button onClick={handleClick} type="button" className="p-link ">
-                    <span className="layout-topbar-icon pi pi-sign-out" />
+                    <span className="layout-topbar-icon pi pi-sign-out main-tutorial-logout" />
                 </button>
             </div>
             <Dialog visible={showDialog} style={{ width: '450px' }} header="Confirm" modal footer={showDialogFooter} onHide={hideDialog}>
@@ -129,6 +143,7 @@ export const Navbar = (props) => {
             <Dialog header="Account" visible={account} style={{ width: '15vw' }} onHide={() => onHide('account')}>
                 <Account/>
             </Dialog>
+            <Tour runTutorial={runTutorial} changeRunTutorial={changeRunTutorial}/>
         </div>
     );
 }

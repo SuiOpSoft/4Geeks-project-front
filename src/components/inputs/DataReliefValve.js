@@ -14,6 +14,7 @@ import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
 import "./DataReliefValve.css";
 import CalculationsButton from '../calculations/CalculationsButton'
+import TourInputs from "../shared/TourInputs"
 
 export const DataReliefValve = () => {
   const toast = useRef(null);
@@ -28,6 +29,7 @@ export const DataReliefValve = () => {
   const [reliefValve, setReliefValve] = useState(store.input_relief_valve_data);
   const [visible, setVisible] = useState(false)
   const [addError, setAddError] = useState()
+  const [runTutorialInputs, setRunTutorialInputs] = useState(false)
   const dt = useRef(null);
 
   let originalRows = {};
@@ -36,6 +38,12 @@ export const DataReliefValve = () => {
 
   useEffect(() => {
     getDataReliefValve()
+  }, []);
+
+  useEffect(() => {
+    if (store.tutorial_inputs == true) {
+      setRunTutorialInputs(true)
+    }
   }, []);
 
   const getDataReliefValve = () => {
@@ -163,13 +171,13 @@ export const DataReliefValve = () => {
         <Button
           label="New"
           icon="pi pi-plus"
-          className="success-button p-button-outlined p-mr-2"
+          className="success-button p-button-outlined p-mr-2 tutorial-inputs"
           onClick={openNew}
         />
         <Button
           label="Delete"
           icon="pi pi-trash"
-          className="delete-button p-button-outlined"
+          className="delete-button p-button-outlined tutorial-inputs-delete"
           onClick={confirmDeleteSelected}
           disabled={!selectedReliefValves || !selectedReliefValves.length}
         />
@@ -268,7 +276,7 @@ export const DataReliefValve = () => {
         <Button
           label="Export"
           icon="pi pi-upload"
-          className="export-button p-button-outlined"
+          className="export-button p-button-outlined tutorial-inputs-export"
           onClick={exportCSV}
         />
       </React.Fragment>
@@ -332,6 +340,11 @@ export const DataReliefValve = () => {
   
     }
   }
+
+  const changeRunTutorialInputs = () => {
+    store.tutorial_inputs = false
+    setRunTutorialInputs(false)
+}
 
   return (
     <>
@@ -455,6 +468,7 @@ export const DataReliefValve = () => {
           <i className="pi pi-exclamation-triangle p-mr-3" style={{ fontSize: '2rem'}}/><span>{addError}</span>
         </div>
         </Dialog>
+        <TourInputs runTutorialInputs={runTutorialInputs} changeRunTutorialInputs={changeRunTutorialInputs}/>
       </div>
     </>
   );
