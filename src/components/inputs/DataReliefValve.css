@@ -269,6 +269,7 @@ td .pi-check{
 .row-input{
     position: relative;
     top: 35%;
+    right: 4.8%;
 }
 
 .home-user-input{
@@ -279,12 +280,13 @@ td .pi-check{
     min-width: 8em;
     height: 7vh;
     border-bottom: 2px solid rgb(67, 211, 158);
-    opacity: 70%;
+    color: white;
 }
 
 .row-output{
     position: relative;
-    padding-top: 2.5%;
+    padding-top: 7%;
+    padding-left: 13%;
 }
 
 .home-user-output{
@@ -295,12 +297,14 @@ td .pi-check{
     min-width: 8em;
     height: 7vh;
     border-bottom: 2px solid rgb(67, 211, 158);
-    opacity: 70%;
+    color: white;
+    /* opacity: 70%; */
 }
 
 .row-chart{
     position: relative;
-    top: 32%;
+    top: 30%;
+    padding-left: 22%;
 }
 
 .home-user-chart{
@@ -311,7 +315,8 @@ td .pi-check{
     min-width: 8em;
     height: 7vh;
     border-bottom: 2px solid rgb(67, 211, 158);
-    opacity: 70%;
+    color: white;
+    /* opacity: 70%; */
 }
 
 .p-dialog-content{

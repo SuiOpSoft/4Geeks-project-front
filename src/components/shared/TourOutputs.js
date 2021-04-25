@@ -4,7 +4,7 @@ import JoyRide, { ACTIONS, EVENTS, STATUS } from "react-joyride";
 // Define the steps
 const TOUR_STEPS = [
   {
-    content: <h4>Let's begin the tutorial!</h4>,
+    content: <h4>Outputs tutorial!</h4>,
     locale: {
       skip: <strong aria-label="skip">Skip</strong>},
     placement: "center",

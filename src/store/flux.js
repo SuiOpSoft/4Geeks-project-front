@@ -8,7 +8,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			
 			tutorial_charts:false,
 
-			endpoint: 'https://3001-copper-gamefowl-loy4z9ow.ws-eu03.gitpod.io',
+			endpoint: 'https://3001-gray-sawfish-4vfxs5ph.ws-eu03.gitpod.io',
 			
 			input_fluids_data: 
 				{

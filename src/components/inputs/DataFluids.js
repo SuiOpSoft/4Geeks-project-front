@@ -142,7 +142,7 @@ export const DataFluids = () => {
     setFluids(_selectedFluids);
     setDeleteFluidsDialog(false);
     setSelectedFluids(null);
-    toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
+    toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Separator Deleted', life: 3000 });
     handleDeleteDataFluids();
   }
   

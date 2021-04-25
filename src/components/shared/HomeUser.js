@@ -32,7 +32,7 @@ export const HomeUser = () => {
       <div className="row d-flex justify-content-end row-output">
         <div className="col-3">
           <Link to="/home/separatorGasAndLiquidAreas">
-            <button onClick={() => RunTutorialOutputs()} type="button" className="card home-user-output ">
+            <button onClick={() => RunTutorialOutputs()} type="button" className="card home-user-output "><strong>OUTPUTS</strong>
             </button>
           </Link>
         </div>
@@ -40,7 +40,7 @@ export const HomeUser = () => {
       <div className="row d-flex justify-content-start row-input">
         <div className="col-3">
           <Link to="/home/datareliefvalve">
-            <button onClick={() => RunTutorialInputs()} type="button" className="card home-user-input">
+            <button onClick={() => RunTutorialInputs()} type="button" className="card home-user-input"><strong>INPUTS</strong>
             </button>
           </Link>
         </div>
@@ -48,7 +48,7 @@ export const HomeUser = () => {
       <div className="row d-flex justify-content-end row-chart">
       <div className="col-3">
         <Link to="/home/gaschart">
-        <button onClick={() => RunTutorialCharts()} type="button" className="card home-user-chart">
+        <button onClick={() => RunTutorialCharts()} type="button" className="card home-user-chart"><strong>CHARTS</strong>
       </button>
           </Link>
         </div>

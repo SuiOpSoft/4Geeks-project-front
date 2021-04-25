@@ -99,7 +99,7 @@ export const DataReliefValve = () => {
     toast.current.show({
       severity: "success",
       summary: "Successful",
-      detail: "ReliefValve Created",
+      detail: "Separator Created",
       life: 3000,
     })
 
@@ -149,7 +149,7 @@ export const DataReliefValve = () => {
     toast.current.show({
       severity: "success",
       summary: "Successful",
-      detail: "Products Deleted",
+      detail: "Separator Deleted",
       life: 3000
     })
     handleDeleteDataReliefValves()

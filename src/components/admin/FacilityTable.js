@@ -160,7 +160,7 @@ export const FacilityTable = () => {
     toast.current.show({
       severity: "success",
       summary: "Successful",
-      detail: "Products Deleted",
+      detail: "Separator Deleted",
       life: 3000
     })
     handleDeleteUsers()
