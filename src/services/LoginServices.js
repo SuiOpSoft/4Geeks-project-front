@@ -1,4 +1,4 @@
-const ENDPOINT = "https://3001-gray-sawfish-4vfxs5ph.ws-eu03.gitpod.io"
+const ENDPOINT = "https://suiopsoftbackend.herokuapp.com"
 
 export default function loginServices ({email , passwordUser}) {
     return fetch(`${ENDPOINT}/api/signInUser`, {
