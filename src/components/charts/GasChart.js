@@ -34,7 +34,7 @@ export const GasChart = () => {
       }, []);
       
         const changeRunTutorialCharts = () => {
-          store.tutorial_outputs = false
+          store.tutorial_charts = false
           setRunTutorialCharts(false)
       }
 
