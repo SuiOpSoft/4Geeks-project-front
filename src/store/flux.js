@@ -8,7 +8,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			
 			tutorial_charts:false,
 
-			endpoint: 'https://suiopsoft-back.herokuapp.com',
+			endpoint: 'https://suiopsoftback.herokuapp.com',
 			
 			input_fluids_data: 
 				{
