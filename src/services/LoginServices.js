@@ -1,4 +1,4 @@
-const ENDPOINT = "https://suiopsoftback.herokuapp.com"
+const ENDPOINT = "https://suiopback.herokuapp.com"
 
 export default function loginServices ({email , passwordUser}) {
     return fetch(`${ENDPOINT}/api/signInUser`, {
