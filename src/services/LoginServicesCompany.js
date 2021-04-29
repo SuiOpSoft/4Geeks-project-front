@@ -1,4 +1,4 @@
-const ENDPOINT = "https://suiopback.herokuapp.com"
+const ENDPOINT = "https://suiopsoftback.herokuapp.com"
 
 export default function loginServicesCompany({ companyUser, passwordCompany }) {
     
