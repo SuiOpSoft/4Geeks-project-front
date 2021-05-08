@@ -425,13 +425,13 @@ const onInputChange = (e, name) => {
             header="Liquid Outlet Nozzle (mm)"
             editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem', textAlign: 'center'  }}
+          <Column headerStyle={{ width: '25rem', textAlign: 'center'  }}
             style={{textAlign: 'center' }}
             field="inletdevicetype"
             header="Inlet Device Type (NID, HOP or SP)"
             editor={(props) => checkEditor("separators", props)} sortable
           ></Column>
-          <Column headerStyle={{ width: '20rem', textAlign: 'center'  }}
+          <Column headerStyle={{ width: '25rem', textAlign: 'center'  }}
             style={{textAlign: 'center' }}
             field="demistertype"
             header="Demister Type (KO, VD, HD or HVD)"

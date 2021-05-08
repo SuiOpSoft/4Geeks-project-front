@@ -67,7 +67,7 @@ export const OutputInletNozzleParameters = () => {
             field="mixtureinletnozzlevelocity"
             header="Mixture Inlet Nozzle Velocity (m/s)"
           ></Column>
-          <Column headerStyle={{ width: '20em', textAlign: 'center' }}
+          <Column headerStyle={{ width: '25em', textAlign: 'center' }}
             style={{textAlign: 'center' }}
             field="inletnozzlemomentum"
             header="Inlet Nozzle Momentum (kg/(m*sec&sup2;))"
@@ -77,7 +77,7 @@ export const OutputInletNozzleParameters = () => {
             field="maximummixtureinletnozzlevelocity"
             header="Maximum Mixture Inlet Nozzle Velocity (m/s)"
           ></Column>
-          <Column headerStyle={{ width: '25em', textAlign: 'center' }}
+          <Column headerStyle={{ width: '35em', textAlign: 'center' }}
             style={{textAlign: 'center' }}
             field="maximuminletnozzlemomentum"
             header="Maximum Inlet Nozzle Momentum (kg/(m*sec&sup2;))"
@@ -87,7 +87,7 @@ export const OutputInletNozzleParameters = () => {
             field="maximumliquidflowinletnozzle"
             header="Maximun Liquid Flow Inlet Nozzle (m&sup3;/h)"
           ></Column>
-          <Column headerStyle={{ width: '20em', textAlign: 'center' }}
+          <Column headerStyle={{ width: '25em', textAlign: 'center' }}
             style={{textAlign: 'center' }}
             field="maximumgasflowinletnozzle"
             header="Maximum Gas Flow Inlet Nozzle (m&sup3;/h)"
